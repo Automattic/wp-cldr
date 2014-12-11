@@ -65,7 +65,7 @@ class WP_CLDR {
 		require $data_file_name;
 
 		$this->localized[ $locale ] = (object) compact(
-			'country_names',
+			'territory_names',
 			'currency_names',
 			'locale_names',
 			'region_names'
@@ -143,11 +143,11 @@ class WP_CLDR {
 	* @param  string $key       The individual item's id / stub.
 	*                           For example: US, FR, DE
 	* @param  string $bucket    (optional) In which group of data to look for the key
-	*                           Defaults to 'country_names'
+	*                           Defaults to 'territory_names'
 	* @param  string $locale (optional)
 	* @return string            The localized string
 	*/
-	public function __( $key, $bucket = 'country_names', $locale = null ) {
+	public function __( $key, $bucket = 'territory_names', $locale = null ) {
 		if ( ! is_string( $key ) || ! strlen( $key ) ) {
 			return '';
 		}
@@ -164,7 +164,7 @@ class WP_CLDR {
 	* Helpers to more easily access by bucket
 	*/
 	public function _territory( $cldr_territory_code, $locale = null ) {
-		return $this->__( $cldr_territory_code, 'country_names', $locale );
+		return $this->__( $cldr_territory_code, 'territory_names', $locale );
 	}
 
 	public function _region( $cldr_region_code, $locale = null ) {
@@ -187,7 +187,7 @@ class WP_CLDR {
 	*/
 	public function territories_by_locale( $locale = null ) {
 		$names = $this->get_localized_names( $locale );
-		return $names->country_names;
+		return $names->territory_names;
 	}
 
 	/**
