@@ -7,14 +7,14 @@
 *
 * // The default locale is English
 * $cldr = new WP_CLDR();
-* $countries_in_english = $cldr->countries_by_locale( 'en' );
+* $territories_in_english = $cldr->territories_by_locale( 'en' );
 *
 * // You can override the default locale per-call by passing in a language slug in the second parameter.
-* $germany_in_arabic = $cldr->_country( 'DE' , 'ar' );
+* $germany_in_arabic = $cldr->_territory( 'DE' , 'ar' );
 *
 * // use a convenience parameter during instantiation to change the default locale
 * $cldr = new WP_CLDR( 'fr' );
-* $germany_in_french = $cldr->_country( 'DE' );
+* $germany_in_french = $cldr->_territory( 'DE' );
 * $us_dollar_in_french = $cldr->_currency( 'USD' );
 * $canadian_french_in_french = $cldr->_locale( 'fr-ca' );
 * $canadian_french_in_english = $cldr->_locale( 'fr-ca', 'en' );
@@ -163,8 +163,8 @@ class WP_CLDR {
 	/**
 	* Helpers to more easily access by bucket
 	*/
-	public function _country( $cldr_country_code, $locale = null ) {
-		return $this->__( $cldr_country_code, 'country_names', $locale );
+	public function _territory( $cldr_territory_code, $locale = null ) {
+		return $this->__( $cldr_territory_code, 'country_names', $locale );
 	}
 
 	public function _region( $cldr_region_code, $locale = null ) {
@@ -180,12 +180,12 @@ class WP_CLDR {
 	}
 
 	/**
-	* Get country names localized for a particular locale.
+	* Get territory names localized for a particular locale.
 	*
 	* @param string $locale The locale to return the list in
-	* @return array an associative array of ISO 3166-1 alpha-2 country codes and localized country names from CLDR
+	* @return array an associative array of ISO 3166-1 alpha-2 territory codes and localized territory names from CLDR
 	*/
-	public function countries_by_locale( $locale = null ) {
+	public function territories_by_locale( $locale = null ) {
 		$names = $this->get_localized_names( $locale );
 		return $names->country_names;
 	}
