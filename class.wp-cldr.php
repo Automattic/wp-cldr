@@ -106,21 +106,6 @@ class WP_CLDR {
 		return $bucket_array;
 	}
 
-	/**
-	* Helper function to get CLDR extract filename for a particular locale.
-	*
-	* @param string $locale The locale for the filename
-	* @return string $input the appropriate CLDR extract filename or English if no match with $locale
-	*/
-	private static function data_file_name( $locale ) {
-		$dir = __DIR__;
-		$input = "$dir/cldr/cldr-" . $locale . '.php';
-		if ( ! file_exists( $input ) ) {
-			$input = "$dir/cldr/cldr-en.php";  // may add some logging here to catch errors in language codes 
-		}
-		return $input;
-	}
-
 	public function initialize_locale( $locale = 'en', $bucket = 'territories', $use_cache = false ) {
 
 		if ( $use_cache ) {
@@ -217,10 +202,6 @@ class WP_CLDR {
 		return $this->__( $territory_code, $locale, 'territories' );
 	}
 
-	public function _region( $cldr_region_code, $locale = null ) {
-		return $this->__( $cldr_region_code, 'region_names', $locale );
-	}
-		
 	public function _currency_symbol( $currency_code, $locale = null ) {
 		$currencies_array = $this->get_localized_names( $locale, 'currencies' );
 		if ( isset( $currencies_array[$currency_code]['symbol'] ) ) {
@@ -250,17 +231,6 @@ class WP_CLDR {
 	}
 
 	/**
-	* Get region names localized for a particular locale.
-	*
-	* @param string $locale The locale to return the list in
-	* @return array an associative array of UN M.49 region codes and localized region names from CLDR
-	*/
-	public function regions_by_locale( $locale = null ) {
-		$names = $this->get_localized_names( $locale );
-		return $names->region_names;
-	}
-
-	/**
 	* Get language names localized for a particular locale.
 	*
 	* @param string $locale The locale to return the list in
@@ -268,16 +238,5 @@ class WP_CLDR {
 	*/
 	public function languages_by_locale( $locale = null ) {
 		return $this->get_localized_names( $locale, 'languages' );
-	}
-
-	/**
-	* Get currency names localized for a particular locale.
-	*
-	* @param string $locale The locale to return the list in
-	* @return array an associative array of ISO 4217 alpha codes and localized currency names from CLDR
-	*/
-	public function currencies_by_locale( $locale = null ) {
-		$names = $this->get_localized_names( $locale );
-		return $names->currency_names;
 	}
 }
