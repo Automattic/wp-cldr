@@ -113,67 +113,6 @@ class WP_CLDR {
 	}
 
 	/**
-	* Helper function to get CLDR code for a given WordPress locale code
-	*
-	* @param string $wp_locale The WordPress locale
-	* @return string The CLDR locale code, if different, or if not the original WordPress locale code
-	*/
-	public function get_CLDR_locale( $wp_locale ) {
-
-		$wp2cldr =  array(
-			'pt-br' => 'pt-BR',
-			'zh-cn' => 'zh',
-			'zh-tw' => 'zh-Hant',
-			'pt'	=> 'pt-PT',
-			'fr-ca' => 'fr-CA',			
-			);
-		
-		if ( isset( $wp2cldr[$wp_locale] ) ) {
-			return $wp2cldr[$wp_locale];
-		} else {
-			return $wp_locale;
-		}
-	}
-
-	/**
-	* Helper function to get CLDR data for a particular locale and bucket.
-	*
-	* @param string $locale The locale for the CLDR data request
-	* @param string $bucket The bucket for the CLDR data request
-	* @return array $bucket_array the CLDR data for the locale and bucket, or English if no match with any CLDR data files
-	*/
-	public function get_CLDR_data( $locale, $bucket ) {
-
-		$CLDR_locale = $this->get_CLDR_locale($locale);
-
-		$dir = __DIR__;
-		$data_file_name = "$dir/cldr/main/" . $CLDR_locale . '/' . $bucket . '.json';
-
-		if ( ! file_exists( $data_file_name ) ) {
-			$data_file_name = "$dir/cldr/main/en/" . $bucket . '.json'; 
-			a8c_slack('@stuwest', 'bad locale code "' . $locale . '" passed to wp-cldr. "en" used instead.');
-			$CLDR_locale = 'en';
-		}
-
-		$json_raw = file_get_contents( $data_file_name );
-		$json_decoded = json_decode( $json_raw, true );
-
-		switch( $bucket ) {
-		    case 'territories':
-		    case 'languages':
-				$bucket_array = $json_decoded['main'][$CLDR_locale]['localeDisplayNames'][$bucket];
-				// sort data according to locale collation rules
-				$coll = collator_create( $CLDR_locale );
-				collator_asort($coll, $bucket_array, Collator::SORT_STRING ); 
-				break;
-			case 'currencies':
-				$bucket_array = $json_decoded['main'][$CLDR_locale]['numbers'][$bucket];
-		}
-
-		return $bucket_array;
-	}
-
-	/**
 	* Return all the data for a given locale 
 	* @param  string $locale (optional) Which locale's strings to return.
 	*                           Defaults to the current locale (which defaults to English).
