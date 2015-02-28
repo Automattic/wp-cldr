@@ -16,13 +16,13 @@
 * $cldr = new WP_CLDR( 'fr' );
 * $germany_in_french = $cldr->_territory( 'DE' );
 * $us_dollar_in_french = $cldr->_currency( 'USD' );
-* $canadian_french_in_french = $cldr->_locale( 'fr-ca' );
-* $canadian_french_in_english = $cldr->_locale( 'fr-ca', 'en' );
-* $africa_in_french = $cldr->_region( '002' );
+* $canadian_french_in_french = $cldr->_language( 'fr-CA' );
+* $canadian_french_in_english = $cldr->_language( 'fr-CA' , 'en' );
+* $africa_in_french = $cldr->_territory( '002' );
 *
 * // switch locales after the object has been created
-* $cldr->set_locale('en')
-* $us_dollar_in_english = $cldr->_currency( 'USD' );
+* $cldr->set_locale('en');
+* $us_dollar_in_english = $cldr->_currency_name( 'USD' );
 */
 
 class WP_CLDR {
@@ -84,7 +84,6 @@ class WP_CLDR {
 
 		if ( ! file_exists( $data_file_name ) ) {
 			$data_file_name = "$dir/cldr/main/en/" . $bucket . '.json'; 
-			a8c_slack('@stuwest', 'bad locale code "' . $locale . '" passed to wp-cldr. "en" used instead.');
 			$CLDR_locale = 'en';
 		}
 
@@ -106,7 +105,7 @@ class WP_CLDR {
 		return $bucket_array;
 	}
 
-	public function initialize_locale( $locale = 'en', $bucket = 'territories', $use_cache = false ) {
+	public function initialize_locale( $locale = 'en', $bucket = 'territories', $use_cache = true ) {
 
 		if ( $use_cache ) {
 			$cache_key = 'cldr-localized-names-' . $locale . $bucket;
@@ -152,6 +151,7 @@ class WP_CLDR {
 	* Return all the data for a given locale 
 	* @param  string $locale (optional) Which locale's strings to return.
 	*                           Defaults to the current locale (which defaults to English).
+	* @param string $bucket     The bucket for the CLDR data request
 	* @return object            Values for keys initialized for a particular locale
 	*/
 	public function get_localized_names( $locale = null , $bucket = 'territories' ) {
@@ -224,7 +224,7 @@ class WP_CLDR {
 	* Get territory names localized for a particular locale.
 	*
 	* @param string $locale The locale to return the list in
-	* @return array an associative array of ISO 3166-1 alpha-2 territory codes and localized territory names from CLDR
+	* @return array an associative array of ISO 3166-1 alpha-2 country codes and UN M.49 region codes, along with localized names, from CLDR
 	*/
 	public function territories_by_locale( $locale = null ) {
 		return $this->get_localized_names( $locale, 'territories' );

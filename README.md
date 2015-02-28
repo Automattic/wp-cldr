@@ -19,8 +19,8 @@ $territories_in_english = $cldr->territories_by_locale( 'en' );
 $cldr = new WP_CLDR( 'fr' );
 $germany_in_french = $cldr->_territory( 'DE' );
 $us_dollar_in_french = $cldr->_currency( 'USD' );
-$canadian_french_in_french = $cldr->_locale( 'fr-ca' );
-$canadian_french_in_english = $cldr->_locale( 'fr-ca', 'en' );
+$canadian_french_in_french = $cldr->_language( 'fr-CA' );
+$canadian_french_in_english = $cldr->_language( 'fr-CA' , 'en' );
 $africa_in_french = $cldr->_region( '002' );
 ```
 
