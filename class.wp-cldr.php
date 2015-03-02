@@ -36,11 +36,6 @@ class WP_CLDR {
 	}
 
 	public function set_locale( $locale ) {
-		// TO DO FIGURE OUT HOW THIS CHECK SHOULD HAPPEN NOW THAT THERE ARE MUTLIPLE BUCKETS
-		if ( $locale === $this->locale && isset( $this->localized[ $locale ] ) && ! empty( $this->localized[ $locale ] ) ) {
-			// No need to do duplicate work when setting the same locale repeatedly
-			return;
-		}
 		$this->locale = $locale;
 		$this->initialize_locale( $locale );
 	}
