@@ -124,7 +124,7 @@ class WP_CLDR {
 		return true;
 	}
 
-	public function flush_wp_cache_for_locale_bucket ( $locale, $bucket ) {
+	public function flush_wp_cache_for_locale_bucket( $locale, $bucket ) {
 		$cache_key = 'cldr-localized-names-' . $locale . $bucket;
 		return wp_cache_delete( $cache_key, WP_CLDR::CACHE_GROUP );
 	}
