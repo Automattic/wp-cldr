@@ -131,7 +131,7 @@ class WP_CLDR {
 		$this->localized = array();
 
 		// Initialize without the cache
-		$this->initialize_locale( 'en', false );
+		$this->initialize_locale( 'en', null, false );
 
 		$locales = $this->locales_by_locale( 'en' );
 		$supported_buckets = array( 'countries' , 'languages' , 'territories' );
