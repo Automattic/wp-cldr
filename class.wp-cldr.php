@@ -89,9 +89,13 @@ class WP_CLDR {
 		    case 'territories':
 		    case 'languages':
 				$bucket_array = $json_decoded['main'][$CLDR_locale]['localeDisplayNames'][$bucket];
-				// sort data according to locale collation rules
-				$coll = collator_create( $CLDR_locale );
-				collator_asort($coll, $bucket_array, Collator::SORT_STRING ); 
+				if ( function_exists( 'collator_create' ) ) {
+					// sort data according to locale collation rules
+					$coll = collator_create( $CLDR_locale );
+					collator_asort( $coll, $bucket_array, Collator::SORT_STRING );
+				} else {
+					asort( $bucket_array );
+				}
 				break;
 			case 'currencies':
 				$bucket_array = $json_decoded['main'][$CLDR_locale]['numbers'][$bucket];
