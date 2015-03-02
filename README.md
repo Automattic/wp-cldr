@@ -21,7 +21,7 @@ $germany_in_french = $cldr->_territory( 'DE' );
 $us_dollar_in_french = $cldr->_currency( 'USD' );
 $canadian_french_in_french = $cldr->_language( 'fr-CA' );
 $canadian_french_in_english = $cldr->_language( 'fr-CA' , 'en' );
-$africa_in_french = $cldr->_region( '002' );
+$africa_in_french = $cldr->_territory( '002' );
 ```
 
 ### switch locales after the object has been created
