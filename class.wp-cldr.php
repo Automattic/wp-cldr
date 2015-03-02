@@ -53,9 +53,9 @@ class WP_CLDR {
 			'zh-cn' => 'zh',
 			'zh-tw' => 'zh-Hant',
 			'pt'	=> 'pt-PT',
-			'fr-ca' => 'fr-CA',			
-			);
-		
+			'fr-ca' => 'fr-CA',
+		);
+
 		if ( isset( $wp2cldr[$wp_locale] ) ) {
 			return $wp2cldr[$wp_locale];
 		} else {
