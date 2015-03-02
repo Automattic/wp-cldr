@@ -107,7 +107,7 @@ class WP_CLDR {
 	public function initialize_locale( $locale = 'en', $bucket = 'territories', $use_cache = true ) {
 
 		if ( $use_cache ) {
-			$cache_key = 'cldr-localized-names-' . $locale . $bucket;
+			$cache_key = "cldr-localized-names-$locale-$bucket";
 			$cached_data = wp_cache_get( $cache_key, WP_CLDR::CACHE_GROUP );
 			if ( $cached_data ) {
 				$this->localized[ $locale ][ $bucket ] = $cached_data;
@@ -124,7 +124,7 @@ class WP_CLDR {
 	}
 
 	public function flush_wp_cache_for_locale_bucket( $locale, $bucket ) {
-		$cache_key = 'cldr-localized-names-' . $locale . $bucket;
+		$cache_key = "cldr-localized-names-$locale-$bucket";
 		return wp_cache_delete( $cache_key, WP_CLDR::CACHE_GROUP );
 	}
 
