@@ -143,7 +143,7 @@ class WP_CLDR {
 	}
 
 	/**
-	* Return all the data for a given locale 
+	* Return all the data for a given locale and bucket
 	* @param  string $locale (optional) Which locale's strings to return.
 	*                           Defaults to the current locale (which defaults to English).
 	* @param string $bucket     The bucket for the CLDR data request
@@ -158,7 +158,7 @@ class WP_CLDR {
 			return $this->localized[ $locale ][ $bucket ];
 		}
 
-		// Maybe that locale hasn't been initialized yet, let's try again:
+		// Maybe that bucket hasn't been initialized on this locale, let's try again:
 		$this->initialize_locale( $locale , $bucket );
 
 		if ( isset( $this->localized[ $locale ][ $bucket ] ) ) {
@@ -174,7 +174,7 @@ class WP_CLDR {
 	* @param  string $key       The individual item's id / stub.
 	*                           For example: US, FR, DE
 	* @param  string $bucket    (optional) In which group of data to look for the key
-	*                           Defaults to 'territory_names'
+	*                           Defaults to 'territories'
 	* @param  string $locale (optional)
 	* @return string            The localized string
 	*/
