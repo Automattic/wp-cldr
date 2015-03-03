@@ -2,7 +2,7 @@
 
 WordPress plugin that leverages the Unicode Common Locale Data Repository to provide localized territory, currency, language, etc. names.
 
-## 
+##
 
 ## Examples:
 ### The default locale is English
@@ -19,8 +19,8 @@ $territories_in_english = $cldr->territories_by_locale( 'en' );
 $cldr = new WP_CLDR( 'fr' );
 $germany_in_french = $cldr->_territory( 'DE' );
 $us_dollar_in_french = $cldr->_currency_name( 'USD' );
-$canadian_french_in_french = $cldr->_language( 'fr-CA' );
-$canadian_french_in_english = $cldr->_language( 'fr-CA' , 'en' );
+$canadian_french_in_french = $cldr->_language( 'fr-ca' );
+$canadian_french_in_english = $cldr->_language( 'fr-ca' , 'en' );
 $us_dollar_symbol_in_simplified_chinese = $cldr->_currency_symbol( 'USD', 'zh' );
 $africa_in_french = $cldr->_territory( '002' );
 ```

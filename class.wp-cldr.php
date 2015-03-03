@@ -16,8 +16,8 @@
 * $cldr = new WP_CLDR( 'fr' );
 * $germany_in_french = $cldr->_territory( 'DE' );
 * $us_dollar_in_french = $cldr->_currency_name( 'USD' );
-* $canadian_french_in_french = $cldr->_language( 'fr-CA' );
-* $canadian_french_in_english = $cldr->_language( 'fr-CA' , 'en' );
+* $canadian_french_in_french = $cldr->_language( 'fr-ca' );
+* $canadian_french_in_english = $cldr->_language( 'fr-ca' , 'en' );
 * $us_dollar_symbol_in_simplified_chinese = $cldr->_currency_symbol( 'USD', 'zh' );
 * $africa_in_french = $cldr->_territory( '002' );
 *
@@ -79,7 +79,7 @@ class WP_CLDR {
 		$data_file_name = "$dir/cldr/main/" . $CLDR_locale . '/' . $bucket . '.json';
 
 		if ( ! file_exists( $data_file_name ) ) {
-			$data_file_name = "$dir/cldr/main/en/" . $bucket . '.json'; 
+			$data_file_name = "$dir/cldr/main/en/" . $bucket . '.json';
 			$CLDR_locale = 'en';
 		}
 
