@@ -217,7 +217,7 @@ class WP_CLDR {
 	}
 
 	public function _language( $language_code, $locale = null ) {
-		return $this->__( $language_code, $locale, 'languages' );
+		return $this->__( $this->get_CLDR_locale( $language_code ), $locale, 'languages' );
 	}
 
 	/**
