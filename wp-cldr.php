@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP CLDR
-Plugin URI: https://github.com/Automattic/wp-cldr-plugin
+Plugin URI: https://github.com/Automattic/wp-cldr
 Description: Use the CLDR to localize territory names, languages, currencies, etc.
 Author: Automattic, Inc.
 Version: 0.1-alpha
