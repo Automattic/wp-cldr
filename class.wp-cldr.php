@@ -15,7 +15,7 @@
 * // use a convenience parameter during instantiation to change the default locale
 * $cldr = new WP_CLDR( 'fr' );
 * $germany_in_french = $cldr->_territory( 'DE' );
-* $us_dollar_in_french = $cldr->_currency( 'USD' );
+* $us_dollar_in_french = $cldr->_currency_name( 'USD' );
 * $canadian_french_in_french = $cldr->_language( 'fr-CA' );
 * $canadian_french_in_english = $cldr->_language( 'fr-CA' , 'en' );
 * $us_dollar_symbol_in_simplified_chinese = $cldr->_currency_symbol( 'USD', 'zh' );
