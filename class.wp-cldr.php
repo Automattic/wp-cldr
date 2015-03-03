@@ -18,6 +18,7 @@
 * $us_dollar_in_french = $cldr->_currency( 'USD' );
 * $canadian_french_in_french = $cldr->_language( 'fr-CA' );
 * $canadian_french_in_english = $cldr->_language( 'fr-CA' , 'en' );
+* $us_dollar_symbol_in_simplified_chinese = $cldr->_currency_symbol( 'USD', 'zh' );
 * $africa_in_french = $cldr->_territory( '002' );
 *
 * // switch locales after the object has been created
