@@ -49,19 +49,51 @@ class WP_CLDR {
 	*/
 	public function get_CLDR_locale( $wp_locale ) {
 
+		// this array captures the WordPress locales that are signficiantly different from CLDR locales
 		$wp2cldr =  array(
-			'pt-br' => 'pt-BR',
 			'zh-cn' => 'zh',
 			'zh-tw' => 'zh-Hant',
 			'pt'	=> 'pt-PT',
-			'fr-ca' => 'fr-CA',
+			'mya' => 'my',
+			'tir' => 'ti',
+			'el-po' => 'grc', // from .org GlotPress locales.php
+			'bal' => 'ca', // from .org GlotPress locales.php
+			'bel' => 'be', // from .org GlotPress locales.php
+			'dzo' => 'dz', // from .org GlotPress locales.php
+			'fuc' => 'ff', // from .org GlotPress locales.php
+			'ido' => 'io', // from .org GlotPress locales.php
+			'ike' => 'iu', // from .org GlotPress locales.php
+			'haw-us' => 'haw', // from .org GlotPress locales.php
+			'kin' => 'rw', // from .org GlotPress locales.php
+			'lin' => 'ln', // from .org GlotPress locales.php
+			'me-me' => 'sr-Latn-ME', // from .org GlotPress locales.php
+			'mhr' => 'chm', // from .org GlotPress locales.php
+			'mri' => 'mi', // from .org GlotPress locales.php
+			'ory' => 'or', // from .org GlotPress locales.php
+			'roh' => 'rm', // from .org GlotPress locales.php
+			'srd' => 'sc', // from .org GlotPress locales.php
+			'tuk' => 'tk', // from .org GlotPress locales.php
+			'zh-hk' => 'zh-Hant', // from .org GlotPress locales.php
+			'zh-sg' => 'zh', // from .org GlotPress locales.php
 		);
 
-		if ( isset( $wp2cldr[$wp_locale] ) ) {
-			return $wp2cldr[$wp_locale];
-		} else {
-			return $wp_locale;
+		// convert underscores to dashes and everything to lowercase
+		$cleaned_up_wp_locale = str_replace( '_', '-', $wp_locale );
+		$cleaned_up_wp_locale = strtolower( $cleaned_up_wp_locale );
+
+		// check for an exact match in exceptions array
+		if ( isset ( $wp2cldr[$cleaned_up_wp_locale] ) ) {
+			return $wp2cldr[$cleaned_up_wp_locale];
 		}
+
+		// capitalize country code to match capitalization of CLDR JSON paths
+ 		$locale_components = explode("-", $cleaned_up_wp_locale);
+		if ( 2 == strlen( $locale_components[1] ) ) {
+			$locale_components[1] = strtoupper( $locale_components[1] );
+			$cleaned_up_wp_locale = implode( '-', $locale_components );
+		}
+
+		return $cleaned_up_wp_locale;
 	}
 
 	/**
