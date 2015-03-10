@@ -101,7 +101,7 @@ class WP_CLDR {
 	*
 	* @param string $locale The locale for the CLDR data request
 	* @param string $bucket The bucket for the CLDR data request
-	* @return array $bucket_array the CLDR data for the locale and bucket, or English if no match with any CLDR data files
+	* @return array $bucket_array the CLDR data for the locale and bucket, or null if no match with any CLDR data files
 	*/
 	public function get_CLDR_data( $locale, $bucket ) {
 
@@ -110,9 +110,16 @@ class WP_CLDR {
 		$dir = __DIR__;
 		$data_file_name = "$dir/cldr/main/" . $CLDR_locale . '/' . $bucket . '.json';
 
+		// if no language-country locale CLDR file, fall back to a language-only CLDR file name
 		if ( ! file_exists( $data_file_name ) ) {
-			$data_file_name = "$dir/cldr/main/en/" . $bucket . '.json';
-			$CLDR_locale = 'en';
+			if ( substr ( $locale, 2, 1 ) == '-' || substr ( $locale, 2, 1 ) == '_' ) {
+				$CLDR_locale = substr( $CLDR_locale, 0, 2 );
+				$data_file_name = "$dir/cldr/main/" . $CLDR_locale . '/' . $bucket . '.json';
+			}
+		}
+
+		if ( ! file_exists( $data_file_name ) ) {
+			return null;
 		}
 
 		$json_raw = file_get_contents( $data_file_name );
@@ -148,7 +155,13 @@ class WP_CLDR {
 			}
 		}
 
-		$this->localized[ $locale ][ $bucket ] = $this->get_CLDR_data( $locale, $bucket );
+		$CLDR_locale_data = $this->get_CLDR_data( $locale, $bucket );
+
+		if ( is_null( $CLDR_locale_data ) ) {
+			$this->localized[ $locale ][ $bucket ] = $this->get_CLDR_data( 'en' , $bucket );
+		} else {
+			$this->localized[ $locale ][ $bucket ] = $CLDR_locale_data;
+		}
 
 		if ( $use_cache ) {
 			wp_cache_set( $cache_key, $this->localized[ $locale ][ $bucket ], WP_CLDR::CACHE_GROUP );
@@ -249,8 +262,18 @@ class WP_CLDR {
 	}
 
 	public function _language( $language_code, $locale = null ) {
-		return $this->__( $this->get_CLDR_locale( $language_code ), $locale, 'languages' );
-	}
+		$CLDR_matched_language_code = $this->get_CLDR_locale( $language_code );
+
+		$language_name = $this->__( $CLDR_matched_language_code, $locale, 'languages' );
+
+		// if no match for locale (language-COUNTRY), try falling back to CLDR-matched language code only
+		if ( is_null( $language_name ) ) {
+			if ( substr ( $CLDR_matched_language_code, 2, 1 ) == '-' || substr ( $CLDR_matched_language_code, 2, 1 ) == '_' ) {
+				$language_name = $this->__( substr ( $CLDR_matched_language_code, 0, 2 ), $locale, 'languages' );
+				}
+			}
+
+		return $language_name;	}
 
 	/**
 	* Get territory names localized for a particular locale.
