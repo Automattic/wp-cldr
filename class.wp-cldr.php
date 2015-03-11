@@ -53,10 +53,10 @@ class WP_CLDR {
 		$wp2cldr =  array(
 			'zh-cn' => 'zh',
 			'zh-tw' => 'zh-Hant',
+			'als' => 'gsw',
 			'pt'	=> 'pt-PT',
 			'mya' => 'my',
 			'tir' => 'ti',
-			'el-po' => 'grc', // from .org GlotPress locales.php
 			'bal' => 'ca', // from .org GlotPress locales.php
 			'bel' => 'be', // from .org GlotPress locales.php
 			'dzo' => 'dz', // from .org GlotPress locales.php
@@ -105,17 +105,15 @@ class WP_CLDR {
 	*/
 	public function get_CLDR_data( $locale, $bucket ) {
 
-		$CLDR_locale = $this->get_CLDR_locale($locale);
+		$cldr_locale = $this->get_CLDR_locale($locale);
 
 		$dir = __DIR__;
-		$data_file_name = "$dir/cldr/main/" . $CLDR_locale . '/' . $bucket . '.json';
+		$data_file_name = "$dir/cldr/main/{$cldr_locale}/$bucket.json";
 
 		// if no language-country locale CLDR file, fall back to a language-only CLDR file name
 		if ( ! file_exists( $data_file_name ) ) {
-			if ( substr ( $locale, 2, 1 ) == '-' || substr ( $locale, 2, 1 ) == '_' ) {
-				$CLDR_locale = substr( $CLDR_locale, 0, 2 );
-				$data_file_name = "$dir/cldr/main/" . $CLDR_locale . '/' . $bucket . '.json';
-			}
+			$cldr_locale = strtok( $cldr_locale, '-_' );
+			$data_file_name = "$dir/cldr/main/{$cldr_locale}/$bucket.json";
 		}
 
 		if ( ! file_exists( $data_file_name ) ) {
@@ -128,17 +126,17 @@ class WP_CLDR {
 		switch( $bucket ) {
 		    case 'territories':
 		    case 'languages':
-				$bucket_array = $json_decoded['main'][$CLDR_locale]['localeDisplayNames'][$bucket];
+				$bucket_array = $json_decoded['main'][$cldr_locale]['localeDisplayNames'][$bucket];
 				if ( function_exists( 'collator_create' ) ) {
 					// sort data according to locale collation rules
-					$coll = collator_create( $CLDR_locale );
+					$coll = collator_create( $cldr_locale );
 					collator_asort( $coll, $bucket_array, Collator::SORT_STRING );
 				} else {
 					asort( $bucket_array );
 				}
 				break;
 			case 'currencies':
-				$bucket_array = $json_decoded['main'][$CLDR_locale]['numbers'][$bucket];
+				$bucket_array = $json_decoded['main'][$cldr_locale]['numbers'][$bucket];
 		}
 
 		return $bucket_array;
@@ -155,12 +153,12 @@ class WP_CLDR {
 			}
 		}
 
-		$CLDR_locale_data = $this->get_CLDR_data( $locale, $bucket );
+		$cldr_locale_data = $this->get_CLDR_data( $locale, $bucket );
 
-		if ( is_null( $CLDR_locale_data ) ) {
+		if ( is_null( $cldr_locale_data ) ) {
 			$this->localized[ $locale ][ $bucket ] = $this->get_CLDR_data( 'en' , $bucket );
 		} else {
-			$this->localized[ $locale ][ $bucket ] = $CLDR_locale_data;
+			$this->localized[ $locale ][ $bucket ] = $cldr_locale_data;
 		}
 
 		if ( $use_cache ) {
@@ -262,16 +260,14 @@ class WP_CLDR {
 	}
 
 	public function _language( $language_code, $locale = null ) {
-		$CLDR_matched_language_code = $this->get_CLDR_locale( $language_code );
+		$cldr_matched_language_code = $this->get_CLDR_locale( $language_code );
 
-		$language_name = $this->__( $CLDR_matched_language_code, $locale, 'languages' );
+		$language_name = $this->__( $cldr_matched_language_code, $locale, 'languages' );
 
 		// if no match for locale (language-COUNTRY), try falling back to CLDR-matched language code only
 		if ( is_null( $language_name ) ) {
-			if ( substr ( $CLDR_matched_language_code, 2, 1 ) == '-' || substr ( $CLDR_matched_language_code, 2, 1 ) == '_' ) {
-				$language_name = $this->__( substr ( $CLDR_matched_language_code, 0, 2 ), $locale, 'languages' );
-				}
-			}
+			$language_name = $this->__( strtok($language_code, '-_' ), $locale, 'languages' );
+		}
 
 		return $language_name;	}
 
