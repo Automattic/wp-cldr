@@ -195,7 +195,7 @@ class WP_CLDR {
 	* @param  string $locale (optional) Which locale's strings to return.
 	*                           Defaults to the current locale (which defaults to English).
 	* @param string $bucket     The bucket for the CLDR data request
-	* @return object            Values for keys initialized for a particular locale
+	* @return array            Values for keys initialized for a particular locale
 	*/
 	public function get_localized_names( $locale = null , $bucket = 'territories' ) {
 		if ( ! $locale ) {
@@ -214,7 +214,7 @@ class WP_CLDR {
 		}
 
 		// Really not found
-		return new StdClass();
+		return null;
 	}
 
 	/**
