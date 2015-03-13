@@ -47,7 +47,7 @@ class WP_CLDR {
 	* @param string $wp_locale The WordPress locale
 	* @return string The CLDR locale code, if different, or if not the original WordPress locale code
 	*/
-	public function get_CLDR_locale( $wp_locale ) {
+	public function get_cldr_locale( $wp_locale ) {
 
 		// this array captures the WordPress locales that are signficiantly different from CLDR locales
 		$wp2cldr =  array(
@@ -103,9 +103,9 @@ class WP_CLDR {
 	* @param string $bucket The bucket for the CLDR data request
 	* @return array $bucket_array the CLDR data for the locale and bucket, or null if no match with any CLDR data files
 	*/
-	public function get_CLDR_data( $locale, $bucket ) {
+	public function get_cldr_data( $locale, $bucket ) {
 
-		$cldr_locale = $this->get_CLDR_locale($locale);
+		$cldr_locale = $this->get_cldr_locale($locale);
 
 		$dir = __DIR__;
 		$data_file_name = "$dir/cldr/main/{$cldr_locale}/$bucket.json";
@@ -153,10 +153,10 @@ class WP_CLDR {
 			}
 		}
 
-		$cldr_locale_data = $this->get_CLDR_data( $locale, $bucket );
+		$cldr_locale_data = $this->get_cldr_data( $locale, $bucket );
 
 		if ( is_null( $cldr_locale_data ) ) {
-			$this->localized[ $locale ][ $bucket ] = $this->get_CLDR_data( 'en' , $bucket );
+			$this->localized[ $locale ][ $bucket ] = $this->get_cldr_data( 'en' , $bucket );
 		} else {
 			$this->localized[ $locale ][ $bucket ] = $cldr_locale_data;
 		}
@@ -260,7 +260,7 @@ class WP_CLDR {
 	}
 
 	public function _language( $language_code, $locale = null ) {
-		$cldr_matched_language_code = $this->get_CLDR_locale( $language_code );
+		$cldr_matched_language_code = $this->get_cldr_locale( $language_code );
 
 		$language_name = $this->__( $cldr_matched_language_code, $locale, 'languages' );
 
