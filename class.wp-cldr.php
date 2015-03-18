@@ -97,24 +97,15 @@ class WP_CLDR {
 	}
 
 	/**
-	* Helper function to get CLDR data for a particular locale and bucket.
+	* Helper function to load a CLDR JSON data file.
 	*
-	* @param string $locale The locale for the CLDR data request
-	* @param string $bucket The bucket for the CLDR data request
-	* @return array $bucket_array the CLDR data for the locale and bucket, or null if no match with any CLDR data files
+	* @param string $path The path for the CLDR JSON data file
+	* @return array $json_decoded an array with the CLDR data from the file, or null if no match with any CLDR data files
 	*/
-	public function get_cldr_data( $locale, $bucket ) {
-
-		$cldr_locale = $this->get_cldr_locale($locale);
+	public function get_cldr_json_file( $path ) {
 
 		$dir = __DIR__;
-		$data_file_name = "$dir/cldr/main/{$cldr_locale}/$bucket.json";
-
-		// if no language-country locale CLDR file, fall back to a language-only CLDR file name
-		if ( ! file_exists( $data_file_name ) ) {
-			$cldr_locale = strtok( $cldr_locale, '-_' );
-			$data_file_name = "$dir/cldr/main/{$cldr_locale}/$bucket.json";
-		}
+		$data_file_name = "$dir/cldr/$path";
 
 		if ( ! file_exists( $data_file_name ) ) {
 			return null;
@@ -123,23 +114,7 @@ class WP_CLDR {
 		$json_raw = file_get_contents( $data_file_name );
 		$json_decoded = json_decode( $json_raw, true );
 
-		switch( $bucket ) {
-		    case 'territories':
-		    case 'languages':
-				$bucket_array = $json_decoded['main'][$cldr_locale]['localeDisplayNames'][$bucket];
-				if ( function_exists( 'collator_create' ) ) {
-					// sort data according to locale collation rules
-					$coll = collator_create( $cldr_locale );
-					collator_asort( $coll, $bucket_array, Collator::SORT_STRING );
-				} else {
-					asort( $bucket_array );
-				}
-				break;
-			case 'currencies':
-				$bucket_array = $json_decoded['main'][$cldr_locale]['numbers'][$bucket];
-		}
-
-		return $bucket_array;
+		return $json_decoded;
 	}
 
 	public function initialize_locale( $locale = 'en', $bucket = 'territories', $use_cache = true ) {
@@ -153,13 +128,39 @@ class WP_CLDR {
 			}
 		}
 
-		$cldr_locale_data = $this->get_cldr_data( $locale, $bucket );
+		$cldr_locale = $this->get_cldr_locale($locale);
 
-		if ( is_null( $cldr_locale_data ) ) {
-			$this->localized[ $locale ][ $bucket ] = $this->get_cldr_data( 'en' , $bucket );
-		} else {
-			$this->localized[ $locale ][ $bucket ] = $cldr_locale_data;
+		$cldr_locale_bucket_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
+
+		// if no language-country locale CLDR file, fall back to a language-only CLDR file
+		if ( is_null( $cldr_locale_bucket_file ) ) {
+			$cldr_locale = strtok( $cldr_locale, '-_' );
+			$cldr_locale_bucket_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
 		}
+
+		// if no language CLDR file, fall back to English CLDR file
+		if ( is_null( $cldr_locale_bucket_file ) ) {
+			$cldr_locale = 'en';
+			$cldr_locale_bucket_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
+		}
+
+		switch( $bucket ) {
+		    case 'territories':
+		    case 'languages':
+				$bucket_array = $cldr_locale_bucket_file['main'][$cldr_locale]['localeDisplayNames'][$bucket];
+				if ( function_exists( 'collator_create' ) ) {
+					// sort data according to locale collation rules
+					$coll = collator_create( $cldr_locale );
+					collator_asort( $coll, $bucket_array, Collator::SORT_STRING );
+				} else {
+					asort( $bucket_array );
+				}
+				break;
+			case 'currencies':
+				$bucket_array = $cldr_locale_bucket_file['main'][$cldr_locale]['numbers'][$bucket];
+		}
+
+		$this->localized[ $locale ][ $bucket ] = $bucket_array;
 
 		if ( $use_cache ) {
 			wp_cache_set( $cache_key, $this->localized[ $locale ][ $bucket ], WP_CLDR::CACHE_GROUP );
@@ -181,11 +182,11 @@ class WP_CLDR {
 		// Initialize without the cache
 		$this->initialize_locale( 'en', null, false );
 
-		$locales = $this->locales_by_locale( 'en' );
+		$locales = $this->languages_by_locale( 'en' );
 		$supported_buckets = array( 'countries' , 'languages' , 'territories' );
 		foreach( array_keys( $locales ) as $locale ) {
 			foreach( $supported_buckets as $bucket ) {
-				$this->flush_wp_cache_for_locale( $locale , $bucket );
+				$this->flush_wp_cache_for_locale_bucket( $locale , $bucket );
 			}
 		}
 	}
