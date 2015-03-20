@@ -11,24 +11,28 @@ $cldr = new WP_CLDR();
 $territories_in_english = $cldr->territories_by_locale( 'en' );
 ```
 
-### You can override the default locale per-call by passing in a language slug in the second parameter.
-```$germany_in_arabic = $cldr->_territory( 'DE' , 'ar' );```
+### You can override the default locale per-call by passing in a language slug in the second parameter
+```
+$germany_in_arabic = $cldr->territory_name( 'DE' , 'ar' );
+```
 
-### use a convenience parameter during instantiation to change the default locale
+### Use a convenience parameter during instantiation to change the default locale
 ```
 $cldr = new WP_CLDR( 'fr' );
-$germany_in_french = $cldr->_territory( 'DE' );
-$us_dollar_in_french = $cldr->_currency_name( 'USD' );
-$canadian_french_in_french = $cldr->_language( 'fr-ca' );
-$canadian_french_in_english = $cldr->_language( 'fr-ca' , 'en' );
-$us_dollar_symbol_in_simplified_chinese = $cldr->_currency_symbol( 'USD', 'zh' );
-$africa_in_french = $cldr->_territory( '002' );
+$germany_in_french = $cldr->territory_name( 'DE' );
+$us_dollar_in_french = $cldr->currency_name( 'USD' );
+$canadian_french_in_french = $cldr->language_name( 'fr-ca' );
+$canadian_french_in_english = $cldr->language_name( 'fr-ca' , 'en' );
+$german_in_german = $cldr->language_name( 'de_DE' , 'de-DE' );
+$bengali_in_japanese = $cldr->language_name( 'bn_BD' , 'ja_JP' );
+$us_dollar_symbol_in_simplified_chinese = $cldr->currency_symbol( 'USD', 'zh' );
+$africa_in_french = $cldr->territory_name( '002' );
 ```
 
-### switch locales after the object has been created
+### Switch locales after the object has been created
 ```
-$cldr->set_locale('en')
-$us_dollar_in_english = $cldr->_currency( 'USD' );
+$cldr->set_locale( 'en' );
+$us_dollar_in_english = $cldr->currency_name( 'USD' );
 ```
 
 ## Links:
