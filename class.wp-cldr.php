@@ -1,7 +1,7 @@
 <?php
 
 /**
-* A class for fetching a bucketed key value store of localized data from extracts of Unicode's Common Locale Data Repository.
+* A class for fetching localization data from Unicode's Common Locale Data Repository.
 *
 * Examples:
 *
@@ -9,21 +9,23 @@
 * $cldr = new WP_CLDR();
 * $territories_in_english = $cldr->territories_by_locale( 'en' );
 *
-* // You can override the default locale per-call by passing in a language slug in the second parameter.
-* $germany_in_arabic = $cldr->_territory( 'DE' , 'ar' );
+* // You can override the default locale per-call by passing in a language slug in the second parameter
+* $germany_in_arabic = $cldr->territory_name( 'DE' , 'ar_AR' );
 *
-* // use a convenience parameter during instantiation to change the default locale
+* // Use a convenience parameter during instantiation to change the default locale
 * $cldr = new WP_CLDR( 'fr' );
-* $germany_in_french = $cldr->_territory( 'DE' );
-* $us_dollar_in_french = $cldr->_currency_name( 'USD' );
-* $canadian_french_in_french = $cldr->_language( 'fr-ca' );
-* $canadian_french_in_english = $cldr->_language( 'fr-ca' , 'en' );
-* $us_dollar_symbol_in_simplified_chinese = $cldr->_currency_symbol( 'USD', 'zh' );
-* $africa_in_french = $cldr->_territory( '002' );
+* $germany_in_french = $cldr->territory_name( 'DE' );
+* $us_dollar_in_french = $cldr->currency_name( 'USD' );
+* $canadian_french_in_french = $cldr->language_name( 'fr-ca' );
+* $canadian_french_in_english = $cldr->language_name( 'fr-ca' , 'en' );
+* $german_in_german = $cldr->language_name( 'de_DE' , 'de-DE' );
+* $bengali_in_japanese = $cldr->language_name( 'bn_BD' , 'ja_JP' );
+* $us_dollar_symbol_in_simplified_chinese = $cldr->currency_symbol( 'USD', 'zh' );
+* $africa_in_french = $cldr->territory_name( '002' );
 *
-* // switch locales after the object has been created
-* $cldr->set_locale('en');
-* $us_dollar_in_english = $cldr->_currency_name( 'USD' );
+* // Switch locales after the object has been created
+* $cldr->set_locale( 'en' );
+* $us_dollar_in_english = $cldr->currency_name( 'USD' );
 */
 
 class WP_CLDR {
@@ -38,7 +40,7 @@ class WP_CLDR {
 
 	public function set_locale( $locale ) {
 		$this->locale = $locale;
-		$this->initialize_locale( $locale );
+		$this->initialize_locale_bucket( $locale );
 	}
 
 	/**
@@ -97,7 +99,7 @@ class WP_CLDR {
 	}
 
 	/**
-	* Helper function to load a CLDR JSON data file.
+	* Helper function to load a CLDR JSON data file
 	*
 	* @param string $path The path for the CLDR JSON data file
 	* @return array $json_decoded an array with the CLDR data from the file, or null if no match with any CLDR data files
@@ -117,10 +119,10 @@ class WP_CLDR {
 		return $json_decoded;
 	}
 
-	public function initialize_locale( $locale = 'en', $bucket = 'territories', $use_cache = true ) {
+	public function initialize_locale_bucket( $locale = 'en', $bucket = 'territories', $use_cache = true ) {
 
 		if ( $use_cache ) {
-			$cache_key = "cldr-localized-names-$locale-$bucket";
+			$cache_key = "cldr-$locale-$bucket";
 			$cached_data = wp_cache_get( $cache_key, WP_CLDR::CACHE_GROUP );
 			if ( $cached_data ) {
 				$this->localized[ $locale ][ $bucket ] = $cached_data;
@@ -130,24 +132,24 @@ class WP_CLDR {
 
 		$cldr_locale = $this->get_cldr_locale($locale);
 
-		$cldr_locale_bucket_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
+		$cldr_locale_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
 
 		// if no language-country locale CLDR file, fall back to a language-only CLDR file
-		if ( is_null( $cldr_locale_bucket_file ) ) {
+		if ( is_null( $cldr_locale_file ) ) {
 			$cldr_locale = strtok( $cldr_locale, '-_' );
-			$cldr_locale_bucket_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
+			$cldr_locale_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
 		}
 
 		// if no language CLDR file, fall back to English CLDR file
-		if ( is_null( $cldr_locale_bucket_file ) ) {
+		if ( is_null( $cldr_locale_file ) ) {
 			$cldr_locale = 'en';
-			$cldr_locale_bucket_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
+			$cldr_locale_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
 		}
 
 		switch( $bucket ) {
 		    case 'territories':
 		    case 'languages':
-				$bucket_array = $cldr_locale_bucket_file['main'][$cldr_locale]['localeDisplayNames'][$bucket];
+				$bucket_array = $cldr_locale_file['main'][$cldr_locale]['localeDisplayNames'][$bucket];
 				if ( function_exists( 'collator_create' ) ) {
 					// sort data according to locale collation rules
 					$coll = collator_create( $cldr_locale );
@@ -157,7 +159,7 @@ class WP_CLDR {
 				}
 				break;
 			case 'currencies':
-				$bucket_array = $cldr_locale_bucket_file['main'][$cldr_locale]['numbers'][$bucket];
+				$bucket_array = $cldr_locale_file['main'][$cldr_locale]['numbers'][$bucket];
 		}
 
 		$this->localized[ $locale ][ $bucket ] = $bucket_array;
@@ -169,7 +171,7 @@ class WP_CLDR {
 	}
 
 	public function flush_wp_cache_for_locale_bucket( $locale, $bucket ) {
-		$cache_key = "cldr-localized-names-$locale-$bucket";
+		$cache_key = "cldr-$locale-$bucket";
 		return wp_cache_delete( $cache_key, WP_CLDR::CACHE_GROUP );
 	}
 
@@ -180,13 +182,13 @@ class WP_CLDR {
 		$this->localized = array();
 
 		// Initialize without the cache
-		$this->initialize_locale( 'en', null, false );
+		$this->initialize_locale_bucket( 'en', null, false );
 
 		$locales = $this->languages_by_locale( 'en' );
 		$supported_buckets = array( 'countries' , 'languages' , 'territories' );
 		foreach( array_keys( $locales ) as $locale ) {
 			foreach( $supported_buckets as $bucket ) {
-				$this->flush_wp_cache_for_locale_bucket( $locale , $bucket );
+				$this->flush_wp_cache_for_locale_bucket( $locale, $bucket );
 			}
 		}
 	}
@@ -198,7 +200,7 @@ class WP_CLDR {
 	* @param string $bucket     The bucket for the CLDR data request
 	* @return array             Values for keys initialized for a particular locale
 	*/
-	public function get_localized_names( $locale = null , $bucket = 'territories' ) {
+	public function get_locale_bucket( $locale = null , $bucket = 'territories' ) {
 		if ( ! $locale ) {
 			$locale = $this->locale;
 		}
@@ -208,7 +210,7 @@ class WP_CLDR {
 		}
 
 		// Maybe that bucket hasn't been initialized on this locale, let's try again:
-		$this->initialize_locale( $locale , $bucket );
+		$this->initialize_locale_bucket( $locale , $bucket );
 
 		if ( isset( $this->localized[ $locale ][ $bucket ] ) ) {
 			return $this->localized[ $locale ][ $bucket ];
@@ -221,18 +223,17 @@ class WP_CLDR {
 	/**
 	* Get the localized value for a particular key in a particular bucket
 	* @param  string $key       The individual item's id / stub.
-	*                           For example: US, FR, DE
-	* @param  string $bucket    (optional) In which group of data to look for the key
-	*                           Defaults to 'territories'
 	* @param  string $locale (optional)
+	* @param  string $bucket (optional) In which group of data to look for the key
+	*                           Defaults to 'territories'
 	* @return string            The localized string
 	*/
-	public function __( $key, $locale = null, $bucket = 'territories' ) {
+	public function get_cldr_item( $key, $locale = null, $bucket = 'territories' ) {
 		if ( ! is_string( $key ) || ! strlen( $key ) ) {
 			return '';
 		}
 
-		$bucket_array = $this->get_localized_names( $locale, $bucket );
+		$bucket_array = $this->get_locale_bucket( $locale, $bucket );
 
 		if ( isset( $bucket_array[ $key ] ) ) {
 			return $bucket_array[ $key ];
@@ -240,55 +241,59 @@ class WP_CLDR {
 	}
 
 	/**
-	* Helpers to more easily access by bucket
+	* Helpers to more easily access an item in a bucket
 	*/
 	public function _territory( $territory_code, $locale = null ) {
-		return $this->__( $territory_code, $locale, 'territories' );
+		return $this->get_cldr_item( $territory_code, $locale, 'territories' );
+	}
+	public function territory_name( $territory_code, $locale = null ) {
+		return $this->get_cldr_item( $territory_code, $locale, 'territories' );
 	}
 
-	public function _currency_symbol( $currency_code, $locale = null ) {
-		$currencies_array = $this->get_localized_names( $locale, 'currencies' );
+	public function currency_symbol( $currency_code, $locale = null ) {
+		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
 		if ( isset( $currencies_array[$currency_code]['symbol'] ) ) {
 			return $currencies_array[$currency_code]['symbol'];
 		}
 	}
 
-	public function _currency_name( $currency_code, $locale = null ) {
-		$currencies_array = $this->get_localized_names( $locale, 'currencies' );
+	public function currency_name( $currency_code, $locale = null ) {
+		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
 		if ( isset( $currencies_array[$currency_code]['displayName'] ) ) {
 			return $currencies_array[$currency_code]['displayName'];
 		}
 	}
 
-	public function _language( $language_code, $locale = null ) {
+	public function language_name( $language_code, $locale = null ) {
 		$cldr_matched_language_code = $this->get_cldr_locale( $language_code );
 
-		$language_name = $this->__( $cldr_matched_language_code, $locale, 'languages' );
+		$language_name = $this->get_cldr_item( $cldr_matched_language_code, $locale, 'languages' );
 
 		// if no match for locale (language-COUNTRY), try falling back to CLDR-matched language code only
 		if ( is_null( $language_name ) ) {
-			$language_name = $this->__( strtok($language_code, '-_' ), $locale, 'languages' );
+			$language_name = $this->get_cldr_item( strtok($language_code, '-_' ), $locale, 'languages' );
 		}
 
-		return $language_name;	}
+		return $language_name;
+	}
 
 	/**
-	* Get territory names localized for a particular locale.
+	* Get territory names localized for a particular locale
 	*
 	* @param string $locale The locale to return the list in
 	* @return array an associative array of ISO 3166-1 alpha-2 country codes and UN M.49 region codes, along with localized names, from CLDR
 	*/
 	public function territories_by_locale( $locale = null ) {
-		return $this->get_localized_names( $locale, 'territories' );
+		return $this->get_locale_bucket( $locale, 'territories' );
 	}
 
 	/**
-	* Get language names localized for a particular locale.
+	* Get language names localized for a particular locale
 	*
 	* @param string $locale The locale to return the list in
 	* @return array an associative array of ISO 639 codes and localized language names from CLDR
 	*/
 	public function languages_by_locale( $locale = null ) {
-		return $this->get_localized_names( $locale, 'languages' );
+		return $this->get_locale_bucket( $locale, 'languages' );
 	}
 }
