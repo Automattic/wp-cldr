@@ -111,7 +111,6 @@ class WP_CLDR {
 			case 'territories':
 			case 'languages':
 				return 'cldr-localenames-modern';
-				break;
 			case 'currencies':
 				return 'cldr-numbers-modern';
 		}
