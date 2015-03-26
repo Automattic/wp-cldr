@@ -1,0 +1,48 @@
+{
+  "name": "cldr-numbers-modern",
+  "version": "27.0.0",
+  "dependencies": {
+    "cldr-core": "27.0.0"
+  },
+  "homepage": "http://cldr.unicode.org",
+  "author": {
+    "name": "The Unicode Consortium"
+  },
+  "maintainers": [
+    {
+      "name": "jcemmons",
+      "email": "emmo@us.ibm.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/unicode-cldr/cldr-numbers-modern.git"
+  },
+  "licenses": [
+    {
+      "type": "Unicode-TOU",
+      "url": "http://www.unicode.org/copyright.html"
+    }
+  ],
+  "bugs": {
+    "url": "http://unicode.org/cldr/trac/newticket"
+  },
+  "gitHead": "6b74e52070909e9ad458cac0e594b0e100861b81",
+  "description": "This repository provides the a portion of the JSON distribution of CLDR locale data for internationalization.",
+  "_id": "cldr-numbers-modern@27.0.0",
+  "scripts": {},
+  "_shasum": "2be3a0ab1ee1ebecd9004465c5054be8b15b9d50",
+  "_from": "cldr-numbers-modern@",
+  "_npmVersion": "2.5.1",
+  "_nodeVersion": "0.12.0",
+  "_npmUser": {
+    "name": "jcemmons",
+    "email": "emmo@us.ibm.com"
+  },
+  "dist": {
+    "shasum": "2be3a0ab1ee1ebecd9004465c5054be8b15b9d50",
+    "tarball": "http://registry.npmjs.org/cldr-numbers-modern/-/cldr-numbers-modern-27.0.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/cldr-numbers-modern/-/cldr-numbers-modern-27.0.0.tgz"
+}
