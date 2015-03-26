@@ -1,6 +1,8 @@
 # wp-cldr
 
-WordPress plugin to access localized territory and language names, currency names/symbols, and other localization info. Source is the [reference JSON files] (http://cldr.unicode.org/index/cldr-spec/json) of the [Unicode Common Locale Data Repository (CLDR)] (http://cldr.unicode.org/).
+WordPress plugin to access localized territory and language names, currency names/symbols, and other localization info. Source is the [JSON distribution] (https://github.com/unicode-cldr/cldr-json) of the [Unicode Common Locale Data Repository (CLDR)] (http://cldr.unicode.org/).
+
+This repository includes [locale display names] (https://github.com/unicode-cldr/cldr-localenames-modern) and [number formatting] (https://github.com/unicode-cldr/cldr-numbers-modern) for CLDR's "modern" package of locales, as well as the [core set of supplemental data] (https://github.com/unicode-cldr/cldr-core). Data for other locales is available in the ["full" packages] (https://github.com/unicode-cldr?query=full).  
 
 ##
 

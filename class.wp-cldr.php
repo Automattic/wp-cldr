@@ -33,6 +33,7 @@ class WP_CLDR {
 	private $localized = array();
 
 	const CACHE_GROUP = 'wp-cldr';
+	const CLDR_VERSION = '27';
 
 	public function __construct( $locale = 'en' ) {
 		$this->set_locale( $locale );
@@ -99,15 +100,36 @@ class WP_CLDR {
 	}
 
 	/**
+	* Helper function to identify the path of the CLDR JSON package for an individual data item
+	*
+	* @param string $bucket The CLDR data item
+	* @return string the path of the CLDR JSON package
+	*/
+	public function get_cldr_json_package( $bucket ) {
+
+		switch( $bucket ) {
+			case 'territories':
+			case 'languages':
+				return 'cldr-localenames-modern';
+			case 'currencies':
+				return 'cldr-numbers-modern';
+		}
+	}
+
+	/**
 	* Helper function to load a CLDR JSON data file
 	*
-	* @param string $path The path for the CLDR JSON data file
+	* @param string $cldr_locale The CLDR locale
+	* @param string $bucket The CLDR data item
 	* @return array $json_decoded an array with the CLDR data from the file, or null if no match with any CLDR data files
 	*/
-	public function get_cldr_json_file( $path ) {
+	public function get_cldr_json_file( $cldr_locale, $bucket ) {
 
 		$dir = __DIR__;
-		$data_file_name = "$dir/cldr/$path";
+		$version = WP_CLDR::CLDR_VERSION;
+		$json_package = $this->get_cldr_json_package( $bucket );
+
+		$data_file_name = "$dir/json-files/v$version/$json_package/main/$cldr_locale/$bucket.json";
 
 		if ( ! file_exists( $data_file_name ) ) {
 			return null;
@@ -132,18 +154,18 @@ class WP_CLDR {
 
 		$cldr_locale = $this->get_cldr_locale($locale);
 
-		$cldr_locale_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
+		$cldr_locale_file = $this->get_cldr_json_file( $cldr_locale, $bucket );
 
 		// if no language-country locale CLDR file, fall back to a language-only CLDR file
 		if ( is_null( $cldr_locale_file ) ) {
 			$cldr_locale = strtok( $cldr_locale, '-_' );
-			$cldr_locale_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
+			$cldr_locale_file = $this->get_cldr_json_file( $cldr_locale, $bucket );
 		}
 
 		// if no language CLDR file, fall back to English CLDR file
 		if ( is_null( $cldr_locale_file ) ) {
 			$cldr_locale = 'en';
-			$cldr_locale_file = $this->get_cldr_json_file( "main/{$cldr_locale}/$bucket.json" );
+			$cldr_locale_file = $this->get_cldr_json_file( $cldr_locale, $bucket );
 		}
 
 		switch( $bucket ) {
