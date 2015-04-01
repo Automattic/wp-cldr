@@ -10,7 +10,7 @@ This repository includes [locale display names] (https://github.com/unicode-cldr
 ### The default locale is English
 ```
 $cldr = new WP_CLDR();
-$territories_in_english = $cldr->territories_by_locale( 'en' );
+$territories_in_english = $cldr->territories_by_locale();
 ```
 
 ### You can override the default locale per-call by passing in a language slug in the second parameter
@@ -35,6 +35,11 @@ $africa_in_french = $cldr->territory_name( '002' );
 ```
 $cldr->set_locale( 'en' );
 $us_dollar_in_english = $cldr->currency_name( 'USD' );
+```
+
+### Get CLDR's supplemental data
+```
+$telephone_code_in_france = $cldr->telephone_code( 'FR' );
 ```
 
 ## Links:
