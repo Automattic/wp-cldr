@@ -116,15 +116,12 @@ class WP_CLDR {
 	* @return array $json_decoded an array with the CLDR data from the file, or null if no match with any CLDR data files
 	*/
 	public function get_cldr_json_file( $cldr_locale, $bucket ) {
+		$base_path = __DIR__ . '/cldr-v' . WP_CLDR::CLDR_VERSION;
+		$relative_path = ( 'supplemental' === $cldr_locale )
+			? 'supplemental'
+			: "main/$cldr_locale";
 
-		$dir = __DIR__;
-		$version = WP_CLDR::CLDR_VERSION;
-
-		if ( 'supplemental' == $cldr_locale ) {
-			$data_file_name = "$dir/cldr-$version/supplemental/$bucket.json";
-		} else {
-			$data_file_name = "$dir/cldr-$version/main/$cldr_locale/$bucket.json";
-		}
+		$data_file_name = "$base_path/$relative_path/$bucket.json";
 
 		if ( ! file_exists( $data_file_name ) ) {
 			return null;
