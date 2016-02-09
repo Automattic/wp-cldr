@@ -26,6 +26,8 @@
 * // Switch locales after the object has been created
 * $cldr->set_locale( 'en' );
 * $us_dollar_in_english = $cldr->currency_name( 'USD' );
+*
+* @autounit wp-cldr
 */
 
 class WP_CLDR {
@@ -116,7 +118,7 @@ class WP_CLDR {
 	* @return array $json_decoded an array with the CLDR data from the file, or null if no match with any CLDR data files
 	*/
 	public function get_cldr_json_file( $cldr_locale, $bucket ) {
-		$base_path = __DIR__ . '/cldr-v' . WP_CLDR::CLDR_VERSION;
+		$base_path = __DIR__ . '/json-files/v' . WP_CLDR::CLDR_VERSION;
 
 		switch ( $bucket ) {
 			case 'supplemental':
@@ -132,7 +134,7 @@ class WP_CLDR {
 				break;
 		}
 
-		$data_file_name = "$dir/json-files/v$version/$relative_path/$bucket.json";
+		$data_file_name = "$base_path/$relative_path/$bucket.json";
 
 		if ( ! file_exists( $data_file_name ) ) {
 			return null;
