@@ -117,11 +117,22 @@ class WP_CLDR {
 	*/
 	public function get_cldr_json_file( $cldr_locale, $bucket ) {
 		$base_path = __DIR__ . '/cldr-v' . WP_CLDR::CLDR_VERSION;
-		$relative_path = ( 'supplemental' === $cldr_locale )
-			? 'supplemental'
-			: "main/$cldr_locale";
 
-		$data_file_name = "$base_path/$relative_path/$bucket.json";
+		switch ( $bucket ) {
+			case 'supplemental':
+				$relative_path = "cldr-core/supplemental";
+				break;
+
+			case 'currencies':
+				$relative_path = "cldr-numbers-modern/main/$cldr_locale";
+				break;
+
+			default:
+				$relative_path = "cldr-localenames-modern/main/$cldr_locale";
+				break;
+		}
+
+		$data_file_name = "$dir/json-files/v$version/$relative_path/$bucket.json";
 
 		if ( ! file_exists( $data_file_name ) ) {
 			return null;
