@@ -1,0 +1,7 @@
+<phpunit testdox="true" stop-on-failure="false" backupGlobals="false" colors="true" bootstrap="./includes/bootstrap.php">
+  <testsuites>
+    <testsuite>
+      <file>./tests/wp-cldr-tests.php</file>
+    </testsuite>
+  </testsuites>
+</phpunit>
