@@ -26,6 +26,8 @@
 * // Switch locales after the object has been created
 * $cldr->set_locale( 'en' );
 * $us_dollar_in_english = $cldr->currency_name( 'USD' );
+*
+* @autounit wp-cldr
 */
 
 class WP_CLDR {
@@ -35,7 +37,8 @@ class WP_CLDR {
 	const CACHE_GROUP = 'wp-cldr';
 	const CLDR_VERSION = '27';
 
-	public function __construct( $locale = 'en' ) {
+	public function __construct( $locale = 'en', $use_cache = true ) {
+		$this->use_cache = $use_cache;
 		$this->set_locale( $locale );
 	}
 
@@ -138,7 +141,7 @@ class WP_CLDR {
 
 	public function initialize_locale_bucket( $locale = 'en', $bucket = 'territories', $use_cache = true ) {
 
-		if ( $use_cache ) {
+		if ( $this->use_cache ) {
 			$cache_key = "cldr-$locale-$bucket";
 			$cached_data = wp_cache_get( $cache_key, WP_CLDR::CACHE_GROUP );
 			if ( $cached_data ) {
@@ -185,7 +188,7 @@ class WP_CLDR {
 
 		$this->localized[ $locale ][ $bucket ] = $bucket_array;
 
-		if ( $use_cache ) {
+		if ( $this->use_cache ) {
 			wp_cache_set( $cache_key, $this->localized[ $locale ][ $bucket ], WP_CLDR::CACHE_GROUP );
 		}
 		return true;
@@ -201,9 +204,6 @@ class WP_CLDR {
 	*/
 	public function flush_all_wp_caches() {
 		$this->localized = array();
-
-		// Initialize without the cache
-		$this->initialize_locale_bucket( 'en', null, false );
 
 		$locales = $this->languages_by_locale( 'en' );
 		$supported_buckets = array( 'countries' , 'languages' , 'territories', 'supplemental' );
