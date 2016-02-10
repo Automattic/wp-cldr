@@ -100,13 +100,15 @@ class WP_CLDR {
 
 		// capitalize country code and initial letter of script code to match CLDR JSON filenames
  		$locale_components = explode("-", $cleaned_up_wp_locale);
-		if ( 2 == strlen( $locale_components[1] ) ) {
-			$locale_components[1] = strtoupper( $locale_components[1] );
-			$cleaned_up_wp_locale = implode( '-', $locale_components );
-		} else if ( 2 < strlen( $locale_components[1] ) ) {
-			$locale_components[1] = ucfirst( $locale_components[1] );
-			$cleaned_up_wp_locale = implode( '-', $locale_components );
-			}
+		if ( isset( $locale_components[1]) ) {
+			if ( 2 == strlen( $locale_components[1] ) ) {
+				$locale_components[1] = strtoupper( $locale_components[1] );
+				$cleaned_up_wp_locale = implode( '-', $locale_components );
+			} else if ( 2 < strlen( $locale_components[1] ) ) {
+				$locale_components[1] = ucfirst( $locale_components[1] );
+				$cleaned_up_wp_locale = implode( '-', $locale_components );
+				}
+		}
 
 		return $cleaned_up_wp_locale;
 	}
