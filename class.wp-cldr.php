@@ -35,7 +35,7 @@ class WP_CLDR {
 	private $localized = array();
 
 	const CACHE_GROUP = 'wp-cldr';
-	const CLDR_VERSION = '27';
+	const CLDR_VERSION = '28.0.2';
 
 	public function __construct( $locale = 'en', $use_cache = true ) {
 		$this->use_cache = $use_cache;
@@ -63,8 +63,8 @@ class WP_CLDR {
 			'als' => 'gsw',
 			'pt'	=> 'pt-PT',
 			'pt-br'	=> 'pt-BR',
-			'el-po'	=> '',
-			'me' => '',
+			'el-po'	=> 'el',
+			'me' => 'sr_Latn_ME',
 			'tl' => 'fil',
 			'mya' => 'my',
 			'tir' => 'ti',
@@ -77,7 +77,7 @@ class WP_CLDR {
 			'haw-us' => 'haw', // from .org GlotPress locales.php
 			'kin' => 'rw', // from .org GlotPress locales.php
 			'lin' => 'ln', // from .org GlotPress locales.php
-			'me-me' => '', // from .org GlotPress locales.php
+			'me-me' => 'sr_Latn_ME', // from .org GlotPress locales.php
 			'mhr' => 'chm', // from .org GlotPress locales.php
 			'mri' => 'mi', // from .org GlotPress locales.php
 			'ory' => 'or', // from .org GlotPress locales.php
@@ -121,7 +121,12 @@ class WP_CLDR {
 	* @return array $json_decoded an array with the CLDR data from the file, or null if no match with any CLDR data files
 	*/
 	public function get_cldr_json_file( $cldr_locale, $bucket ) {
-		$base_path = __DIR__ . '/json-files/v' . WP_CLDR::CLDR_VERSION;
+		$base_path = __DIR__ . '/json/v' . WP_CLDR::CLDR_VERSION;
+
+		// work around for inconsitency where Brazilian Portuguese (pt-BR) uses "pt" for its directory name
+		if ( 'pt-br' == $cldr_locale ) {
+			$cldr_locale = 'pt';
+		}
 
 		switch ( $bucket ) {
 			case 'supplemental':
