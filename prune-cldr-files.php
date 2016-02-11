@@ -26,8 +26,21 @@ $wpcom_locales = array( "af", "als", "am", "ar", "arc", "as", "ast", "av", "ay",
 	"yi", "yo", "za", "zh-cn", "zh-tw" );
 echo 'wpcom locales -- ' . count( $wpcom_locales ) . "\n";
 
-// from wpcom locales.php as of Feb 2016
-$wporg_locales = array( 'aa', 'ae', 'af', 'ak', 'am', 'an', 'ar', 'arq', 'ary', 'as', 'ast', 'av', 'ay', 'az', 'azb', 'az_TR', 'ba', 'bal', 'bcc', 'bel', 'bg_BG', 'bh', 'bi', 'bm', 'bn_BD', 'bo', 'bre', 'bs_BA', 'ca', 'ce', 'ceb', 'ch', 'ckb', 'co', 'cr', 'cs_CZ', 'csb', 'cu', 'cv', 'cy', 'da_DK', 'de_DE', 'de_CH', 'dv', 'dzo', 'ee', 'el-po', 'el', 'art_xemoji', 'en_US', 'en_AU', 'en_CA', 'en_GB', 'en_NZ', 'en_ZA', 'eo', 'es_ES', 'es_AR', 'es_CL', 'es_CO', 'es_GT', 'es_MX', 'es_PE', 'es_PR', 'es_VE', 'et', 'eu', 'fa_IR', 'fa_AF', 'fuc', 'fi', 'fj', 'fo', 'fr_FR', 'fr_BE', 'fr_CA', 'fr-ch', 'frp', 'fur', 'fy', 'ga', 'gd', 'gl_ES', 'gn', 'gsw', 'gu', 'ha', 'haw_US', 'haz', 'he_IL', 'hi_IN', 'hr', 'hu_HU', 'hy', 'ia', 'id_ID', 'ido', 'ike', 'ilo', 'is_IS', 'it_IT', 'ja', 'jv_ID', 'ka_GE', 'kab', 'kal', 'kin', 'kk', 'km', 'kmr', 'kn', 'ko_KR', 'ks', 'ky_KY', 'la', 'lb_LU', 'li', 'lin', 'lo', 'lt_LT', 'lv', 'me_ME', 'mg_MG', 'mhr', 'mk_MK', 'ml_IN', 'mn', 'mr', 'mri', 'mrj', 'ms_MY', 'mwl', 'my_MM', 'ne_NP', 'nb_NO', 'nl_NL', 'nl_BE', 'nn_NO', 'no', 'oci', 'orm', 'ory', 'os', 'pa_IN', 'pl_PL', 'pt_BR', 'pt_PT', 'ps', 'rhg', 'ro_RO', 'roh', 'ru_RU', 'rue', 'rup_MK', 'sah', 'sa_IN', 'si_LK', 'sk_SK', 'sl_SI', 'snd', 'so_SO', 'sq', 'sr_RS', 'srd', 'su_ID', 'sv_SE', 'sw', 'szl', 'ta_IN', 'ta_LK', 'tah', 'te', 'tg', 'th', 'tir', 'tlh', 'tl', 'tr_TR', 'tt_RU', 'tuk', 'twd', 'tzm', 'udm', 'ug_CN', 'uk', 'ur', 'uz_UZ', 'vec', 'vi', 'wa', 'xmf', 'yi', 'yor', 'zh_CN', 'zh_HK', 'zh-sg', 'zh_TW', 'zh' );
+// from wporg locales.php as of Feb 2016
+$wporg_locales = array( 'aa', 'ae', 'af', 'ak', 'am', 'an', 'ar', 'arq', 'ary', 'as', 'ast', 'av', 'ay', 'az',
+	'azb', 'az_TR', 'ba', 'bal', 'bcc', 'bel', 'bg_BG', 'bh', 'bi', 'bm', 'bn_BD', 'bo', 'bre', 'bs_BA', 'ca',
+	'ce','ceb', 'ch', 'ckb', 'co', 'cr', 'cs_CZ', 'csb', 'cu', 'cv', 'cy', 'da_DK', 'de_DE', 'de_CH', 'dv', 'dzo',
+	'ee', 'el-po', 'el', 'art_xemoji', 'en_US', 'en_AU', 'en_CA', 'en_GB', 'en_NZ', 'en_ZA', 'eo', 'es_ES', 'es_AR',
+	'es_CL', 'es_CO', 'es_GT', 'es_MX', 'es_PE', 'es_PR', 'es_VE', 'et', 'eu', 'fa_IR', 'fa_AF', 'fuc', 'fi', 'fj',
+	'fo', 'fr_FR', 'fr_BE', 'fr_CA', 'fr-ch', 'frp', 'fur', 'fy', 'ga', 'gd', 'gl_ES', 'gn', 'gsw', 'gu', 'ha',
+	'haw_US', 'haz', 'he_IL', 'hi_IN', 'hr', 'hu_HU', 'hy', 'ia', 'id_ID', 'ido', 'ike', 'ilo', 'is_IS', 'it_IT',
+	'ja', 'jv_ID', 'ka_GE', 'kab', 'kal', 'kin', 'kk', 'km', 'kmr', 'kn', 'ko_KR', 'ks', 'ky_KY', 'la', 'lb_LU',
+	'li', 'lin', 'lo', 'lt_LT', 'lv', 'me_ME', 'mg_MG', 'mhr', 'mk_MK', 'ml_IN', 'mn', 'mr', 'mri', 'mrj', 'ms_MY',
+	'mwl', 'my_MM', 'ne_NP', 'nb_NO', 'nl_NL', 'nl_BE', 'nn_NO', 'no', 'oci', 'orm', 'ory', 'os', 'pa_IN', 'pl_PL',
+	'pt_BR', 'pt_PT', 'ps', 'rhg', 'ro_RO', 'roh', 'ru_RU', 'rue', 'rup_MK', 'sah', 'sa_IN', 'si_LK', 'sk_SK',
+	'sl_SI', 'snd', 'so_SO', 'sq', 'sr_RS', 'srd', 'su_ID', 'sv_SE', 'sw', 'szl', 'ta_IN', 'ta_LK', 'tah', 'te', 'tg',
+	'th', 'tir', 'tlh', 'tl', 'tr_TR', 'tt_RU', 'tuk', 'twd', 'tzm', 'udm', 'ug_CN', 'uk', 'ur', 'uz_UZ', 'vec', 'vi',
+	'wa', 'xmf', 'yi', 'yor', 'zh_CN', 'zh_HK', 'zh-sg', 'zh_TW', 'zh' );
 echo 'wporg locales -- ' . count( $wporg_locales ) . "\n";
 
 $wp_locales = array_unique ( array_merge( $wpcom_locales, $wporg_locales ) );
@@ -40,7 +53,7 @@ $files_to_keep = array( 'localeDisplayNames.json', 'territories.json', 'language
 $cldr = new WP_CLDR( 'en', false );
 
 foreach ( $wp_locales as $wp_locale ) {
-	// work around for inconsitency where Brazilian Portuguese (pt-BR) uses "pt" for its directory name
+	// work around for inconsistency where Brazilian Portuguese (pt-BR) uses "pt" for its directory name
 	if ( 'pt-br' == $wp_locale ) {
 		$wp_locales_mapped_to_cldr_directories[] = 'pt';
 	} else {
