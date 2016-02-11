@@ -2,7 +2,7 @@
 
 WordPress plugin to access localized territory and language names, currency names/symbols, and other localization info. Source is the [JSON distribution] (https://github.com/unicode-cldr/cldr-json) of the [Unicode Common Locale Data Repository (CLDR)] (http://cldr.unicode.org/).
 
-This repository includes [locale display names] (https://github.com/unicode-cldr/cldr-localenames-modern) and [number formatting] (https://github.com/unicode-cldr/cldr-numbers-modern) for CLDR's "modern" package of locales, as well as the [core set of supplemental data] (https://github.com/unicode-cldr/cldr-core). Data for other locales is available in the ["full" packages] (https://github.com/unicode-cldr?query=full).  
+This repository includes [locale display names] (https://github.com/unicode-cldr/cldr-localenames-modern) and [number formatting] (https://github.com/unicode-cldr/cldr-numbers-modern) for the locales currently [used by WordPress.com](https://github.com/Automattic/wp-cldr/blob/master/prune-cldr-files.php#L18) and [used by WordPress.org](https://github.com/Automattic/wp-cldr/blob/master/prune-cldr-files.php#L29), as well as the [core set of supplemental data] (https://github.com/unicode-cldr/cldr-core).
 
 ##
 
