@@ -1,4 +1,4 @@
-<phpunit testdox="true" stop-on-failure="false" backupGlobals="false" colors="true" bootstrap="./includes/bootstrap.php">
+<phpunit testdox="true" stop-on-failure="false" backupGlobals="false" colors="true">
   <testsuites>
     <testsuite>
       <file>./tests/wp-cldr-tests.php</file>
