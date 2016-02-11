@@ -129,7 +129,8 @@ class WP_CLDR {
 		}
 
 		switch ( $bucket ) {
-			case 'supplemental':
+			case 'weekData':
+			case 'telephoneCodeData':
 				$relative_path = "cldr-core/supplemental";
 				break;
 

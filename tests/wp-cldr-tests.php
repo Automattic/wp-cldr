@@ -132,4 +132,18 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( "zh-Hans", $this->cldr->get_cldr_locale( 'zh-cn' ) );
 		$this->assertEquals( "zh-Hant", $this->cldr->get_cldr_locale( 'zh-tw' ) );
 	}
+
+	public function test_telephone_code() {
+
+		$this->assertEquals( "1", $this->cldr->telephone_code( 'US' ) );
+		$this->assertEquals( "55", $this->cldr->telephone_code( 'BR' ) );
+	}
+
+	public function test_first_day_of_week() {
+
+		$this->assertEquals( "sun", $this->cldr->first_day_of_week( 'US' ) );
+		$this->assertEquals( "sat", $this->cldr->first_day_of_week( 'QA' ) );
+	}
+
+
 }
