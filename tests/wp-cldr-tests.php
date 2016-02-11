@@ -123,10 +123,10 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( "pt-PT", $this->cldr->get_cldr_locale( 'pt' ) );
 
 		// brazilian portuguese
-		$this->assertEquals( "pt", $this->cldr->get_cldr_locale( 'pt-br' ) );
-		$this->assertEquals( "pt", $this->cldr->get_cldr_locale( 'pt-BR' ) );
-		$this->assertEquals( "pt", $this->cldr->get_cldr_locale( 'pt_br' ) );
-		$this->assertEquals( "pt", $this->cldr->get_cldr_locale( 'pt_BR' ) );
+		$this->assertEquals( "pt-BR", $this->cldr->get_cldr_locale( 'pt-br' ) );
+		$this->assertEquals( "pt-BR", $this->cldr->get_cldr_locale( 'pt-BR' ) );
+		$this->assertEquals( "pt-BR", $this->cldr->get_cldr_locale( 'pt_br' ) );
+		$this->assertEquals( "pt-BR", $this->cldr->get_cldr_locale( 'pt_BR' ) );
 
 		// chinese variants
 		$this->assertEquals( "zh-Hans", $this->cldr->get_cldr_locale( 'zh-cn' ) );
