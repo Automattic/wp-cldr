@@ -120,7 +120,7 @@ class WP_CLDR {
 	* @param string $bucket The CLDR data item
 	* @return array $json_decoded an array with the CLDR data from the file, or null if no match with any CLDR data files
 	*/
-	public function get_cldr_json_file( $cldr_locale, $bucket ) {
+	private function get_cldr_json_file( $cldr_locale, $bucket ) {
 		$base_path = __DIR__ . '/json/v' . WP_CLDR::CLDR_VERSION;
 
 		// work around for inconsitency where Brazilian Portuguese (pt-BR) uses "pt" for its directory name
@@ -154,7 +154,7 @@ class WP_CLDR {
 		return $json_decoded;
 	}
 
-	public function initialize_locale_bucket( $locale = 'en', $bucket = 'territories', $use_cache = true ) {
+	private function initialize_locale_bucket( $locale = 'en', $bucket = 'territories', $use_cache = true ) {
 
 		if ( $this->use_cache ) {
 			$cache_key = "cldr-$locale-$bucket";
@@ -235,7 +235,7 @@ class WP_CLDR {
 	* @param string $bucket		The bucket for the CLDR data request
 	* @return array						 Values for keys initialized for a particular locale
 	*/
-	public function get_locale_bucket( $locale , $bucket ) {
+	private function get_locale_bucket( $locale , $bucket ) {
 		if ( ! $locale ) {
 			$locale = $this->locale;
 		}
@@ -262,7 +262,7 @@ class WP_CLDR {
 	* @param	string $bucket In which group of data to look for the key
 	* @return string						The localized string
 	*/
-	public function get_cldr_item( $key, $locale, $bucket ) {
+	private function get_cldr_item( $key, $locale, $bucket ) {
 		if ( ! is_string( $key ) || ! strlen( $key ) ) {
 			return '';
 		}
