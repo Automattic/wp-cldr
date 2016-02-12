@@ -11,7 +11,7 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 	// test basic data queries
 
 	public function setup() {
-		// the second parameter, false, tell the class to not use caching which means we can avoid loading wordpress for these tests
+		// the second parameter, false, tells the class to not use caching which means we can avoid loading WordPress for these tests
 		$this->cldr = new WP_CLDR( 'en', false );
 	}
 

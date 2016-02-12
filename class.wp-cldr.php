@@ -107,7 +107,7 @@ class WP_CLDR {
 			} else if ( 2 < strlen( $locale_components[1] ) ) {
 				$locale_components[1] = ucfirst( $locale_components[1] );
 				$cleaned_up_wp_locale = implode( '-', $locale_components );
-				}
+			}
 		}
 
 		return $cleaned_up_wp_locale;
@@ -120,7 +120,7 @@ class WP_CLDR {
 	* @param string $bucket The CLDR data item
 	* @return array $json_decoded an array with the CLDR data from the file, or null if no match with any CLDR data files
 	*/
-	private function get_cldr_json_file( $cldr_locale, $bucket ) {
+	public static function get_cldr_json_file( $cldr_locale, $bucket ) {
 		$base_path = __DIR__ . '/json/v' . WP_CLDR::CLDR_VERSION;
 
 		switch ( $bucket ) {
@@ -140,7 +140,7 @@ class WP_CLDR {
 
 		$data_file_name = "$base_path/$relative_path/$bucket.json";
 
-		if ( ! file_exists( $data_file_name ) ) {
+		if ( ! is_readable( $data_file_name ) ) {
 			return null;
 		}
 
@@ -169,24 +169,24 @@ class WP_CLDR {
 			$cldr_locale = 'pt';
 		}
 
-		$cldr_locale_file = $this->get_cldr_json_file( $cldr_locale, $bucket );
+		$cldr_locale_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 
 		// if no language-country locale CLDR file, fall back to a language-only CLDR file
 		if ( is_null( $cldr_locale_file ) ) {
 			$cldr_locale = strtok( $cldr_locale, '-_' );
-			$cldr_locale_file = $this->get_cldr_json_file( $cldr_locale, $bucket );
+			$cldr_locale_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 		}
 
 		// if no language CLDR file, fall back to English CLDR file
 		if ( is_null( $cldr_locale_file ) ) {
 			$cldr_locale = 'en';
-			$cldr_locale_file = $this->get_cldr_json_file( $cldr_locale, $bucket );
+			$cldr_locale_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 		}
 
 		// for performance, pre-process a few items before putting into the cache
 		switch( $bucket ) {
-				case 'territories':
-				case 'languages':
+			case 'territories':
+			case 'languages':
 				$bucket_array = $cldr_locale_file['main'][$cldr_locale]['localeDisplayNames'][$bucket];
 				if ( function_exists( 'collator_create' ) ) {
 					// sort data according to locale collation rules
