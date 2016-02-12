@@ -56,7 +56,7 @@ class WP_CLDR {
 	public function get_cldr_locale( $wp_locale ) {
 
 		// this array captures the WordPress locales that are signficiantly different from CLDR locales
-		$wp2cldr =	array(
+		$wp2cldr = array(
 			'zh-cn' => 'zh-Hans',
 			'zh-tw' => 'zh-Hant',
 			'zh' => 'zh-Hans',
@@ -64,7 +64,7 @@ class WP_CLDR {
 			'pt'	=> 'pt-PT',
 			'pt-br'	=> 'pt-BR',
 			'el-po'	=> 'el',
-			'me' => 'sr_Latn_ME',
+			'me' => 'sr-Latn-ME',
 			'tl' => 'fil',
 			'mya' => 'my',
 			'tir' => 'ti',
@@ -77,7 +77,7 @@ class WP_CLDR {
 			'haw-us' => 'haw', // from .org GlotPress locales.php
 			'kin' => 'rw', // from .org GlotPress locales.php
 			'lin' => 'ln', // from .org GlotPress locales.php
-			'me-me' => 'sr_Latn_ME', // from .org GlotPress locales.php
+			'me-me' => 'sr-Latn-ME', // from .org GlotPress locales.php
 			'mhr' => 'chm', // from .org GlotPress locales.php
 			'mri' => 'mi', // from .org GlotPress locales.php
 			'ory' => 'or', // from .org GlotPress locales.php
@@ -123,11 +123,6 @@ class WP_CLDR {
 	private function get_cldr_json_file( $cldr_locale, $bucket ) {
 		$base_path = __DIR__ . '/json/v' . WP_CLDR::CLDR_VERSION;
 
-		// work around for inconsitency where Brazilian Portuguese (pt-BR) uses "pt" for its directory name
-		if ( 'pt-br' == $cldr_locale ) {
-			$cldr_locale = 'pt';
-		}
-
 		switch ( $bucket ) {
 			case 'weekData':
 			case 'telephoneCodeData':
@@ -155,7 +150,7 @@ class WP_CLDR {
 		return $json_decoded;
 	}
 
-	private function initialize_locale_bucket( $locale = 'en', $bucket = 'territories', $use_cache = true ) {
+	private function initialize_locale_bucket( $locale = 'en', $bucket = 'territories' ) {
 
 		if ( $this->use_cache ) {
 			$cache_key = "cldr-$locale-$bucket";
@@ -167,6 +162,12 @@ class WP_CLDR {
 		}
 
 		$cldr_locale = $this->get_cldr_locale($locale);
+
+		// workaround for CLDR quirk that Brazilian Portuguese has the locale code "pt-BR"
+		// but JSON files and trees use "pt"
+		if ( 'pt-BR' == $cldr_locale ) {
+			$cldr_locale = 'pt';
+		}
 
 		$cldr_locale_file = $this->get_cldr_json_file( $cldr_locale, $bucket );
 
@@ -222,7 +223,7 @@ class WP_CLDR {
 		$this->localized = array();
 
 		$locales = $this->languages_by_locale( 'en' );
-		$supported_buckets = array( 'countries' , 'languages' , 'territories', 'supplemental' );
+		$supported_buckets = array( 'territories', 'currencies', 'languages', 'weekData', 'telephoneCodeData' );
 		foreach( array_keys( $locales ) as $locale ) {
 			foreach( $supported_buckets as $bucket ) {
 				$this->flush_wp_cache_for_locale_bucket( $locale, $bucket );
@@ -354,5 +355,4 @@ class WP_CLDR {
 			return $json_file['supplemental']['weekData']['firstDay'][$country];
 		}
 	}
-
 }
