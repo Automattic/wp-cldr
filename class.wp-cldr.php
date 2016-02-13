@@ -94,14 +94,14 @@ class WP_CLDR {
 		$cleaned_up_wp_locale = strtolower( $cleaned_up_wp_locale );
 
 		// check for an exact match in exceptions array
-		if ( isset ( $wp2cldr[$cleaned_up_wp_locale] ) ) {
-			return $wp2cldr[$cleaned_up_wp_locale];
+		if ( isset( $wp2cldr[ $cleaned_up_wp_locale ] ) ) {
+			return $wp2cldr[ $cleaned_up_wp_locale ];
 		}
 
 		// capitalize country code and initial letter of script code to match CLDR JSON filenames
- 		$locale_components = explode("-", $cleaned_up_wp_locale);
-		if ( isset( $locale_components[1]) ) {
-			if ( 2 == strlen( $locale_components[1] ) ) {
+		$locale_components = explode( '-', $cleaned_up_wp_locale );
+		if ( isset( $locale_components[1] ) ) {
+			if ( 2 === strlen( $locale_components[1] ) ) {
 				$locale_components[1] = strtoupper( $locale_components[1] );
 				$cleaned_up_wp_locale = implode( '-', $locale_components );
 			} else if ( 2 < strlen( $locale_components[1] ) ) {
@@ -126,7 +126,7 @@ class WP_CLDR {
 		switch ( $bucket ) {
 			case 'weekData':
 			case 'telephoneCodeData':
-				$relative_path = "cldr-core/supplemental";
+				$relative_path = 'cldr-core/supplemental';
 				break;
 
 			case 'currencies':
@@ -161,11 +161,11 @@ class WP_CLDR {
 			}
 		}
 
-		$cldr_locale = $this->get_cldr_locale($locale);
+		$cldr_locale = $this->get_cldr_locale( $locale );
 
 		// workaround for CLDR quirk that Brazilian Portuguese has the locale code "pt-BR"
 		// but JSON files and trees use "pt"
-		if ( 'pt-BR' == $cldr_locale ) {
+		if ( 'pt-BR' === $cldr_locale ) {
 			$cldr_locale = 'pt';
 		}
 
@@ -184,10 +184,10 @@ class WP_CLDR {
 		}
 
 		// for performance, pre-process a few items before putting into the cache
-		switch( $bucket ) {
+		switch ( $bucket ) {
 			case 'territories':
 			case 'languages':
-				$bucket_array = $cldr_locale_file['main'][$cldr_locale]['localeDisplayNames'][$bucket];
+				$bucket_array = $cldr_locale_file['main'][ $cldr_locale ]['localeDisplayNames'][ $bucket ];
 				if ( function_exists( 'collator_create' ) ) {
 					// sort data according to locale collation rules
 					$coll = collator_create( $cldr_locale );
@@ -197,7 +197,7 @@ class WP_CLDR {
 				}
 				break;
 			case 'currencies':
-				$bucket_array = $cldr_locale_file['main'][$cldr_locale]['numbers'][$bucket];
+				$bucket_array = $cldr_locale_file['main'][ $cldr_locale ]['numbers'][ $bucket ];
 				break;
 			default: // covers supplemental files
 				$bucket_array = $cldr_locale_file;
@@ -224,8 +224,8 @@ class WP_CLDR {
 
 		$locales = $this->languages_by_locale( 'en' );
 		$supported_buckets = array( 'territories', 'currencies', 'languages', 'weekData', 'telephoneCodeData' );
-		foreach( array_keys( $locales ) as $locale ) {
-			foreach( $supported_buckets as $bucket ) {
+		foreach ( array_keys( $locales ) as $locale ) {
+			foreach ( $supported_buckets as $bucket ) {
 				$this->flush_wp_cache_for_locale_bucket( $locale, $bucket );
 			}
 		}
@@ -237,7 +237,7 @@ class WP_CLDR {
 	* @param string $bucket		The bucket for the CLDR data request
 	* @return array						 Values for keys initialized for a particular locale
 	*/
-	private function get_locale_bucket( $locale , $bucket ) {
+	private function get_locale_bucket( $locale, $bucket ) {
 		if ( ! $locale ) {
 			$locale = $this->locale;
 		}
@@ -285,15 +285,15 @@ class WP_CLDR {
 
 	public function currency_symbol( $currency_code, $locale = null ) {
 		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
-		if ( isset( $currencies_array[$currency_code]['symbol'] ) ) {
-			return $currencies_array[$currency_code]['symbol'];
+		if ( isset( $currencies_array[ $currency_code ]['symbol'] ) ) {
+			return $currencies_array[ $currency_code ]['symbol'];
 		}
 	}
 
 	public function currency_name( $currency_code, $locale = null ) {
 		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
-		if ( isset( $currencies_array[$currency_code]['displayName'] ) ) {
-			return $currencies_array[$currency_code]['displayName'];
+		if ( isset( $currencies_array[ $currency_code ]['displayName'] ) ) {
+			return $currencies_array[ $currency_code ]['displayName'];
 		}
 	}
 
@@ -304,7 +304,7 @@ class WP_CLDR {
 
 		// if no match for locale (language-COUNTRY), try falling back to CLDR-matched language code only
 		if ( is_null( $language_name ) ) {
-			$language_name = $this->get_cldr_item( strtok($language_code, '-_' ), $locale, 'languages' );
+			$language_name = $this->get_cldr_item( strtok( $language_code, '-_' ), $locale, 'languages' );
 		}
 
 		return $language_name;
@@ -338,8 +338,8 @@ class WP_CLDR {
 	*/
 	public function telephone_code( $country ) {
 		$json_file = $this->get_locale_bucket( 'supplemental', 'telephoneCodeData' );
-		if ( isset( $json_file['supplemental']['telephoneCodeData'][$country][0]['telephoneCountryCode'] ) ) {
-			return $json_file['supplemental']['telephoneCodeData'][$country][0]['telephoneCountryCode'];
+		if ( isset( $json_file['supplemental']['telephoneCodeData'][ $country ][0]['telephoneCountryCode'] ) ) {
+			return $json_file['supplemental']['telephoneCodeData'][ $country ][0]['telephoneCountryCode'];
 		}
 	}
 
@@ -351,8 +351,8 @@ class WP_CLDR {
 	*/
 	public function first_day_of_week( $country ) {
 		$json_file = $this->get_locale_bucket( 'supplemental', 'weekData' );
-		if ( isset( $json_file['supplemental']['weekData']['firstDay'][$country] ) ) {
-			return $json_file['supplemental']['weekData']['firstDay'][$country];
+		if ( isset( $json_file['supplemental']['weekData']['firstDay'][ $country ] ) ) {
+			return $json_file['supplemental']['weekData']['firstDay'][ $country ];
 		}
 	}
 }

@@ -9,21 +9,22 @@
 include_once 'class.wp-cldr.php';
 
 function remove_directory( $directory ) {
-    foreach( glob( "{$directory}/*" ) as $file ) {
-        unlink($file);
-    }
-    rmdir( $directory );
+	foreach ( glob( "$directory/*" ) as $file ) {
+		unlink( $file );
+	}
+	rmdir( $directory );
 }
 
 // from wpcom as of Feb 2016
-$wpcom_locales = array( "af", "als", "am", "ar", "arc", "as", "ast", "av", "ay", "az", "ba", "be", "bg", "bm",
-	"bn", "bo", "br", "bs", "ca", "ce", "ckb", "cs", "csb", "cv", "cy", "da", "de", "dv", "dz", "el", "el-po", "en", "en-gb", "eo",
-	"es", "et", "eu", "fa", "fi", "fil", "fo", "fr", "fr-be", "fr-ca", "fr-ch", "fur", "fy", "ga", "gd", "gl", "gn", "gu", "he", "hi", "hr", "hu", "hy",
-	"ia", "id", "ii", "ilo", "is", "it", "ja", "ka", "km", "kn", "ko", "kk", "ks", "ku", "kv", "ky", "la", "li", "lo", "lv",
-	"lt", "mk", "ml", 'mwl', 'mn', 'mr', "ms", "mya", "nah", "nap", "ne", "nds", "nl", "nn", "no", "non", "nv", "oc", "or", "os",
-	"pa", "pl", "ps", "pt", "pt-br","qu", "ro", "ru", "rup", "sc", "sd", "si", "sk", "sl", "so", "sq", "sr", "su",
-	"sv", "ta", "te", "th", "tl", "tir", "tr", "tt", "ty", "udm", "ug", "uk", "ur", "uz", "vec", "vi", "wa", "xal",
-	"yi", "yo", "za", "zh-cn", "zh-tw" );
+$wpcom_locales = array( 'af', 'als', 'am', 'ar', 'arc', 'as', 'ast', 'av', 'ay', 'az', 'ba', 'be', 'bg', 'bm',
+	'bn', 'bo', 'br', 'bs', 'ca', 'ce', 'ckb', 'cs', 'csb', 'cv', 'cy', 'da', 'de', 'dv', 'dz', 'el', 'el-po',
+	'en', 'en-gb', 'eo', 'es', 'et', 'eu', 'fa', 'fi', 'fil', 'fo', 'fr', 'fr-be', 'fr-ca', 'fr-ch', 'fur',
+	'fy', 'ga', 'gd', 'gl', 'gn', 'gu', 'he', 'hi', 'hr', 'hu', 'hy', 'ia', 'id', 'ii', 'ilo', 'is', 'it', 'ja',
+	'ka', 'km', 'kn', 'ko', 'kk', 'ks', 'ku', 'kv', 'ky', 'la', 'li', 'lo', 'lv', 'lt', 'mk', 'ml', 'mwl', 'mn',
+	'mr', 'ms', 'mya', 'nah', 'nap', 'ne', 'nds', 'nl', 'nn', 'no', 'non', 'nv', 'oc', 'or', 'os', 'pa', 'pl',
+	'ps', 'pt', 'pt-br','qu', 'ro', 'ru', 'rup', 'sc', 'sd', 'si', 'sk', 'sl', 'so', 'sq', 'sr', 'su', 'sv',
+	'ta', 'te', 'th', 'tl', 'tir', 'tr', 'tt', 'ty', 'udm', 'ug', 'uk', 'ur', 'uz', 'vec', 'vi', 'wa', 'xal',
+	'yi', 'yo', 'za', 'zh-cn', 'zh-tw', );
 echo 'wpcom locales -- ' . count( $wpcom_locales ) . "\n";
 
 // from wporg locales.php as of Feb 2016
@@ -40,10 +41,10 @@ $wporg_locales = array( 'aa', 'ae', 'af', 'ak', 'am', 'an', 'ar', 'arq', 'ary', 
 	'pt_BR', 'pt_PT', 'ps', 'rhg', 'ro_RO', 'roh', 'ru_RU', 'rue', 'rup_MK', 'sah', 'sa_IN', 'si_LK', 'sk_SK',
 	'sl_SI', 'snd', 'so_SO', 'sq', 'sr_RS', 'srd', 'su_ID', 'sv_SE', 'sw', 'szl', 'ta_IN', 'ta_LK', 'tah', 'te', 'tg',
 	'th', 'tir', 'tlh', 'tl', 'tr_TR', 'tt_RU', 'tuk', 'twd', 'tzm', 'udm', 'ug_CN', 'uk', 'ur', 'uz_UZ', 'vec', 'vi',
-	'wa', 'xmf', 'yi', 'yor', 'zh_CN', 'zh_HK', 'zh-sg', 'zh_TW', 'zh' );
+	'wa', 'xmf', 'yi', 'yor', 'zh_CN', 'zh_HK', 'zh-sg', 'zh_TW', 'zh', );
 echo 'wporg locales -- ' . count( $wporg_locales ) . "\n";
 
-$wp_locales = array_unique ( array_merge( $wpcom_locales, $wporg_locales ) );
+$wp_locales = array_unique( array_merge( $wpcom_locales, $wporg_locales ) );
 echo 'combined locales -- ' . count( $wp_locales ) . "\n";
 
 $cldr_directories_to_prune = array( 'cldr-localenames-modern/main', 'cldr-numbers-modern/main' );
@@ -54,7 +55,7 @@ $cldr = new WP_CLDR( 'en', false );
 
 foreach ( $wp_locales as $wp_locale ) {
 	// work around for inconsistency where Brazilian Portuguese (pt-BR) uses "pt" for its directory name
-	if ( 'pt-br' == $wp_locale ) {
+	if ( 'pt-br' === $wp_locale ) {
 		$wp_locales_mapped_to_cldr_directories[] = 'pt';
 	} else {
 		$wp_locales_mapped_to_cldr_directories[] = $cldr->get_cldr_locale( $wp_locale );
@@ -68,17 +69,17 @@ foreach ( $cldr_directories_to_prune as $directory ) {
 	$retained_locales = 0;
 	$files_pruned_from_retained_locales = 0;
 
-	foreach( $cldr_directories as $cldr_directory ) {
-		if ( in_array( $cldr_directory, $wp_locales_mapped_to_cldr_directories ) ) {
+	foreach ( $cldr_directories as $cldr_directory ) {
+		if ( in_array( $cldr_directory, $wp_locales_mapped_to_cldr_directories, true ) ) {
 			$retained_locales++;
-			$locale_directory_files = scandir( "{$dir}/$cldr_directory" );
-			foreach( $locale_directory_files as $file ) {
-				if ( !in_array( $file, $files_to_keep ) && '.' != $file && '..' != $file ) {
-					unlink( "{$dir}/$cldr_directory/$file" );
+			$locale_directory_files = scandir( "$dir/$cldr_directory" );
+			foreach ( $locale_directory_files as $file ) {
+				if ( ! in_array( $file, $files_to_keep, true ) && '.' !== $file && '..' !== $file ) {
+					unlink( "$dir/$cldr_directory/$file" );
 					$files_pruned_from_retained_locales++;
 				}
 			}
-		} else if ( !in_array( $cldr_directory, array( '.', '..', '.DS_Store') ) ) {
+		} else if ( ! in_array( $cldr_directory, array( '.', '..', '.DS_Store' ), true ) ) {
 			remove_directory( "$dir/$cldr_directory" );
 			$deleted_locales++;
 		}
