@@ -1,14 +1,12 @@
 <?php
 
-include_once 'class.wp-cldr.php';
+require 'class.wp-cldr.php';
 
 /**
  * Performs unit tests against the wp-cldr plugin.
  *
  */
 class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
-
-	// test basic data queries
 
 	public function setup() {
 		// the second parameter, false, tells the class to not use caching which means we can avoid loading WordPress for these tests
@@ -66,14 +64,6 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'Allemagne', $this->cldr->territory_name( 'DE' ) );
 	}
 
-	//	need to add this functionality
-	/*	public function test_short_variant_of_country_names() {
-
-		$this->assertEquals( 'Hong Kong', $this->cldr->territory_name( 'HK' ) );
-		$this->assertEquals( 'Macau', $this->cldr->territory_name( 'MO' ) );
-		$this->assertEquals( 'Palestine', $this->cldr->territory_name( 'PS' ) );
-	} */
-
 	public function test_wpcom_homepage_locales() {
 
 		// test the wpcom homepage locales as of Feb 2016
@@ -101,8 +91,7 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'Tyskland', $this->cldr->territory_name( 'DE', 'sv' ) );
 		$this->assertEquals( 'เยอรมนี', $this->cldr->territory_name( 'DE', 'th' ) );
 		$this->assertEquals( 'Almanya', $this->cldr->territory_name( 'DE', 'tr' ) );
-		// this needs fixing
-		// $this->assertEquals( 'Німеччина', $this->cldr->territory_name( 'DE', 'uk' ) );
+		$this->assertEquals( 'Німеччина', $this->cldr->territory_name( 'DE', 'uk' ) );
 		$this->assertEquals( '德国', $this->cldr->territory_name( 'DE', 'zh-cn' ) );
 		$this->assertEquals( '德國', $this->cldr->territory_name( 'DE', 'zh-tw' ) );
 	}
@@ -147,7 +136,7 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 			'ta', 'te', 'th', 'tl', 'tir', 'tr', 'tt', 'ty', 'udm', 'ug', 'uk', 'ur', 'uz', 'vec', 'vi', 'wa', 'xal',
 			'yi', 'yo', 'za', 'zh-cn', 'zh-tw', );
 
-		// from wporg locales.php as of Feb 2016
+		// from wporg locales.php as of Feb 2016 https://glotpress.trac.wordpress.org/browser/trunk/locales/locales.php
 		$wporg_locales = array( 'aa', 'ae', 'af', 'ak', 'am', 'an', 'ar', 'arq', 'ary', 'as', 'ast', 'av', 'ay', 'az',
 			'azb', 'az_TR', 'ba', 'bal', 'bcc', 'bel', 'bg_BG', 'bh', 'bi', 'bm', 'bn_BD', 'bo', 'bre', 'bs_BA', 'ca',
 			'ce','ceb', 'ch', 'ckb', 'co', 'cr', 'cs_CZ', 'csb', 'cu', 'cv', 'cy', 'da_DK', 'de_DE', 'de_CH', 'dv', 'dzo',
