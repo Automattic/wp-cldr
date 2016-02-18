@@ -1,25 +1,33 @@
 <?php
+/**
+ * Unit tests related to WP_CLDR class for fetching localization data from Unicode's Common Locale Data Repository
+ *
+ * The wp-cldr plugin is comprised of the WP_CLDR class, a subset of the reference JSON files from Unicode, and unit tests.
+ *
+ * @link https://github.com/Automattic/wp-cldr
+ *
+ * @package wp-cldr
+ */
 
 require 'class.wp-cldr.php';
 
 /**
  * Performs unit tests against the wp-cldr plugin.
- *
  */
 class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 	public function setup() {
-		// the second parameter, false, tells the class to not use caching which means we can avoid loading WordPress for these tests
+		// The second parameter, false, tells the class to not use caching which means we can avoid loading WordPress for these tests.
 		$this->cldr = new WP_CLDR( 'en', false );
 	}
 
 	public function test_territory_name() {
 
-		// test country names
+		// Test country names.
 		$this->assertEquals( 'Allemagne', $this->cldr->territory_name( 'DE' , 'fr_FR' ) );
 		$this->assertEquals( 'ألمانيا', $this->cldr->territory_name( 'DE' , 'ar_AR' ) );
 
-		// test region names
+		// Test region names.
 		$this->assertEquals( 'Afrique', $this->cldr->territory_name( '002', 'fr_FR' ) );
 		$this->assertEquals( '亚洲', $this->cldr->territory_name( '142', 'zh-cn' ) );
 	}
@@ -66,7 +74,7 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 	public function test_wpcom_homepage_locales() {
 
-		// test the wpcom homepage locales as of Feb 2016
+		// Test the wpcom homepage locales as of Feb 2016.
 		$this->assertEquals( 'ألمانيا', $this->cldr->territory_name( 'DE', 'ar' ) );
 		$this->assertEquals( 'Almaniya', $this->cldr->territory_name( 'DE', 'az' ) );
 		$this->assertEquals( 'Deutschland', $this->cldr->territory_name( 'DE', 'de' ) );
@@ -108,16 +116,16 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 	public function test_wpcom_to_cldr_locale_mapping() {
 
-		// portuguese
+		// Portuguese.
 		$this->assertEquals( 'pt-PT', $this->cldr->get_cldr_locale( 'pt' ) );
 
-		// brazilian portuguese
+		// Brazilian Portuguese.
 		$this->assertEquals( 'pt-BR', $this->cldr->get_cldr_locale( 'pt-br' ) );
 		$this->assertEquals( 'pt-BR', $this->cldr->get_cldr_locale( 'pt-BR' ) );
 		$this->assertEquals( 'pt-BR', $this->cldr->get_cldr_locale( 'pt_br' ) );
 		$this->assertEquals( 'pt-BR', $this->cldr->get_cldr_locale( 'pt_BR' ) );
 
-		// chinese variants
+		// Chinese variants.
 		$this->assertEquals( 'zh-Hans', $this->cldr->get_cldr_locale( 'zh-cn' ) );
 		$this->assertEquals( 'zh-Hant', $this->cldr->get_cldr_locale( 'zh-tw' ) );
 
@@ -125,7 +133,7 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 	public function test_all_WordPress_locales() {
 
-		// from wpcom as of Feb 2016
+		// From wpcom as of Feb 2016.
 		$wpcom_locales = array( 'af', 'als', 'am', 'ar', 'arc', 'as', 'ast', 'av', 'ay', 'az', 'ba', 'be', 'bg', 'bm',
 			'bn', 'bo', 'br', 'bs', 'ca', 'ce', 'ckb', 'cs', 'csb', 'cv', 'cy', 'da', 'de', 'dv', 'dz', 'el', 'el-po',
 			'en', 'en-gb', 'eo', 'es', 'et', 'eu', 'fa', 'fi', 'fil', 'fo', 'fr', 'fr-be', 'fr-ca', 'fr-ch', 'fur',
@@ -136,7 +144,7 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 			'ta', 'te', 'th', 'tl', 'tir', 'tr', 'tt', 'ty', 'udm', 'ug', 'uk', 'ur', 'uz', 'vec', 'vi', 'wa', 'xal',
 			'yi', 'yo', 'za', 'zh-cn', 'zh-tw', );
 
-		// from wporg locales.php as of Feb 2016 https://glotpress.trac.wordpress.org/browser/trunk/locales/locales.php
+		// From wporg locales.php as of Feb 2016 https://glotpress.trac.wordpress.org/browser/trunk/locales/locales.php.
 		$wporg_locales = array( 'aa', 'ae', 'af', 'ak', 'am', 'an', 'ar', 'arq', 'ary', 'as', 'ast', 'av', 'ay', 'az',
 			'azb', 'az_TR', 'ba', 'bal', 'bcc', 'bel', 'bg_BG', 'bh', 'bi', 'bm', 'bn_BD', 'bo', 'bre', 'bs_BA', 'ca',
 			'ce','ceb', 'ch', 'ckb', 'co', 'cr', 'cs_CZ', 'csb', 'cu', 'cv', 'cy', 'da_DK', 'de_DE', 'de_CH', 'dv', 'dzo',
