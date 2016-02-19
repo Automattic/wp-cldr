@@ -221,4 +221,78 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( '', $this->cldr->first_day_of_week( 'bad-slug' ) );
 		$this->assertEquals( '', $this->cldr->first_day_of_week( '' ) );
 	}
+
+	public function test_get_currency_for_all_countries() {
+
+		$all_currencies = $this->cldr->get_currency_for_all_countries();
+		$this->assertEquals( 'USD', $all_currencies['US'] );
+		$this->assertEquals( 'QAR', $all_currencies['QA'] );
+		$this->assertEquals( 'EUR', $all_currencies['FR'] );
+
+		// The number of countries is dynamic this range should cover it.
+		$this->assertGreaterThan( 245, count( $this->cldr->get_currency_for_all_countries() ) );
+		$this->assertLessThan( 275, count( $this->cldr->get_currency_for_all_countries() ) );
+	}
+
+	public function test_get_currency_for_country() {
+
+		$this->assertEquals( 'USD', $this->cldr->get_currency_for_country( 'US' ) );
+		$this->assertEquals( 'QAR', $this->cldr->get_currency_for_country( 'QA' ) );
+		$this->assertEquals( 'EUR', $this->cldr->get_currency_for_country( 'VA' ) );
+
+		// Test a bad slug.
+		$this->assertEquals( '', $this->cldr->get_currency_for_country( 'bad-code' ) );
+	}
+
+	public function test_get_countries_for_all_currencies() {
+
+		$this->assertArrayHasKey( 'USD', $this->cldr->get_countries_for_all_currencies() );
+		$this->assertArrayHasKey( 'EUR', $this->cldr->get_countries_for_all_currencies() );
+		$this->assertArrayHasKey( 'QAR', $this->cldr->get_countries_for_all_currencies() );
+
+		// The number of currencies is dynamic this range should cover it.
+		$this->assertGreaterThan( 145, count( $this->cldr->get_countries_for_all_currencies() ) );
+		$this->assertLessThan( 165, count( $this->cldr->get_countries_for_all_currencies() ) );
+	}
+
+	public function test_get_countries_for_currency() {
+
+		$this->assertEquals( array( 'JP' ), $this->cldr->get_countries_for_currency( 'JPY' ) );
+		$this->assertEquals( array( 'QA' ), $this->cldr->get_countries_for_currency( 'QAR' ) );
+		$this->assertEquals( array( 'GB', 'GG', 'GS', 'IM', 'JE', 'TA' ), $this->cldr->get_countries_for_currency( 'GBP' ) );
+
+		// Test a bad slug.
+		$this->assertEquals( array(), $this->cldr->get_countries_for_currency( 'bad-code' ) );
+	}
+
+	public function test_get_territories_contained() {
+
+		$this->assertEquals( array( 'BM', 'CA', 'GL', 'PM', 'US' ), $this->cldr->get_territories_contained( '021' ) );
+		$this->assertEquals( array( 'US' ), $this->cldr->get_territories_contained( 'US' ) );
+
+		// Test some bad slugs.
+		$this->assertEquals( array(), $this->cldr->get_territories_contained( 'bad-slug' ) );
+		$this->assertEquals( array(), $this->cldr->get_territories_contained( '' ) );
+	}
+
+	public function test_get_languages_spoken() {
+
+		$us_languages = $this->cldr->get_languages_spoken( 'US' );
+		$this->assertArrayHasKey( 'en', $us_languages );
+		$this->assertArrayHasKey( 'es', $us_languages );
+
+		// Test some bad slugs.
+		$this->assertEquals( array(), $this->cldr->get_languages_spoken( 'bad-slug' ) );
+		$this->assertEquals( array(), $this->cldr->get_languages_spoken( '' ) );
+	}
+
+	public function test_get_territory_info() {
+
+		$us_info = $this->cldr->get_territory_info( 'US' );
+		$this->assertArrayHasKey( '_gdp', $us_info );
+		$this->assertArrayHasKey( 'languagePopulation', $us_info );
+
+		// Test some bad slugs.
+		$this->assertEquals( array(), $this->cldr->get_territory_info( 'bad-slug' ) );
+	}
 }

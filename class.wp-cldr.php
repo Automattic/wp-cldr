@@ -472,4 +472,161 @@ class WP_CLDR {
 		}
 		return '';
 	}
+
+	/**
+	 * Gets the currency used in each country worldwide.
+	 *
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
+	 * @link http://www.iso.org/iso/currency_codes ISO 4217 currency codes
+	 *
+	 * @return array An associative array of ISO 3166 country codes and the ISO 4217 code for the currency currently used in each country.
+	 */
+	public function get_currency_for_all_countries() {
+		$json_file = $this->get_locale_bucket( 'supplemental', 'currencyData' );
+
+		// This CLDR item has a history of all the currencies ever used in a country
+		// so we need to loop through them to find one without a `_to` ending date
+		// and without a `_tender` flag which are always false indicating
+		// the currency wasn't legal tender.
+		foreach ( $json_file['supplemental']['currencyData']['region'] as $territory => $currencies ) {
+			foreach ( $currencies as $currency_dates ) {
+				if ( ! array_key_exists( '_to', current( $currency_dates ) ) && ! array_key_exists( '_tender', current( $currency_dates ) ) ) {
+					$result[ $territory ] = key( $currency_dates );
+				}
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Gets the currency currently used in a country.
+	 *
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
+	 * @link http://www.iso.org/iso/currency_codes ISO 4217 currency codes
+	 *
+	 * @param string $country A two-letter ISO 3166-1 country code.
+	 * @return string The three-letter ISO 4217 code for the currency currently used in that country.
+	 */
+	public function get_currency_for_country( $country ) {
+		$currency_for_all_countries = $this->get_currency_for_all_countries();
+		if ( isset( $currency_for_all_countries[ $country ] ) ) {
+			return $currency_for_all_countries[ $country ];
+		}
+		return '';
+	}
+
+	/**
+	 * Gets the countries that use each currency in use today.
+	 *
+	 * @link http://www.iso.org/iso/currency_codes ISO 4217 currency codes
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
+	 *
+	 * @return array An associative array of ISO 4217 currency codes and then an array of the ISO 3166 codes for countries which currently each currency.
+	 */
+	public function get_countries_for_all_currencies() {
+		$currency_for_all_countries = $this->get_currency_for_all_countries();
+		foreach ( $currency_for_all_countries as $country => $currency ) {
+			$result[ $currency ][] = $country;
+		}
+		return $result;
+	}
+
+	/**
+	 * Gets the countries that use a particular currency.
+	 *
+	 * @link http://www.iso.org/iso/currency_codes ISO 4217 currency codes
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
+	 *
+	 * @param string $currency A three-letter ISO 4217 currency code.
+	 * @return array The ISO 3166 codes for the countries which currently the currency.
+	 */
+	public function get_countries_for_currency( $currency ) {
+		$countries_for_all_currencies = $this->get_countries_for_all_currencies();
+		if ( isset( $countries_for_all_currencies[ $currency ] ) ) {
+			return $countries_for_all_currencies[ $currency ];
+		}
+		return array();
+	}
+
+	/**
+	 * Gets the territories contained by a region code.
+	 *
+	 * @link http://www.unicode.org/cldr/charts/latest/supplemental/territory_containment_un_m_49.html CLDR info page on territory containment
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
+	 * @link http://unstats.un.org/unsd/methods/m49/m49regin.htm UN M.49 region codes
+	 *
+	 * @param string $region A UN M.49 region code or a two-letter ISO 3166-1 country code.
+	 * @return array The territories included in that region, or the country if $region is a country.
+	 */
+	public function get_territories_contained( $region ) {
+
+		// If $region is a country code, return it.
+		if ( preg_match( '/[A-Z]{2}/', $region ) ) {
+			return array( $region );
+		}
+
+		// If it's a region code, recursively find the contained country codes.
+		if ( preg_match( '/\d{3}/', $region ) ) {
+			$result = array();
+			$json_file = $this->get_locale_bucket( 'supplemental', 'territoryContainment' );
+			if ( isset( $json_file['supplemental']['territoryContainment'][ $region ]['_contains'] ) ) {
+				foreach ( $json_file['supplemental']['territoryContainment'][ $region ]['_contains'] as $contained_region ) {
+					$result = array_merge( $result, $this->get_territories_contained( $contained_region ) );
+				}
+				return $result;
+			}
+		}
+
+		return array();
+	}
+
+	/**
+	 * Gets the language spoken in a territory, in descending order of use.
+	 *
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
+	 * @link http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html Detail on CLDR language information
+	 *
+	 * @param string $territory A two-letter ISO 3166-1 country code.
+	 * @return array An associative array with the key of a language code and the value of the percentage of population which speaks the language in that territory.
+	 */
+	public function get_languages_spoken( $territory ) {
+
+		$result = array();
+		$json_file = $this->get_locale_bucket( 'supplemental', 'territoryInfo' );
+
+		if ( isset( $json_file['supplemental']['territoryInfo'][ $territory ]['languagePopulation'] ) ) {
+			foreach ( $json_file['supplemental']['territoryInfo'][ $territory ]['languagePopulation'] as $language => $info ) {
+				$result[ $language ] = $info['_populationPercent'];
+			}
+		}
+
+		arsort( $result );
+
+		return $result;
+	}
+
+	/**
+	 * Gets GDP, population, and language information.
+	 *
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
+	 * @link http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html CLDR's territory information
+	 *
+	 * @param string $territory Optional. A two-letter ISO 3166-1 country code.
+	 * @return array CLDR's territory information.
+	 */
+	public function get_territory_info( $territory = '' ) {
+
+		$result = array();
+		$json_file = $this->get_locale_bucket( 'supplemental', 'territoryInfo' );
+
+		if ( isset( $json_file['supplemental']['territoryInfo'] ) && '' === $territory ) {
+			return $json_file['supplemental']['territoryInfo'];
+		}
+
+		if ( isset( $json_file['supplemental']['territoryInfo'][ $territory ] ) ) {
+			return $json_file['supplemental']['territoryInfo'][ $territory ];
+		}
+
+		return array();
+	}
 }
