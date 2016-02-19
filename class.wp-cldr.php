@@ -54,26 +54,31 @@ class WP_CLDR {
 	/**
 	 * The current locale.
 	 *
-	 * @var string $var
+	 * @var string
 	 */
 	private $locale = 'en';
+
 	/**
 	 * The in-memory array of localized values.
 	 *
-	 * @var array $var
+	 * @var array
 	 */
 	private $localized = array();
 
 	/**
-	 * The cache group name to use for the WordPress object cache.
+	 * Whether or not to use caching.
 	 *
-	 * @var string $var
+	 * @var bool
+	 */
+	private $use_cache = true;
+
+	/**
+	 * The cache group name to use for the WordPress object cache.
 	 */
 	const CACHE_GROUP = 'wp-cldr';
+
 	/**
 	 * The CLDR version, which the class uses to determine path to JSON files.
-	 *
-	 * @var string $var
 	 */
 	const CLDR_VERSION = '28.0.2';
 
@@ -81,7 +86,7 @@ class WP_CLDR {
 	 * Constructs a new instance of the class, including setting defaults for locale and caching.
 	 *
 	 * @param string $locale Optional. A WordPress locale code.
-	 * @param bool $use_cache Optional. Whether to use caching (primarily used to suppres caching for unit testing).
+	 * @param bool   $use_cache Optional. Whether to use caching (primarily used to suppress caching for unit testing).
 	 */
 	public function __construct( $locale = 'en', $use_cache = true ) {
 		$this->use_cache = $use_cache;
@@ -169,7 +174,7 @@ class WP_CLDR {
 	 *
 	 * @param string $cldr_locale The CLDR locale.
 	 * @param string $bucket The CLDR data item.
-	 * @return array $json_decoded An array with the CLDR data from the file, or null if no match with any CLDR data files.
+	 * @return array An array with the CLDR data from the file, or null if no match with any CLDR data files.
 	 */
 	public static function get_cldr_json_file( $cldr_locale, $bucket ) {
 		$base_path = __DIR__ . '/json/v' . WP_CLDR::CLDR_VERSION;
@@ -273,8 +278,8 @@ class WP_CLDR {
 	/**
 	 * Flushes the WordPress object cache for a single CLDR data item for a single locale.
 	 *
-	 * @param string $locale	A WordPress locale code.
-	 * @param string $bucket	A CLDR data item.
+	 * @param string $locale A WordPress locale code.
+	 * @param string $bucket A CLDR data item.
 	 */
 	public function flush_wp_cache_for_locale_bucket( $locale, $bucket ) {
 		$cache_key = "cldr-$locale-$bucket";
@@ -282,7 +287,7 @@ class WP_CLDR {
 	}
 
 	/**
-	 * Clears the WordPress object cache for all data CLDR items across all locales.
+	 * Clears the WordPress object cache for all CLDR data items across all locales.
 	 */
 	public function flush_all_wp_caches() {
 		$this->localized = array();
@@ -299,8 +304,8 @@ class WP_CLDR {
 	/**
 	 * Returns data for a single CLDR data item in a locale.
 	 *
-	 * @param string $locale	A WordPress locale code.
-	 * @param string $bucket	A CLDR data item.
+	 * @param string $locale A WordPress locale code.
+	 * @param string $bucket A CLDR data item.
 	 * @return array An associative array where keys are WordPress locales and values are CLDR data items
 	 */
 	private function get_locale_bucket( $locale, $bucket ) {
@@ -313,7 +318,7 @@ class WP_CLDR {
 		}
 
 		// Maybe that bucket hasn't been initialized on this locale, let's try again.
-		$this->initialize_locale_bucket( $locale , $bucket );
+		$this->initialize_locale_bucket( $locale, $bucket );
 
 		if ( isset( $this->localized[ $locale ][ $bucket ] ) ) {
 			return $this->localized[ $locale ][ $bucket ];
@@ -327,8 +332,8 @@ class WP_CLDR {
 	 * Gets the localized value for a single data item in a bucket of localized CLDR data.
 	 *
 	 * @param string $key A key of a CLDR data item.
-	 * @param string $locale	A WordPress locale code.
-	 * @param string $bucket	A CLDR data item.
+	 * @param string $locale A WordPress locale code.
+	 * @param string $bucket A CLDR data item.
 	 * @return string The localized CLDR data item in the selected locale.
 	 */
 	private function get_cldr_item( $key, $locale, $bucket ) {
@@ -348,11 +353,11 @@ class WP_CLDR {
 	/**
 	 * Gets a localized territory or region name.
 	 *
-	 * @link http://www.iso.org/iso/country_codes
-	 * @link http://unstats.un.org/unsd/methods/m49/m49regin.htm
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
+	 * @link http://unstats.un.org/unsd/methods/m49/m49regin.htm UN M.49 region codes
 	 *
-	 * @param string $territory_code An ISO 3166-1 country code, or a UN M. 49 region code.
-	 * @param string $locale	Optional. A WordPress locale code.
+	 * @param string $territory_code An ISO 3166-1 country code, or a UN M.49 region code.
+	 * @param string $locale Optional. A WordPress locale code.
 	 * @return string The name of the territory in the provided locale.
 	 */
 	public function territory_name( $territory_code, $locale = null ) {
@@ -362,10 +367,10 @@ class WP_CLDR {
 	/**
 	 * Gets a localized currency symbol.
 	 *
-	 * @link http://www.iso.org/iso/currency_codes
+	 * @link http://www.iso.org/iso/currency_codes ISO 4217 currency codes
 	 *
 	 * @param string $currency_code An ISO 4217 currency code.
-	 * @param string $locale	Optional. A WordPress locale code.
+	 * @param string $locale Optional. A WordPress locale code.
 	 * @return string The symbol for the currency in the provided locale.
 	 */
 	public function currency_symbol( $currency_code, $locale = null ) {
@@ -380,10 +385,10 @@ class WP_CLDR {
 	/**
 	 * Gets a localized currency name.
 	 *
-	 * @link http://www.iso.org/iso/currency_codes
+	 * @link http://www.iso.org/iso/currency_codes ISO 4217 currency codes
 	 *
 	 * @param string $currency_code An ISO 4217 currency code.
-	 * @param string $locale	Optional. A WordPress locale code.
+	 * @param string $locale Optional. A WordPress locale code.
 	 * @return string The name of the currency in the provided locale.
 	 */
 	public function currency_name( $currency_code, $locale = null ) {
@@ -398,10 +403,10 @@ class WP_CLDR {
 	/**
 	 * Gets a localized language name.
 	 *
-	 * @link http://www.iso.org/iso/language_codes
+	 * @link http://www.iso.org/iso/language_codes ISO 639 language codes
 	 *
 	 * @param string $language_code An ISO 639 language code.
-	 * @param string $locale	Optional. A WordPress locale code.
+	 * @param string $locale Optional. A WordPress locale code.
 	 * @return string The name of the language in the provided locale.
 	 */
 	public function language_name( $language_code, $locale = null ) {
@@ -420,10 +425,10 @@ class WP_CLDR {
 	/**
 	 * Gets all territory and region names in a locale.
 	 *
-	 * @link http://www.iso.org/iso/country_codes
-	 * @link http://unstats.un.org/unsd/methods/m49/m49regin.htm
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
+	 * @link http://unstats.un.org/unsd/methods/m49/m49regin.htm UN M.49 region codes
 	 *
-	 * @param string $locale	Optional. A WordPress locale code.
+	 * @param string $locale Optional. A WordPress locale code.
 	 * @return array An associative array of ISO 3166-1 alpha-2 country codes and UN M.49 region codes, along with localized names, from CLDR
 	 */
 	public function territories_by_locale( $locale = null ) {
@@ -433,9 +438,9 @@ class WP_CLDR {
 	/**
 	 * Gets all language names in a locale.
 	 *
-	 * @link http://www.iso.org/iso/language_codes
+	 * @link http://www.iso.org/iso/language_codes ISO 639 language codes
 	 *
-	 * @param string $locale	Optional. A WordPress locale code.
+	 * @param string $locale Optional. A WordPress locale code.
 	 * @return array An associative array of ISO 639 codes and localized language names from CLDR
 	 */
 	public function languages_by_locale( $locale = null ) {
@@ -445,8 +450,8 @@ class WP_CLDR {
 	/**
 	 * Gets telephone code for a country.
 	 *
-	 * @link http://unicode.org/reports/tr35/tr35-info.html#Telephone_Code_Data
-	 * @link http://www.iso.org/iso/country_codes
+	 * @link http://unicode.org/reports/tr35/tr35-info.html#Telephone_Code_Data CLDR Telephone Code Data
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 *
 	 * @param string $country A two-letter ISO 3166 country code.
 	 * @return string The telephone code for the provided country.
@@ -463,8 +468,8 @@ class WP_CLDR {
 	/**
 	 * Gets the day which typically starts a calendar week in a country.
 	 *
-	 * @link http://unicode.org/reports/tr35/tr35-dates.html
-	 * @link http://www.iso.org/iso/country_codes
+	 * @link http://unicode.org/reports/tr35/tr35-dates.html#Week_Data CLDR week data
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 *
 	 * @param string $country A two-letter ISO 3166 country code.
 	 * @return string The first three characters, in lowercase, of the English name for the day considered to be the start of the week.
