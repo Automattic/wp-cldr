@@ -30,18 +30,31 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		// Test region names.
 		$this->assertEquals( 'Afrique', $this->cldr->territory_name( '002', 'fr_FR' ) );
 		$this->assertEquals( '亚洲', $this->cldr->territory_name( '142', 'zh-cn' ) );
+
+		// Test some bad slugs.
+		$this->assertEquals( '', $this->cldr->territory_name( 'bad-slug', 'fr_FR' ) );
+		$this->assertEquals( 'Africa', $this->cldr->territory_name( '002', 'badlocalecode' ) );
+		$this->assertEquals( 'Africa', $this->cldr->territory_name( '002', 'bad-locale-code' ) );
 	}
 
 	public function test_currency_name() {
 
 		$this->assertEquals( 'dollar des États-Unis', $this->cldr->currency_name( 'USD', 'fr' ) );
 		$this->assertEquals( 'US Dollar', $this->cldr->currency_name( 'USD', 'en' ) );
+
+		// Test some bad slugs.
+		$this->assertEquals( '', $this->cldr->currency_name( 'bad-slug', 'en' ) );
+		$this->assertEquals( '', $this->cldr->currency_name( '' ) );
 	}
 
 	public function test_currency_symbol() {
 
 		$this->assertEquals( 'US$', $this->cldr->currency_symbol( 'USD', 'zh' ) );
 		$this->assertEquals( '$', $this->cldr->currency_symbol( 'USD', 'en' ) );
+
+		// Test some bad slugs.
+		$this->assertEquals( '', $this->cldr->currency_symbol( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->currency_symbol( '' ) );
 	}
 
 	public function test_language_name() {
@@ -50,6 +63,10 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'Canadian French', $this->cldr->language_name( 'fr-ca' , 'en' ) );
 		$this->assertEquals( 'Deutsch', $this->cldr->language_name( 'de_DE' , 'de-DE' ) );
 		$this->assertEquals( 'ベンガル語', $this->cldr->language_name( 'bn_BD' , 'ja_JP' ) );
+
+		// Test some bad slugs.
+		$this->assertEquals( '', $this->cldr->language_name( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->language_name( '' ) );
 	}
 
 	public function test_territories_by_locale() {
@@ -57,6 +74,9 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$territories_in_english = $this->cldr->territories_by_locale( 'en' );
 		$this->assertArrayHasKey( 'US', $territories_in_english );
 		$this->assertEquals( 'United States', $territories_in_english['US'] );
+
+		// Test some bad slugs.
+		$this->assertEquals( 'United States', $this->cldr->territories_by_locale( 'bad-slug' )['US'] );
 	}
 
 	public function test_languages_by_locale() {
@@ -64,12 +84,19 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$languages_in_english = $this->cldr->languages_by_locale( 'en' );
 		$this->assertArrayHasKey( 'en', $languages_in_english );
 		$this->assertEquals( 'German', $languages_in_english['de'] );
+
+		// Test some bad slugs.
+		$this->assertEquals( 'English', $this->cldr->languages_by_locale( 'bad-slug' )['en'] );
 	}
 
 	public function test_set_locale() {
 
 		$this->cldr->set_locale( 'fr' );
 		$this->assertEquals( 'Allemagne', $this->cldr->territory_name( 'DE' ) );
+
+		// Test some bad slugs.
+		$this->cldr->set_locale( 'bad-slug' );
+		$this->assertEquals( 'Germany', $this->cldr->territory_name( 'DE' ) );
 	}
 
 	public function test_wpcom_homepage_locales() {
@@ -129,6 +156,10 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'zh-Hans', $this->cldr->get_cldr_locale( 'zh-cn' ) );
 		$this->assertEquals( 'zh-Hant', $this->cldr->get_cldr_locale( 'zh-tw' ) );
 
+		// Test some bad slugs.
+		$this->assertEquals( 'bad-Slug', $this->cldr->get_cldr_locale( 'bad-slug' ) );
+		$this->assertEquals( 'badslug', $this->cldr->get_cldr_locale( 'badslug' ) );
+		$this->assertEquals( '', $this->cldr->get_cldr_locale( '' ) );
 	}
 
 	public function test_all_WordPress_locales() {
@@ -163,7 +194,8 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$wp_locales = array_unique( array_merge( $wpcom_locales, $wporg_locales ) );
 
 		foreach ( $wp_locales as $wp_locale ) {
-			$this->assertNotEmpty( $this->cldr->get_cldr_locale( $wp_locale ) );
+			$cldr_locale = $this->cldr->get_cldr_locale( $wp_locale );
+			$this->assertNotEmpty( $cldr_locale );
 		}
 
 	}
@@ -172,11 +204,19 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals( '1', $this->cldr->telephone_code( 'US' ) );
 		$this->assertEquals( '55', $this->cldr->telephone_code( 'BR' ) );
+
+		// Test some bad slugs.
+		$this->assertEquals( '', $this->cldr->telephone_code( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->telephone_code( '' ) );
 	}
 
 	public function test_first_day_of_week() {
 
 		$this->assertEquals( 'sun', $this->cldr->first_day_of_week( 'US' ) );
 		$this->assertEquals( 'sat', $this->cldr->first_day_of_week( 'QA' ) );
+
+		// Test some bad slugs.
+		$this->assertEquals( '', $this->cldr->first_day_of_week( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->first_day_of_week( '' ) );
 	}
 }
