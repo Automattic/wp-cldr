@@ -19,15 +19,20 @@
  * Examples:
  *
  * The default locale is English:
+ *
  * ```
  * $cldr = new WP_CLDR();
  * $territories_in_english = $cldr->territories_by_locale( 'en' );
  * ```
+ *
  * You can override the default locale per-call by passing in a language slug in the second parameter:
+ *
  * ```
  * $germany_in_arabic = $cldr->territory_name( 'DE' , 'ar_AR' );
  * ```
+ *
  * Use a convenience parameter during instantiation to change the default locale
+ *
  * ```
  * $cldr = new WP_CLDR( 'fr' );
  * $germany_in_french = $cldr->territory_name( 'DE' );
@@ -39,7 +44,9 @@
  * $us_dollar_symbol_in_simplified_chinese = $cldr->currency_symbol( 'USD', 'zh' );
  * $africa_in_french = $cldr->territory_name( '002' );
  * ```
+ *
  * Switch locales after the object has been created
+ *
  * ```
  * $cldr->set_locale( 'en' );
  * $us_dollar_in_english = $cldr->currency_name( 'USD' );
