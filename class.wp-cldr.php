@@ -83,6 +83,27 @@ class WP_CLDR {
 	const CLDR_VERSION = '28.0.2';
 
 	/**
+	 * Constructs a new instance of the class, including setting defaults for locale and caching.
+	 *
+	 * @param string $locale    Optional. A WordPress locale code.
+	 * @param bool   $use_cache Optional. Whether to use caching (primarily used to suppress caching for unit testing).
+	 */
+	public function __construct( $locale = 'en', $use_cache = true ) {
+		$this->use_cache = $use_cache;
+		$this->set_locale( $locale );
+	}
+
+	/**
+	 * Sets the locale.
+	 *
+	 * @param string $locale A WordPress locale code.
+	 */
+	public function set_locale( $locale ) {
+		$this->locale = $locale;
+		$this->initialize_locale_bucket( $locale );
+	}
+
+	/**
 	 * Gets CLDR code for the equivalent WordPress locale code.
 	 *
 	 * @param string $wp_locale A WordPress locale code.
@@ -254,6 +275,32 @@ class WP_CLDR {
 	}
 
 	/**
+	 * Flushes the WordPress object cache for a single CLDR data item for a single locale.
+	 *
+	 * @param string $locale A WordPress locale code.
+	 * @param string $bucket A CLDR data item.
+	 */
+	public function flush_wp_cache_for_locale_bucket( $locale, $bucket ) {
+		$cache_key = "cldr-$locale-$bucket";
+		return wp_cache_delete( $cache_key, WP_CLDR::CACHE_GROUP );
+	}
+
+	/**
+	 * Clears the WordPress object cache for all CLDR data items across all locales.
+	 */
+	public function flush_all_wp_caches() {
+		$this->localized = array();
+
+		$locales = $this->languages_by_locale( 'en' );
+		$supported_buckets = array( 'territories', 'currencies', 'languages', 'weekData', 'telephoneCodeData' );
+		foreach ( array_keys( $locales ) as $locale ) {
+			foreach ( $supported_buckets as $bucket ) {
+				$this->flush_wp_cache_for_locale_bucket( $locale, $bucket );
+			}
+		}
+	}
+
+	/**
 	 * Returns data for a single CLDR data item in a locale.
 	 *
 	 * @param string $locale A WordPress locale code.
@@ -300,27 +347,6 @@ class WP_CLDR {
 		}
 
 		return '';
-	}
-
-	/**
-	 * Sets the locale.
-	 *
-	 * @param string $locale A WordPress locale code.
-	 */
-	public function set_locale( $locale ) {
-		$this->locale = $locale;
-		$this->initialize_locale_bucket( $locale );
-	}
-
-	/**
-	 * Constructs a new instance of the class, including setting defaults for locale and caching.
-	 *
-	 * @param string $locale    Optional. A WordPress locale code.
-	 * @param bool   $use_cache Optional. Whether to use caching (primarily used to suppress caching for unit testing).
-	 */
-	public function __construct( $locale = 'en', $use_cache = true ) {
-		$this->use_cache = $use_cache;
-		$this->set_locale( $locale );
 	}
 
 	/**
@@ -450,31 +476,5 @@ class WP_CLDR {
 			return $json_file['supplemental']['weekData']['firstDay'][ $country ];
 		}
 		return '';
-	}
-
-	/**
-	 * Flushes the WordPress object cache for a single CLDR data item for a single locale.
-	 *
-	 * @param string $locale A WordPress locale code.
-	 * @param string $bucket A CLDR data item.
-	 */
-	public function flush_wp_cache_for_locale_bucket( $locale, $bucket ) {
-		$cache_key = "cldr-$locale-$bucket";
-		return wp_cache_delete( $cache_key, WP_CLDR::CACHE_GROUP );
-	}
-
-	/**
-	 * Clears the WordPress object cache for all CLDR data items across all locales.
-	 */
-	public function flush_all_wp_caches() {
-		$this->localized = array();
-
-		$locales = $this->languages_by_locale( 'en' );
-		$supported_buckets = array( 'territories', 'currencies', 'languages', 'weekData', 'telephoneCodeData' );
-		foreach ( array_keys( $locales ) as $locale ) {
-			foreach ( $supported_buckets as $bucket ) {
-				$this->flush_wp_cache_for_locale_bucket( $locale, $bucket );
-			}
-		}
 	}
 }
