@@ -153,7 +153,6 @@ class WP_CLDR {
 		);
 
 		// Convert underscores to dashes and everything to lowercase.
-		$cleaned_up_wp_locale = '';
 		$cleaned_up_wp_locale = str_replace( '_', '-', $wp_locale );
 		$cleaned_up_wp_locale = strtolower( $cleaned_up_wp_locale );
 
@@ -315,7 +314,7 @@ class WP_CLDR {
 	 * @return array An associative array where keys are WordPress locales and values are CLDR data items
 	 */
 	private function get_locale_bucket( $locale, $bucket ) {
-		if ( '' === $locale ) {
+		if ( empty( $locale ) ) {
 			$locale = $this->locale;
 		}
 
