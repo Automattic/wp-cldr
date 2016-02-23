@@ -19,15 +19,20 @@
  * Examples:
  *
  * The default locale is English:
+ *
  * ```
  * $cldr = new WP_CLDR();
  * $territories_in_english = $cldr->territories_by_locale( 'en' );
  * ```
+ *
  * You can override the default locale per-call by passing in a language slug in the second parameter:
+ *
  * ```
  * $germany_in_arabic = $cldr->territory_name( 'DE' , 'ar_AR' );
  * ```
+ *
  * Use a convenience parameter during instantiation to change the default locale
+ *
  * ```
  * $cldr = new WP_CLDR( 'fr' );
  * $germany_in_french = $cldr->territory_name( 'DE' );
@@ -39,7 +44,9 @@
  * $us_dollar_symbol_in_simplified_chinese = $cldr->currency_symbol( 'USD', 'zh' );
  * $africa_in_french = $cldr->territory_name( '002' );
  * ```
+ *
  * Switch locales after the object has been created
+ *
  * ```
  * $cldr->set_locale( 'en' );
  * $us_dollar_in_english = $cldr->currency_name( 'USD' );
@@ -85,7 +92,7 @@ class WP_CLDR {
 	/**
 	 * Constructs a new instance of the class, including setting defaults for locale and caching.
 	 *
-	 * @param string $locale Optional. A WordPress locale code.
+	 * @param string $locale    Optional. A WordPress locale code.
 	 * @param bool   $use_cache Optional. Whether to use caching (primarily used to suppress caching for unit testing).
 	 */
 	public function __construct( $locale = 'en', $use_cache = true ) {
@@ -111,7 +118,7 @@ class WP_CLDR {
 	 */
 	public function get_cldr_locale( $wp_locale ) {
 
-		// This array captures the WordPress locales that are signficiantly different from CLDR locales.
+		// This array captures the WordPress locales that are significantly different from CLDR locales.
 		$wp2cldr = array(
 			'zh-cn' => 'zh-Hans',
 			'zh-tw' => 'zh-Hant',
@@ -154,16 +161,17 @@ class WP_CLDR {
 			return $wp2cldr[ $cleaned_up_wp_locale ];
 		}
 
-		// Capitalize country code and initial letter of script code to match CLDR JSON filenames.
+		// Capitalize country code and initial letter of script code to match CLDR JSON file names.
 		$locale_components = explode( '-', $cleaned_up_wp_locale );
-		if ( isset( $locale_components[1] ) ) {
-			if ( 2 === strlen( $locale_components[1] ) ) {
-				$locale_components[1] = strtoupper( $locale_components[1] );
-				$cleaned_up_wp_locale = implode( '-', $locale_components );
-			} else if ( 2 < strlen( $locale_components[1] ) ) {
-				$locale_components[1] = ucfirst( $locale_components[1] );
-				$cleaned_up_wp_locale = implode( '-', $locale_components );
-			}
+		if ( isset( $locale_components[1] ) && 2 === strlen( $locale_components[1] ) ) {
+			$locale_components[1] = strtoupper( $locale_components[1] );
+			$cleaned_up_wp_locale = implode( '-', $locale_components );
+			return $cleaned_up_wp_locale;
+		}
+		if ( isset( $locale_components[1] ) && 2 < strlen( $locale_components[1] ) ) {
+			$locale_components[1] = ucfirst( $locale_components[1] );
+			$cleaned_up_wp_locale = implode( '-', $locale_components );
+			return $cleaned_up_wp_locale;
 		}
 
 		return $cleaned_up_wp_locale;
@@ -174,7 +182,7 @@ class WP_CLDR {
 	 *
 	 * @param string $cldr_locale The CLDR locale.
 	 * @param string $bucket The CLDR data item.
-	 * @return array An array with the CLDR data from the file, or null if no match with any CLDR data files.
+	 * @return array  An array with the CLDR data from the file, or an empty array if no match with any CLDR data files.
 	 */
 	public static function get_cldr_json_file( $cldr_locale, $bucket ) {
 		$base_path = __DIR__ . '/json/v' . WP_CLDR::CLDR_VERSION;
@@ -197,7 +205,7 @@ class WP_CLDR {
 		$data_file_name = "$base_path/$relative_path/$bucket.json";
 
 		if ( ! is_readable( $data_file_name ) ) {
-			return null;
+			return array();
 		}
 
 		$json_raw = file_get_contents( $data_file_name );
@@ -211,7 +219,6 @@ class WP_CLDR {
 	 *
 	 * @param string $locale Optional. The locale.
 	 * @param string $bucket Optional. The CLDR data item.
-	 * @return bool Whether the locale bucket was successfully initialized.
 	 */
 	private function initialize_locale_bucket( $locale = 'en', $bucket = 'territories' ) {
 
@@ -221,7 +228,6 @@ class WP_CLDR {
 			$cached_data = wp_cache_get( $cache_key, WP_CLDR::CACHE_GROUP );
 			if ( $cached_data ) {
 				$this->localized[ $locale ][ $bucket ] = $cached_data;
-				return true;
 			}
 		}
 
@@ -236,13 +242,13 @@ class WP_CLDR {
 		$cldr_locale_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 
 		// If no language-country locale CLDR file, fall back to a language-only CLDR file.
-		if ( is_null( $cldr_locale_file ) ) {
+		if ( empty( $cldr_locale_file ) ) {
 			$cldr_locale = strtok( $cldr_locale, '-_' );
 			$cldr_locale_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 		}
 
 		// If no language CLDR file, fall back to English CLDR file.
-		if ( is_null( $cldr_locale_file ) ) {
+		if ( empty( $cldr_locale_file ) ) {
 			$cldr_locale = 'en';
 			$cldr_locale_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 		}
@@ -272,7 +278,6 @@ class WP_CLDR {
 		if ( $this->use_cache ) {
 			wp_cache_set( $cache_key, $this->localized[ $locale ][ $bucket ], WP_CLDR::CACHE_GROUP );
 		}
-		return true;
 	}
 
 	/**
@@ -309,7 +314,7 @@ class WP_CLDR {
 	 * @return array An associative array where keys are WordPress locales and values are CLDR data items
 	 */
 	private function get_locale_bucket( $locale, $bucket ) {
-		if ( null === $locale ) {
+		if ( empty( $locale ) ) {
 			$locale = $this->locale;
 		}
 
@@ -325,29 +330,29 @@ class WP_CLDR {
 		}
 
 		// Really not found.
-		return null;
+		return array();
 	}
 
 	/**
 	 * Gets the localized value for a single data item in a bucket of localized CLDR data.
 	 *
-	 * @param string $key A key of a CLDR data item.
+	 * @param string $key    A key of a CLDR data item.
 	 * @param string $locale A WordPress locale code.
 	 * @param string $bucket A CLDR data item.
 	 * @return string The localized CLDR data item in the selected locale.
 	 */
 	private function get_cldr_item( $key, $locale, $bucket ) {
 		if ( ! is_string( $key ) || ! strlen( $key ) ) {
-			return null;
+			return '';
 		}
 
 		$bucket_array = $this->get_locale_bucket( $locale, $bucket );
 
 		if ( isset( $bucket_array[ $key ] ) ) {
-			return $bucket_array[ $key ];
+			return (string) $bucket_array[ $key ];
 		}
 
-		return null;
+		return '';
 	}
 
 	/**
@@ -357,10 +362,10 @@ class WP_CLDR {
 	 * @link http://unstats.un.org/unsd/methods/m49/m49regin.htm UN M.49 region codes
 	 *
 	 * @param string $territory_code An ISO 3166-1 country code, or a UN M.49 region code.
-	 * @param string $locale Optional. A WordPress locale code.
+	 * @param string $locale         Optional. A WordPress locale code.
 	 * @return string The name of the territory in the provided locale.
 	 */
-	public function territory_name( $territory_code, $locale = null ) {
+	public function territory_name( $territory_code, $locale = '' ) {
 		return $this->get_cldr_item( $territory_code, $locale, 'territories' );
 	}
 
@@ -370,16 +375,15 @@ class WP_CLDR {
 	 * @link http://www.iso.org/iso/currency_codes ISO 4217 currency codes
 	 *
 	 * @param string $currency_code An ISO 4217 currency code.
-	 * @param string $locale Optional. A WordPress locale code.
+	 * @param string $locale        Optional. A WordPress locale code.
 	 * @return string The symbol for the currency in the provided locale.
 	 */
-	public function currency_symbol( $currency_code, $locale = null ) {
+	public function currency_symbol( $currency_code, $locale = '' ) {
 		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
 		if ( isset( $currencies_array[ $currency_code ]['symbol'] ) ) {
 			return $currencies_array[ $currency_code ]['symbol'];
-		} else {
-			return null;
 		}
+		return '';
 	}
 
 	/**
@@ -388,16 +392,15 @@ class WP_CLDR {
 	 * @link http://www.iso.org/iso/currency_codes ISO 4217 currency codes
 	 *
 	 * @param string $currency_code An ISO 4217 currency code.
-	 * @param string $locale Optional. A WordPress locale code.
+	 * @param string $locale        Optional. A WordPress locale code.
 	 * @return string The name of the currency in the provided locale.
 	 */
-	public function currency_name( $currency_code, $locale = null ) {
+	public function currency_name( $currency_code, $locale = '' ) {
 		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
 		if ( isset( $currencies_array[ $currency_code ]['displayName'] ) ) {
 			return $currencies_array[ $currency_code ]['displayName'];
-		} else {
-			return null;
 		}
+		return '';
 	}
 
 	/**
@@ -406,16 +409,16 @@ class WP_CLDR {
 	 * @link http://www.iso.org/iso/language_codes ISO 639 language codes
 	 *
 	 * @param string $language_code An ISO 639 language code.
-	 * @param string $locale Optional. A WordPress locale code.
+	 * @param string $locale        Optional. A WordPress locale code.
 	 * @return string The name of the language in the provided locale.
 	 */
-	public function language_name( $language_code, $locale = null ) {
+	public function language_name( $language_code, $locale = '' ) {
 		$cldr_matched_language_code = $this->get_cldr_locale( $language_code );
 
 		$language_name = $this->get_cldr_item( $cldr_matched_language_code, $locale, 'languages' );
 
 		// If no match for locale (language-COUNTRY), try falling back to CLDR-matched language code only.
-		if ( is_null( $language_name ) ) {
+		if ( empty( $language_name ) ) {
 			$language_name = $this->get_cldr_item( strtok( $language_code, '-_' ), $locale, 'languages' );
 		}
 
@@ -431,7 +434,7 @@ class WP_CLDR {
 	 * @param string $locale Optional. A WordPress locale code.
 	 * @return array An associative array of ISO 3166-1 alpha-2 country codes and UN M.49 region codes, along with localized names, from CLDR
 	 */
-	public function territories_by_locale( $locale = null ) {
+	public function territories_by_locale( $locale = '' ) {
 		return $this->get_locale_bucket( $locale, 'territories' );
 	}
 
@@ -443,7 +446,7 @@ class WP_CLDR {
 	 * @param string $locale Optional. A WordPress locale code.
 	 * @return array An associative array of ISO 639 codes and localized language names from CLDR
 	 */
-	public function languages_by_locale( $locale = null ) {
+	public function languages_by_locale( $locale = '' ) {
 		return $this->get_locale_bucket( $locale, 'languages' );
 	}
 
@@ -460,9 +463,8 @@ class WP_CLDR {
 		$json_file = $this->get_locale_bucket( 'supplemental', 'telephoneCodeData' );
 		if ( isset( $json_file['supplemental']['telephoneCodeData'][ $country ][0]['telephoneCountryCode'] ) ) {
 			return $json_file['supplemental']['telephoneCodeData'][ $country ][0]['telephoneCountryCode'];
-		} else {
-			return null;
 		}
+		return '';
 	}
 
 	/**
@@ -478,8 +480,7 @@ class WP_CLDR {
 		$json_file = $this->get_locale_bucket( 'supplemental', 'weekData' );
 		if ( isset( $json_file['supplemental']['weekData']['firstDay'][ $country ] ) ) {
 			return $json_file['supplemental']['weekData']['firstDay'][ $country ];
-		} else {
-			return null;
 		}
+		return '';
 	}
 }
