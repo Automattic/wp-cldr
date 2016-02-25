@@ -1,4 +1,15 @@
-# wp-cldr
+=== wp-cldr ===
+Contributors: stuwest, jblz, automattic
+Tags: i18n, internationalization, L10n, localization, unicode, CLDR
+Requires at least: 4.4
+Tested up to: 4.4.2
+Stable tag: 1.0
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+Use CLDR localization data in WordPress.
+
+== Description ==
 
 This plugin provides WordPress developers with easy access to localized country/region names, language names, currency names/symbols/usage, and other localization info from the [Unicode Common Locale Data Repository (CLDR)] (http://cldr.unicode.org/).
 
@@ -10,7 +21,7 @@ With the plugin active, WordPress developers will have access across nearly 100 
 - localized calendar information including the first day of the week in different countries
 - telephone codes for different countries
 
-The plugin includes support for high volume application. It includes two layers of caching (in-memory arrays and the WordPress object cache). It is currently used on WordPress.com.
+The plugin includes support for high volume applications. It includes two layers of caching (in-memory arrays and the WordPress object cache). It is currently used on WordPress.com.
 
 CLDR is a library of localization data managed by Unicode. It emphasizes [common, everyday usage] (http://cldr.unicode.org/translation/country-names) and is available in over 700 language-region locales. It is [updated every six months] (http://cldr.unicode.org/index/downloads) and used by [all major software systems] (http://cldr.unicode.org/#TOC-Who-uses-CLDR-). CLDR data is licensed under [Unicode's data files and software license] (http://unicode.org/copyright.html#Exhibit1) which is on [the list of approved GPLv2 compatible licenses] (https://www.gnu.org/philosophy/license-list.html#Unicode).
 
@@ -18,44 +29,43 @@ The plugin currently includes CLDR data for WordPress.org locales including aa, 
 
 More information in [detailed API documentation] (https://automattic.github.io/wp-cldr/class-WP_CLDR.html).
 
-##
+Please follow along with or contribute to the development of this plugin at https://github.com/Automattic/wp-cldr.
 
-## Examples:
-### The default locale is English
-```
-$cldr = new WP_CLDR();
-$territories_in_english = $cldr->territories_by_locale();
-```
+== Installation ==
 
-### You can override the default locale per-call by passing in a language slug in the second parameter
-```
-$germany_in_arabic = $cldr->territory_name( 'DE' , 'ar' );
-```
+1. Upload the folder to the `/wp-content/plugins/` directory
+1. Activate the plugin through the 'Plugins' menu in WordPress
 
-### Use a convenience parameter during instantiation to change the default locale
-```
-$cldr = new WP_CLDR( 'fr' );
-$germany_in_french = $cldr->territory_name( 'DE' );
-$us_dollar_in_french = $cldr->currency_name( 'USD' );
-$canadian_french_in_french = $cldr->language_name( 'fr-ca' );
-$canadian_french_in_english = $cldr->language_name( 'fr-ca' , 'en' );
-$german_in_german = $cldr->language_name( 'de_DE' , 'de-DE' );
-$bengali_in_japanese = $cldr->language_name( 'bn_BD' , 'ja_JP' );
-$us_dollar_symbol_in_simplified_chinese = $cldr->currency_symbol( 'USD', 'zh' );
-$africa_in_french = $cldr->territory_name( '002' );
-```
+== Frequently Asked Questions ==
 
-### Switch locales after the object has been created
-```
-$cldr->set_locale( 'en' );
-$us_dollar_in_english = $cldr->currency_name( 'USD' );
-```
+= Where's the menu item / interface? =
 
-### Get CLDR's supplemental data
-```
-$telephone_code_in_france = $cldr->telephone_code( 'FR' );
-```
+This is a developer-focused plugin and does not have an interface. In order to integrate plugin functions into your code, see the API documentation at https://automattic.github.io/wp-cldr.
 
-## Links:
-* http://cldr.unicode.org/
-* http://cldr.unicode.org/index/cldr-spec/json
+= Where can I report issues? =
+
+Open up a new issue on Github at https://github.com/Automattic/wp-cldr/issues.
+
+== Changelog ==
+
+= 1.0 (Feb 29, 2016) =
+
+* initial release into plugin repo
+
+
+
+<?php
+/**
+ * Plugin Name: WP CLDR
+ * Description: Use CLDR localization data in WordPress.
+ * Plugin URI:  https://github.com/Automattic/wp-cldr
+ * Author:      Automattic
+ * Author URI:  https://automattic.com
+ * Version:     1.0
+ * Text Domain: wp-cldr
+ * Domain Path: /languages/
+ * License:     GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ */
+
+require_once plugin_dir_path( __FILE__ ) . 'class.wp-cldr.php';
