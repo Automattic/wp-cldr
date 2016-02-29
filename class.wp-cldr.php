@@ -125,7 +125,7 @@ class WP_CLDR {
 			'zh' => 'zh-Hans',
 			'als' => 'gsw',
 			'pt'	=> 'pt-PT',
-			'pt-br'	=> 'pt-BR',
+			'pt-br'	=> 'pt', // In CLDR, the root `pt` locale is Brazilian Portuguese.
 			'el-po'	=> 'el',
 			'me' => 'sr-Latn-ME',
 			'tl' => 'fil',
@@ -188,9 +188,9 @@ class WP_CLDR {
 		$base_path = __DIR__ . '/json/v' . WP_CLDR::CLDR_VERSION;
 
 		switch ( $bucket ) {
-			case 'weekData':
-			case 'telephoneCodeData':
-				$relative_path = 'cldr-core/supplemental';
+			case 'territories':
+			case 'languages':
+				$relative_path = "cldr-localenames-modern/main/$cldr_locale";
 				break;
 
 			case 'currencies':
@@ -198,7 +198,7 @@ class WP_CLDR {
 				break;
 
 			default:
-				$relative_path = "cldr-localenames-modern/main/$cldr_locale";
+				$relative_path = 'cldr-core/supplemental';
 				break;
 		}
 
@@ -233,47 +233,34 @@ class WP_CLDR {
 
 		$cldr_locale = $this->get_cldr_locale( $locale );
 
-		// Workaround for CLDR quirk that Brazilian Portuguese has the locale code "pt-BR"
-		// but JSON files and trees use "pt".
-		if ( 'pt-BR' === $cldr_locale ) {
-			$cldr_locale = 'pt';
-		}
-
-		$cldr_locale_file = self::get_cldr_json_file( $cldr_locale, $bucket );
+		$json_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 
 		// If no language-country locale CLDR file, fall back to a language-only CLDR file.
-		if ( empty( $cldr_locale_file ) ) {
+		if ( empty( $json_file ) && 'supplemental' !== $bucket ) {
 			$cldr_locale = strtok( $cldr_locale, '-_' );
-			$cldr_locale_file = self::get_cldr_json_file( $cldr_locale, $bucket );
+			$json_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 		}
 
 		// If no language CLDR file, fall back to English CLDR file.
-		if ( empty( $cldr_locale_file ) ) {
+		if ( empty( $json_file ) && 'supplemental' !== $bucket ) {
 			$cldr_locale = 'en';
-			$cldr_locale_file = self::get_cldr_json_file( $cldr_locale, $bucket );
+			$json_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 		}
 
-		// For performance, pre-process a few items before putting into the cache.
-		switch ( $bucket ) {
-			case 'territories':
-			case 'languages':
-				$bucket_array = $cldr_locale_file['main'][ $cldr_locale ]['localeDisplayNames'][ $bucket ];
-				if ( function_exists( 'collator_create' ) ) {
-					// Sort data according to locale collation rules.
-					$coll = collator_create( $cldr_locale );
-					collator_asort( $coll, $bucket_array, Collator::SORT_STRING );
-				} else {
-					asort( $bucket_array );
-				}
-				break;
-			case 'currencies':
-				$bucket_array = $cldr_locale_file['main'][ $cldr_locale ]['numbers'][ $bucket ];
-				break;
-			default: // Covers supplemental files.
-				$bucket_array = $cldr_locale_file;
-		}
+		$this->localized[ $locale ][ $bucket ] = $json_file;
 
-		$this->localized[ $locale ][ $bucket ] = $bucket_array;
+		// For performance, sort a few items before putting into the cache.
+		if ( 'territories' === $bucket || 'languages' === $bucket ) {
+			$sorted_array = $json_file['main'][ $cldr_locale ]['localeDisplayNames'][ $bucket ];
+			if ( function_exists( 'collator_create' ) ) {
+				// Sort data according to locale collation rules.
+				$coll = collator_create( $cldr_locale );
+				collator_asort( $coll, $sorted_array, Collator::SORT_STRING );
+			} else {
+				asort( $sorted_array );
+			}
+			$this->localized[ $locale ][ $bucket ] = $sorted_array;
+		}
 
 		if ( $this->use_cache ) {
 			wp_cache_set( $cache_key, $this->localized[ $locale ][ $bucket ], WP_CLDR::CACHE_GROUP );
@@ -379,9 +366,10 @@ class WP_CLDR {
 	 * @return string The symbol for the currency in the provided locale.
 	 */
 	public function currency_symbol( $currency_code, $locale = '' ) {
-		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
-		if ( isset( $currencies_array[ $currency_code ]['symbol'] ) ) {
-			return $currencies_array[ $currency_code ]['symbol'];
+		$json_file = $this->get_locale_bucket( $locale, 'currencies' );
+		$cldr_locale = $this->get_cldr_locale( $locale );
+		if ( isset( $json_file['main'][ $cldr_locale ]['numbers']['currencies'][ $currency_code ]['symbol'] ) ) {
+			return $json_file['main'][ $cldr_locale ]['numbers']['currencies'][ $currency_code ]['symbol'];
 		}
 		return '';
 	}
@@ -396,9 +384,10 @@ class WP_CLDR {
 	 * @return string The name of the currency in the provided locale.
 	 */
 	public function currency_name( $currency_code, $locale = '' ) {
-		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
-		if ( isset( $currencies_array[ $currency_code ]['displayName'] ) ) {
-			return $currencies_array[ $currency_code ]['displayName'];
+		$json_file = $this->get_locale_bucket( $locale, 'currencies' );
+		$cldr_locale = $this->get_cldr_locale( $locale );
+		if ( isset( $json_file['main'][ $cldr_locale ]['numbers']['currencies'][ $currency_code ]['displayName'] ) ) {
+			return $json_file['main'][ $cldr_locale ]['numbers']['currencies'][ $currency_code ]['displayName'];
 		}
 		return '';
 	}

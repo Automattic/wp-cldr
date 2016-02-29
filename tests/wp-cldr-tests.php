@@ -76,7 +76,8 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'United States', $territories_in_english['US'] );
 
 		// Test some bad slugs.
-		$this->assertEquals( 'United States', $this->cldr->territories_by_locale( 'bad-slug' )['US'] );
+		$all_territories = $this->cldr->territories_by_locale( 'bad-slug' );
+		$this->assertEquals( 'United States', $all_territories['US'] );
 	}
 
 	public function test_languages_by_locale() {
@@ -86,7 +87,8 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'German', $languages_in_english['de'] );
 
 		// Test some bad slugs.
-		$this->assertEquals( 'English', $this->cldr->languages_by_locale( 'bad-slug' )['en'] );
+		$all_languages = $this->cldr->languages_by_locale( 'bad-slug' );
+		$this->assertEquals( 'English', $all_languages['en'] );
 	}
 
 	public function test_set_locale() {
@@ -147,10 +149,10 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'pt-PT', $this->cldr->get_cldr_locale( 'pt' ) );
 
 		// Brazilian Portuguese.
-		$this->assertEquals( 'pt-BR', $this->cldr->get_cldr_locale( 'pt-br' ) );
-		$this->assertEquals( 'pt-BR', $this->cldr->get_cldr_locale( 'pt-BR' ) );
-		$this->assertEquals( 'pt-BR', $this->cldr->get_cldr_locale( 'pt_br' ) );
-		$this->assertEquals( 'pt-BR', $this->cldr->get_cldr_locale( 'pt_BR' ) );
+		$this->assertEquals( 'pt', $this->cldr->get_cldr_locale( 'pt-br' ) );
+		$this->assertEquals( 'pt', $this->cldr->get_cldr_locale( 'pt-BR' ) );
+		$this->assertEquals( 'pt', $this->cldr->get_cldr_locale( 'pt_br' ) );
+		$this->assertEquals( 'pt', $this->cldr->get_cldr_locale( 'pt_BR' ) );
 
 		// Chinese variants.
 		$this->assertEquals( 'zh-Hans', $this->cldr->get_cldr_locale( 'zh-cn' ) );
