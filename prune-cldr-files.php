@@ -6,7 +6,7 @@
  *
 */
 
-include_once 'class.wp-cldr.php';
+include_once 'class-wp-cldr.php';
 
 function remove_directory( $directory ) {
 	foreach ( glob( "$directory/*" ) as $file ) {

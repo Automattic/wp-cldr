@@ -4,7 +4,7 @@
 wget http://www.apigen.org/apigen.phar
 
 # Generate Api
-php apigen.phar generate -s class.wp-cldr.php -d ../gh-pages --template-theme bootstrap --base-url https://automattic.github.io/wp-cldr/ --title wp-cldr
+php apigen.phar generate -s class-wp-cldr.php -d ../gh-pages --template-theme bootstrap --base-url https://automattic.github.io/wp-cldr/ --title wp-cldr
 cd ../gh-pages
 
 # Set identity
