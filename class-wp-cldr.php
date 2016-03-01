@@ -476,7 +476,7 @@ class WP_CLDR {
 	 * @param string $country_code A two-letter ISO 3166 country code.
 	 * @return string The first three characters, in lowercase, of the English name for the day considered to be the start of the week.
 	 */
-	public function first_day_of_week( $country_code ) {
+	public function get_first_day_of_week( $country_code ) {
 		$json_file = $this->get_locale_bucket( 'supplemental', 'weekData' );
 		if ( isset( $json_file['supplemental']['weekData']['firstDay'][ $country_code ] ) ) {
 			return $json_file['supplemental']['weekData']['firstDay'][ $country_code ];

@@ -216,14 +216,14 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( '', $this->cldr->get_telephone_code( '' ) );
 	}
 
-	public function test_first_day_of_week() {
+	public function test_get_first_day_of_week() {
 
-		$this->assertEquals( 'sun', $this->cldr->first_day_of_week( 'US' ) );
-		$this->assertEquals( 'sat', $this->cldr->first_day_of_week( 'QA' ) );
+		$this->assertEquals( 'sun', $this->cldr->get_first_day_of_week( 'US' ) );
+		$this->assertEquals( 'sat', $this->cldr->get_first_day_of_week( 'QA' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->first_day_of_week( 'bad-slug' ) );
-		$this->assertEquals( '', $this->cldr->first_day_of_week( '' ) );
+		$this->assertEquals( '', $this->cldr->get_first_day_of_week( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->get_first_day_of_week( '' ) );
 	}
 
 	public function test_get_currency_for_all_countries() {

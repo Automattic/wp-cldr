@@ -156,7 +156,7 @@ function wp_cldr_settings() {
 	echo ' <code>' . esc_html( $country ) . '</code> ' . esc_html( $cldr->get_telephone_code( $country ) ) . '<br>';
 
 	esc_html_e( 'First day of week:', 'wp-cldr' );
-	echo ' <code>' . esc_html( $country ) . '</code>' . esc_html( $cldr->first_day_of_week( $country ) ) . '<br>';
+	echo ' <code>' . esc_html( $country ) . '</code>' . esc_html( $cldr->get_first_day_of_week( $country ) ) . '<br>';
 
 	esc_html_e( 'Most spoken language:', 'wp-cldr' );
 	$most_spoken_language = $cldr->get_top_language_spoken( $country );
