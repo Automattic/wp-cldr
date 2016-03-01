@@ -44,7 +44,7 @@ $canadian_french_in_french = $cldr->language_name( 'fr-ca' );
 $canadian_french_in_english = $cldr->language_name( 'fr-ca' , 'en' );
 $german_in_german = $cldr->language_name( 'de_DE' , 'de-DE' );
 $bengali_in_japanese = $cldr->language_name( 'bn_BD' , 'ja_JP' );
-$us_dollar_symbol_in_simplified_chinese = $cldr->currency_symbol( 'USD', 'zh' );
+$us_dollar_symbol_in_simplified_chinese = $cldr->get_currency_symbol( 'USD', 'zh' );
 $africa_in_french = $cldr->get_territory_name( '002' );
 ```
 

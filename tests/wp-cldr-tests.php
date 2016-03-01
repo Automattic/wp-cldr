@@ -49,15 +49,15 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'US Dollar', $this->cldr->currency_name( 'USD', '' ) );
 	}
 
-	public function test_currency_symbol() {
+	public function test_get_currency_symbol() {
 
-		$this->assertEquals( 'US$', $this->cldr->currency_symbol( 'USD', 'zh' ) );
-		$this->assertEquals( '$', $this->cldr->currency_symbol( 'USD', 'en' ) );
+		$this->assertEquals( 'US$', $this->cldr->get_currency_symbol( 'USD', 'zh' ) );
+		$this->assertEquals( '$', $this->cldr->get_currency_symbol( 'USD', 'en' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->currency_symbol( 'bad-slug' ) );
-		$this->assertEquals( '', $this->cldr->currency_symbol( '' ) );
-		$this->assertEquals( '$', $this->cldr->currency_symbol( 'USD', '' ) );
+		$this->assertEquals( '', $this->cldr->get_currency_symbol( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->get_currency_symbol( '' ) );
+		$this->assertEquals( '$', $this->cldr->get_currency_symbol( 'USD', '' ) );
 	}
 
 	public function test_language_name() {

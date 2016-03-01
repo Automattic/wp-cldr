@@ -118,7 +118,7 @@ function wp_cldr_settings() {
 	$example_currencies = array( 'USD', 'JPY', 'ZAR' );
 	esc_html_e( 'Example currency names and symbols:', 'wp-cldr' );
 	foreach ( $example_currencies as $currency ) {
-		echo ' <code>' . esc_html( $currency ) . '</code> ' . esc_html( $cldr->currency_name( $currency ) ) . ' / ' . esc_html( $cldr->currency_symbol( $currency ) );
+		echo ' <code>' . esc_html( $currency ) . '</code> ' . esc_html( $cldr->currency_name( $currency ) ) . ' / ' . esc_html( $cldr->get_currency_symbol( $currency ) );
 	}
 	echo '<br>';
 ?>

@@ -41,7 +41,7 @@
  * $canadian_french_in_english = $cldr->language_name( 'fr-ca' , 'en' );
  * $german_in_german = $cldr->language_name( 'de_DE' , 'de-DE' );
  * $bengali_in_japanese = $cldr->language_name( 'bn_BD' , 'ja_JP' );
- * $us_dollar_symbol_in_simplified_chinese = $cldr->currency_symbol( 'USD', 'zh' );
+ * $us_dollar_symbol_in_simplified_chinese = $cldr->get_currency_symbol( 'USD', 'zh' );
  * $africa_in_french = $cldr->get_territory_name( '002' );
  * ```
  *
@@ -378,7 +378,7 @@ class WP_CLDR {
 	 * @param string $locale        Optional. A WordPress locale code.
 	 * @return string The symbol for the currency in the provided locale.
 	 */
-	public function currency_symbol( $currency_code, $locale = '' ) {
+	public function get_currency_symbol( $currency_code, $locale = '' ) {
 		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
 		if ( isset( $currencies_array[ $currency_code ]['symbol'] ) ) {
 			return $currencies_array[ $currency_code ]['symbol'];
