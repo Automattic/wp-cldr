@@ -459,7 +459,7 @@ class WP_CLDR {
 	 * @param string $country_code A two-letter ISO 3166 country code.
 	 * @return string The telephone code for the provided country.
 	 */
-	public function telephone_code( $country_code ) {
+	public function get_telephone_code( $country_code ) {
 		$json_file = $this->get_locale_bucket( 'supplemental', 'telephoneCodeData' );
 		if ( isset( $json_file['supplemental']['telephoneCodeData'][ $country_code ][0]['telephoneCountryCode'] ) ) {
 			return $json_file['supplemental']['telephoneCodeData'][ $country_code ][0]['telephoneCountryCode'];

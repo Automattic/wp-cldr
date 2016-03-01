@@ -56,7 +56,7 @@ $us_dollar_in_english = $cldr->get_currency_name( 'USD' );
 
 ### Get CLDR's supplemental data
 ```
-$telephone_code_in_france = $cldr->telephone_code( 'FR' );
+$telephone_code_in_france = $cldr->get_telephone_code( 'FR' );
 ```
 
 ## Links:

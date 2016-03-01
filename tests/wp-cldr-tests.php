@@ -206,14 +206,14 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 	}
 
-	public function test_telephone_code() {
+	public function test_get_telephone_code() {
 
-		$this->assertEquals( '1', $this->cldr->telephone_code( 'US' ) );
-		$this->assertEquals( '55', $this->cldr->telephone_code( 'BR' ) );
+		$this->assertEquals( '1', $this->cldr->get_telephone_code( 'US' ) );
+		$this->assertEquals( '55', $this->cldr->get_telephone_code( 'BR' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->telephone_code( 'bad-slug' ) );
-		$this->assertEquals( '', $this->cldr->telephone_code( '' ) );
+		$this->assertEquals( '', $this->cldr->get_telephone_code( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->get_telephone_code( '' ) );
 	}
 
 	public function test_first_day_of_week() {

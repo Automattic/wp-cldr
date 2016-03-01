@@ -153,7 +153,7 @@ function wp_cldr_settings() {
 	echo ' <code>' . esc_html( $country ) . '</code> ' . esc_html( $cldr->get_territory_name( $country ) ) . ' / ' . esc_html( $cldr->get_territory_name( $country, 'en' ) ) . '<br>';
 
 	esc_html_e( 'Telephone code:', 'wp-cldr' );
-	echo ' <code>' . esc_html( $country ) . '</code> ' . esc_html( $cldr->telephone_code( $country ) ) . '<br>';
+	echo ' <code>' . esc_html( $country ) . '</code> ' . esc_html( $cldr->get_telephone_code( $country ) ) . '<br>';
 
 	esc_html_e( 'First day of week:', 'wp-cldr' );
 	echo ' <code>' . esc_html( $country ) . '</code>' . esc_html( $cldr->first_day_of_week( $country ) ) . '<br>';
