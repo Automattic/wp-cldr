@@ -37,10 +37,10 @@
  * $cldr = new WP_CLDR( 'fr' );
  * $germany_in_french = $cldr->get_territory_name( 'DE' );
  * $us_dollar_in_french = $cldr->get_currency_name( 'USD' );
- * $canadian_french_in_french = $cldr->language_name( 'fr-ca' );
- * $canadian_french_in_english = $cldr->language_name( 'fr-ca' , 'en' );
- * $german_in_german = $cldr->language_name( 'de_DE' , 'de-DE' );
- * $bengali_in_japanese = $cldr->language_name( 'bn_BD' , 'ja_JP' );
+ * $canadian_french_in_french = $cldr->get_language_name( 'fr-ca' );
+ * $canadian_french_in_english = $cldr->get_language_name( 'fr-ca' , 'en' );
+ * $german_in_german = $cldr->get_language_name( 'de_DE' , 'de-DE' );
+ * $bengali_in_japanese = $cldr->get_language_name( 'bn_BD' , 'ja_JP' );
  * $us_dollar_symbol_in_simplified_chinese = $cldr->get_currency_symbol( 'USD', 'zh' );
  * $africa_in_french = $cldr->get_territory_name( '002' );
  * ```
@@ -412,7 +412,7 @@ class WP_CLDR {
 	 * @param string $locale        Optional. A WordPress locale code.
 	 * @return string The name of the language in the provided locale.
 	 */
-	public function language_name( $language_code, $locale = '' ) {
+	public function get_language_name( $language_code, $locale = '' ) {
 		$cldr_matched_language_code = $this->get_cldr_locale( $language_code );
 
 		$language_name = $this->get_cldr_item( $cldr_matched_language_code, $locale, 'languages' );

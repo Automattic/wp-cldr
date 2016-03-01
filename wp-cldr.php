@@ -99,7 +99,7 @@ function wp_cldr_settings() {
 	echo '<br>';
 
 	esc_html_e( 'Mapped to CLDR JSON path:', 'wp-cldr' );
-	echo ' <code> ' . esc_html( $cldr->get_cldr_locale( $locale ) ) . '</code> ' . esc_html( $cldr->language_name( $locale ) ) . ' / ' . esc_html( $cldr->language_name( $locale, 'en' ) ) . '<br>';
+	echo ' <code> ' . esc_html( $cldr->get_cldr_locale( $locale ) ) . '</code> ' . esc_html( $cldr->get_language_name( $locale ) ) . ' / ' . esc_html( $cldr->get_language_name( $locale, 'en' ) ) . '<br>';
 
 	$example_territories = array( 'US', 'CN', '002' );
 	esc_html_e( 'Example territory names:', 'wp-cldr' );
@@ -111,7 +111,7 @@ function wp_cldr_settings() {
 	$example_languages = array( 'en', 'zh_TW', 'en_ZA' );
 	esc_html_e( 'Example language names:', 'wp-cldr' );
 	foreach ( $example_languages as $language ) {
-		echo ' <code>' . esc_html( $language ) . '</code> ' . esc_html( $cldr->language_name( $language ) );
+		echo ' <code>' . esc_html( $language ) . '</code> ' . esc_html( $cldr->get_language_name( $language ) );
 	}
 	echo '<br>';
 

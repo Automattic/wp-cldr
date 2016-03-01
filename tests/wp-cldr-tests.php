@@ -60,17 +60,17 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( '$', $this->cldr->get_currency_symbol( 'USD', '' ) );
 	}
 
-	public function test_language_name() {
+	public function test_get_language_name() {
 
-		$this->assertEquals( 'français canadien', $this->cldr->language_name( 'fr-ca', 'fr' ) );
-		$this->assertEquals( 'Canadian French', $this->cldr->language_name( 'fr-ca' , 'en' ) );
-		$this->assertEquals( 'Deutsch', $this->cldr->language_name( 'de_DE' , 'de-DE' ) );
-		$this->assertEquals( 'ベンガル語', $this->cldr->language_name( 'bn_BD' , 'ja_JP' ) );
+		$this->assertEquals( 'français canadien', $this->cldr->get_language_name( 'fr-ca', 'fr' ) );
+		$this->assertEquals( 'Canadian French', $this->cldr->get_language_name( 'fr-ca' , 'en' ) );
+		$this->assertEquals( 'Deutsch', $this->cldr->get_language_name( 'de_DE' , 'de-DE' ) );
+		$this->assertEquals( 'ベンガル語', $this->cldr->get_language_name( 'bn_BD' , 'ja_JP' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->language_name( 'bad-slug' ) );
-		$this->assertEquals( '', $this->cldr->language_name( '' ) );
-		$this->assertEquals( 'Canadian French', $this->cldr->language_name( 'fr-ca' , '' ) );
+		$this->assertEquals( '', $this->cldr->get_language_name( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->get_language_name( '' ) );
+		$this->assertEquals( 'Canadian French', $this->cldr->get_language_name( 'fr-ca' , '' ) );
 	}
 
 	public function test_territories_by_locale() {
