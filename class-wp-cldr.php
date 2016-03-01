@@ -297,7 +297,7 @@ class WP_CLDR {
 	public function flush_all_wp_caches() {
 		$this->localized = array();
 
-		$locales = $this->languages_by_locale( 'en' );
+		$locales = $this->get_languages_by_locale( 'en' );
 		$supported_buckets = array( 'territories', 'currencies', 'languages', 'weekData', 'telephoneCodeData' );
 		foreach ( array_keys( $locales ) as $locale ) {
 			foreach ( $supported_buckets as $bucket ) {
@@ -446,7 +446,7 @@ class WP_CLDR {
 	 * @param string $locale Optional. A WordPress locale code.
 	 * @return array An associative array of ISO 639 codes and localized language names from CLDR
 	 */
-	public function languages_by_locale( $locale = '' ) {
+	public function get_languages_by_locale( $locale = '' ) {
 		return $this->get_locale_bucket( $locale, 'languages' );
 	}
 
