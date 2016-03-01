@@ -73,14 +73,14 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'Canadian French', $this->cldr->get_language_name( 'fr-ca' , '' ) );
 	}
 
-	public function test_territories_by_locale() {
+	public function test_get_territories_by_locale() {
 
-		$territories_in_english = $this->cldr->territories_by_locale( 'en' );
+		$territories_in_english = $this->cldr->get_territories_by_locale( 'en' );
 		$this->assertArrayHasKey( 'US', $territories_in_english );
 		$this->assertEquals( 'United States', $territories_in_english['US'] );
 
 		// Test some bad slugs.
-		$all_territories = $this->cldr->territories_by_locale( 'bad-slug' );
+		$all_territories = $this->cldr->get_territories_by_locale( 'bad-slug' );
 		$this->assertEquals( 'United States', $all_territories['US'] );
 	}
 

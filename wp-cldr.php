@@ -58,7 +58,7 @@ function wp_cldr_settings() {
 	$languages = get_available_languages();
 	$translations = wp_get_available_translations();
 	$locales = array_merge( $default, $translations );
-	$territories = $cldr->territories_by_locale();
+	$territories = $cldr->get_territories_by_locale();
 	?>
 
 	<div class="wrap">

@@ -27,7 +27,7 @@ The class included a set of PHPUnit tests. To run them, call `phpunit` from the 
 ### The default locale is English
 ```
 $cldr = new WP_CLDR();
-$territories_in_english = $cldr->territories_by_locale();
+$territories_in_english = $cldr->get_territories_by_locale();
 ```
 
 ### You can override the default locale per-call by passing in a language slug in the second parameter

@@ -22,7 +22,7 @@
  *
  * ```
  * $cldr = new WP_CLDR();
- * $territories_in_english = $cldr->territories_by_locale( 'en' );
+ * $territories_in_english = $cldr->get_territories_by_locale( 'en' );
  * ```
  *
  * You can override the default locale per-call by passing in a language slug in the second parameter:
@@ -434,7 +434,7 @@ class WP_CLDR {
 	 * @param string $locale Optional. A WordPress locale code.
 	 * @return array An associative array of ISO 3166-1 alpha-2 country codes and UN M.49 region codes, along with localized names, from CLDR
 	 */
-	public function territories_by_locale( $locale = '' ) {
+	public function get_territories_by_locale( $locale = '' ) {
 		return $this->get_locale_bucket( $locale, 'territories' );
 	}
 
