@@ -9,7 +9,7 @@
  * @package wp-cldr
  */
 
-require 'class.wp-cldr.php';
+require 'class-wp-cldr.php';
 
 /**
  * Performs unit tests against the wp-cldr plugin.

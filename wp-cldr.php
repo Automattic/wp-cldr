@@ -12,4 +12,4 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 
-require_once plugin_dir_path( __FILE__ ) . 'class.wp-cldr.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-wp-cldr.php';
