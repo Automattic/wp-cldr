@@ -104,7 +104,7 @@ function wp_cldr_settings() {
 	$example_territories = array( 'US', 'CN', '002' );
 	esc_html_e( 'Example territory names:', 'wp-cldr' );
 	foreach ( $example_territories as $territory ) {
-		echo ' <code>' . esc_html( $territory ) . '</code> ' . esc_html( $cldr->territory_name( $territory ) );
+		echo ' <code>' . esc_html( $territory ) . '</code> ' . esc_html( $cldr->get_territory_name( $territory ) );
 	}
 	echo '<br>';
 
@@ -150,7 +150,7 @@ function wp_cldr_settings() {
 	<?php
 
 	esc_html_e( 'Country code:', 'wp-cldr' );
-	echo ' <code>' . esc_html( $country ) . '</code> ' . esc_html( $cldr->territory_name( $country ) ) . ' / ' . esc_html( $cldr->territory_name( $country, 'en' ) ) . '<br>';
+	echo ' <code>' . esc_html( $country ) . '</code> ' . esc_html( $cldr->get_territory_name( $country ) ) . ' / ' . esc_html( $cldr->get_territory_name( $country, 'en' ) ) . '<br>';
 
 	esc_html_e( 'Telephone code:', 'wp-cldr' );
 	echo ' <code>' . esc_html( $country ) . '</code> ' . esc_html( $cldr->telephone_code( $country ) ) . '<br>';
