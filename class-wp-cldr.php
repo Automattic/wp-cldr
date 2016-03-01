@@ -52,6 +52,9 @@
  * $us_dollar_in_english = $cldr->currency_name( 'USD' );
  * ```
  *
+ * Testing
+ * The class included a set of PHPUnit tests. To run them, call `phpunit` from the plugin directory.
+ *
  * @link http://cldr.unicode.org
  * @link https://github.com/unicode-cldr/cldr-json
  *
