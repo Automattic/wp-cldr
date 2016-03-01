@@ -36,7 +36,7 @@
  * ```
  * $cldr = new WP_CLDR( 'fr' );
  * $germany_in_french = $cldr->get_territory_name( 'DE' );
- * $us_dollar_in_french = $cldr->currency_name( 'USD' );
+ * $us_dollar_in_french = $cldr->get_currency_name( 'USD' );
  * $canadian_french_in_french = $cldr->language_name( 'fr-ca' );
  * $canadian_french_in_english = $cldr->language_name( 'fr-ca' , 'en' );
  * $german_in_german = $cldr->language_name( 'de_DE' , 'de-DE' );
@@ -49,7 +49,7 @@
  *
  * ```
  * $cldr->set_locale( 'en' );
- * $us_dollar_in_english = $cldr->currency_name( 'USD' );
+ * $us_dollar_in_english = $cldr->get_currency_name( 'USD' );
  * ```
  *
  * Testing
@@ -395,7 +395,7 @@ class WP_CLDR {
 	 * @param string $locale        Optional. A WordPress locale code.
 	 * @return string The name of the currency in the provided locale.
 	 */
-	public function currency_name( $currency_code, $locale = '' ) {
+	public function get_currency_name( $currency_code, $locale = '' ) {
 		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
 		if ( isset( $currencies_array[ $currency_code ]['displayName'] ) ) {
 			return $currencies_array[ $currency_code ]['displayName'];

@@ -38,15 +38,15 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'Africa', $this->cldr->get_territory_name( '002', '' ) );
 	}
 
-	public function test_currency_name() {
+	public function test_get_currency_name() {
 
-		$this->assertEquals( 'dollar des États-Unis', $this->cldr->currency_name( 'USD', 'fr' ) );
-		$this->assertEquals( 'US Dollar', $this->cldr->currency_name( 'USD', 'en' ) );
+		$this->assertEquals( 'dollar des États-Unis', $this->cldr->get_currency_name( 'USD', 'fr' ) );
+		$this->assertEquals( 'US Dollar', $this->cldr->get_currency_name( 'USD', 'en' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->currency_name( 'bad-slug', 'en' ) );
-		$this->assertEquals( '', $this->cldr->currency_name( '' ) );
-		$this->assertEquals( 'US Dollar', $this->cldr->currency_name( 'USD', '' ) );
+		$this->assertEquals( '', $this->cldr->get_currency_name( 'bad-slug', 'en' ) );
+		$this->assertEquals( '', $this->cldr->get_currency_name( '' ) );
+		$this->assertEquals( 'US Dollar', $this->cldr->get_currency_name( 'USD', '' ) );
 	}
 
 	public function test_get_currency_symbol() {

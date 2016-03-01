@@ -39,7 +39,7 @@ $germany_in_arabic = $cldr->get_territory_name( 'DE' , 'ar' );
 ```
 $cldr = new WP_CLDR( 'fr' );
 $germany_in_french = $cldr->get_territory_name( 'DE' );
-$us_dollar_in_french = $cldr->currency_name( 'USD' );
+$us_dollar_in_french = $cldr->get_currency_name( 'USD' );
 $canadian_french_in_french = $cldr->language_name( 'fr-ca' );
 $canadian_french_in_english = $cldr->language_name( 'fr-ca' , 'en' );
 $german_in_german = $cldr->language_name( 'de_DE' , 'de-DE' );
@@ -51,7 +51,7 @@ $africa_in_french = $cldr->get_territory_name( '002' );
 ### Switch locales after the object has been created
 ```
 $cldr->set_locale( 'en' );
-$us_dollar_in_english = $cldr->currency_name( 'USD' );
+$us_dollar_in_english = $cldr->get_currency_name( 'USD' );
 ```
 
 ### Get CLDR's supplemental data

@@ -118,7 +118,7 @@ function wp_cldr_settings() {
 	$example_currencies = array( 'USD', 'JPY', 'ZAR' );
 	esc_html_e( 'Example currency names and symbols:', 'wp-cldr' );
 	foreach ( $example_currencies as $currency ) {
-		echo ' <code>' . esc_html( $currency ) . '</code> ' . esc_html( $cldr->currency_name( $currency ) ) . ' / ' . esc_html( $cldr->get_currency_symbol( $currency ) );
+		echo ' <code>' . esc_html( $currency ) . '</code> ' . esc_html( $cldr->get_currency_name( $currency ) ) . ' / ' . esc_html( $cldr->get_currency_symbol( $currency ) );
 	}
 	echo '<br>';
 ?>
@@ -165,7 +165,7 @@ function wp_cldr_settings() {
 
 	esc_html_e( 'Currency:', 'wp-cldr' );
 	$currency_code = $cldr->get_currency_for_country( $country );
-	$currency_name = $cldr->currency_name( $currency_code );
+	$currency_name = $cldr->get_currency_name( $currency_code );
 	echo ' <code>' . esc_html( $country ) . '</code>' . esc_html( $currency_code ) . ', ' . esc_html( $currency_name ) . '<br>';
 }
 ?>
