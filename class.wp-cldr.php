@@ -247,19 +247,29 @@ class WP_CLDR {
 			$json_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 		}
 
-		$this->localized[ $locale ][ $bucket ] = $json_file;
+		// Do some performance-enhancing pre-processing of data items, then put into cache
+		// organized by WordPress locale.
+		switch ( $bucket ) {
+			case 'territories':
+			case 'languages':
+				$sorted_array = $json_file['main'][ $cldr_locale ]['localeDisplayNames'][ $bucket ];
+				if ( function_exists( 'collator_create' ) ) {
+					// Sort data according to locale collation rules.
+					$coll = collator_create( $cldr_locale );
+					collator_asort( $coll, $sorted_array, Collator::SORT_STRING );
+				} else {
+					asort( $sorted_array );
+				}
+				$this->localized[ $locale ][ $bucket ] = $sorted_array;
+				break;
 
-		// For performance, sort a few items before putting into the cache.
-		if ( 'territories' === $bucket || 'languages' === $bucket ) {
-			$sorted_array = $json_file['main'][ $cldr_locale ]['localeDisplayNames'][ $bucket ];
-			if ( function_exists( 'collator_create' ) ) {
-				// Sort data according to locale collation rules.
-				$coll = collator_create( $cldr_locale );
-				collator_asort( $coll, $sorted_array, Collator::SORT_STRING );
-			} else {
-				asort( $sorted_array );
-			}
-			$this->localized[ $locale ][ $bucket ] = $sorted_array;
+			case 'currencies':
+			 	$this->localized[ $locale ][ $bucket ] = $json_file['main'][ $cldr_locale ]['numbers'][ $bucket ];
+			 	break;
+
+			default:
+				$this->localized[ $locale ][ $bucket ] = $json_file;
+				break;
 		}
 
 		if ( $this->use_cache ) {
@@ -366,10 +376,9 @@ class WP_CLDR {
 	 * @return string The symbol for the currency in the provided locale.
 	 */
 	public function currency_symbol( $currency_code, $locale = '' ) {
-		$json_file = $this->get_locale_bucket( $locale, 'currencies' );
-		$cldr_locale = $this->get_cldr_locale( $locale );
-		if ( isset( $json_file['main'][ $cldr_locale ]['numbers']['currencies'][ $currency_code ]['symbol'] ) ) {
-			return $json_file['main'][ $cldr_locale ]['numbers']['currencies'][ $currency_code ]['symbol'];
+		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
+		if ( isset( $currencies_array[ $currency_code ]['symbol'] ) ) {
+			return $currencies_array[ $currency_code ]['symbol'];
 		}
 		return '';
 	}
@@ -384,10 +393,9 @@ class WP_CLDR {
 	 * @return string The name of the currency in the provided locale.
 	 */
 	public function currency_name( $currency_code, $locale = '' ) {
-		$json_file = $this->get_locale_bucket( $locale, 'currencies' );
-		$cldr_locale = $this->get_cldr_locale( $locale );
-		if ( isset( $json_file['main'][ $cldr_locale ]['numbers']['currencies'][ $currency_code ]['displayName'] ) ) {
-			return $json_file['main'][ $cldr_locale ]['numbers']['currencies'][ $currency_code ]['displayName'];
+		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
+		if ( isset( $currencies_array[ $currency_code ]['displayName'] ) ) {
+			return $currencies_array[ $currency_code ]['displayName'];
 		}
 		return '';
 	}
