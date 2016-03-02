@@ -625,7 +625,7 @@ class WP_CLDR {
 	 * @param string $territory Optional. A two-letter ISO 3166-1 country code.
 	 * @return array CLDR's territory information.
 	 */
-	public function get_territory_info( $territory = '' ) {
+	public function get_territory_info( $territory ) {
 
 		$result = array();
 		$json_file = $this->get_locale_bucket( 'supplemental', 'territoryInfo' );
