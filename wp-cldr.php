@@ -160,7 +160,7 @@ function wp_cldr_settings() {
 
 	esc_html_e( 'Most spoken language:', 'wp-cldr' );
 	$most_spoken_language = $cldr->get_top_language_spoken( $country );
-	$language_name = $cldr->language_name( $most_spoken_language );
+	$language_name = $cldr->get_language_name( $most_spoken_language );
 	echo ' <code>' . esc_html( $country ) . '</code>' . esc_html( $most_spoken_language ) . ', ' . esc_html( $language_name ) . '<br>';
 
 	esc_html_e( 'Currency:', 'wp-cldr' );
