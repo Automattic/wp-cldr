@@ -98,7 +98,7 @@ function wp_cldr_settings() {
 	}
 	echo '<br>';
 
-	esc_html_e( 'Mapped to CLDR locale:', 'wp-cldr' );
+	esc_html_e( 'Mapped to CLDR JSON path:', 'wp-cldr' );
 	echo ' <code> ' . esc_html( $cldr->get_cldr_locale( $locale ) ) . '</code> ' . esc_html( $cldr->language_name( $locale ) ) . ' / ' . esc_html( $cldr->language_name( $locale, 'en' ) ) . '<br>';
 
 	$example_territories = array( 'US', 'CN', '002' );
@@ -159,8 +159,7 @@ function wp_cldr_settings() {
 	echo ' <code>' . esc_html( $country ) . '</code>' . esc_html( $cldr->first_day_of_week( $country ) ) . '<br>';
 
 	esc_html_e( 'Most spoken language:', 'wp-cldr' );
-	$languages_spoken = $cldr->get_languages_spoken( $country );
-	$most_spoken_language = key( $languages_spoken );
+	$most_spoken_language = $cldr->get_top_language_spoken( $country );
 	$language_name = $cldr->language_name( $most_spoken_language );
 	echo ' <code>' . esc_html( $country ) . '</code>' . esc_html( $most_spoken_language ) . ', ' . esc_html( $language_name ) . '<br>';
 
