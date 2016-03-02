@@ -290,6 +290,17 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( array(), $this->cldr->get_languages_spoken( '' ) );
 	}
 
+	public function test_get_top_language_spoken() {
+
+		$this->assertEquals( 'en', $this->cldr->get_top_language_spoken( 'US' ) );
+		$this->assertEquals( 'fr', $this->cldr->get_top_language_spoken( 'FR' ) );
+		$this->assertEquals( 'zh_Hans', $this->cldr->get_top_language_spoken( 'CN' ) );
+
+		// Test some bad slugs.
+		$this->assertEquals( '', $this->cldr->get_top_language_spoken( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->get_top_language_spoken( '' ) );
+	}
+
 	public function test_get_territory_info() {
 
 		$us_info = $this->cldr->get_territory_info( 'US' );

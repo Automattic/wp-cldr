@@ -617,6 +617,24 @@ class WP_CLDR {
 	}
 
 	/**
+	 * Gets the most widely spoken language spoken in a territory.
+	 *
+	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
+	 * @link http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html Detail on CLDR language information
+	 * @link http://www.iso.org/iso/language_codes ISO 639 language codes
+	 *
+	 * @param string $territory A two-letter ISO 3166-1 country code.
+	 * @return string The ISO 639 code for the language most widely spoken in the territory.
+	 */
+	public function get_top_language_spoken( $territory ) {
+		$languages_spoken = $this->get_languages_spoken( $territory );
+		if ( ! empty( $languages_spoken ) ) {
+			return key( $languages_spoken );
+		}
+		return '';
+	}
+
+	/**
 	 * Gets GDP, population, and language information.
 	 *
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
