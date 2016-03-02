@@ -356,7 +356,7 @@ class WP_CLDR {
 	}
 
 	/**
-	 * Gets a localized territory or region name.
+	 * Gets a localized country or region name.
 	 *
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 * @link http://unstats.un.org/unsd/methods/m49/m49regin.htm UN M.49 region codes
@@ -426,7 +426,7 @@ class WP_CLDR {
 	}
 
 	/**
-	 * Gets all territory and region names in a locale.
+	 * Gets all country and region names in a locale.
 	 *
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 * @link http://unstats.un.org/unsd/methods/m49/m49regin.htm UN M.49 region codes
@@ -456,13 +456,13 @@ class WP_CLDR {
 	 * @link http://unicode.org/reports/tr35/tr35-info.html#Telephone_Code_Data CLDR Telephone Code Data
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 *
-	 * @param string $country A two-letter ISO 3166 country code.
+	 * @param string $country_code A two-letter ISO 3166 country code.
 	 * @return string The telephone code for the provided country.
 	 */
-	public function telephone_code( $country ) {
+	public function telephone_code( $country_code ) {
 		$json_file = $this->get_locale_bucket( 'supplemental', 'telephoneCodeData' );
-		if ( isset( $json_file['supplemental']['telephoneCodeData'][ $country ][0]['telephoneCountryCode'] ) ) {
-			return $json_file['supplemental']['telephoneCodeData'][ $country ][0]['telephoneCountryCode'];
+		if ( isset( $json_file['supplemental']['telephoneCodeData'][ $country_code ][0]['telephoneCountryCode'] ) ) {
+			return $json_file['supplemental']['telephoneCodeData'][ $country_code ][0]['telephoneCountryCode'];
 		}
 		return '';
 	}
@@ -473,13 +473,13 @@ class WP_CLDR {
 	 * @link http://unicode.org/reports/tr35/tr35-dates.html#Week_Data CLDR week data
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 *
-	 * @param string $country A two-letter ISO 3166 country code.
+	 * @param string $country_code A two-letter ISO 3166 country code.
 	 * @return string The first three characters, in lowercase, of the English name for the day considered to be the start of the week.
 	 */
-	public function first_day_of_week( $country ) {
+	public function first_day_of_week( $country_code ) {
 		$json_file = $this->get_locale_bucket( 'supplemental', 'weekData' );
-		if ( isset( $json_file['supplemental']['weekData']['firstDay'][ $country ] ) ) {
-			return $json_file['supplemental']['weekData']['firstDay'][ $country ];
+		if ( isset( $json_file['supplemental']['weekData']['firstDay'][ $country_code ] ) ) {
+			return $json_file['supplemental']['weekData']['firstDay'][ $country_code ];
 		}
 		return '';
 	}
@@ -499,10 +499,10 @@ class WP_CLDR {
 		// so we need to loop through them to find one without a `_to` ending date
 		// and without a `_tender` flag which are always false indicating
 		// the currency wasn't legal tender.
-		foreach ( $json_file['supplemental']['currencyData']['region'] as $territory => $currencies ) {
+		foreach ( $json_file['supplemental']['currencyData']['region'] as $country_code => $currencies ) {
 			foreach ( $currencies as $currency_dates ) {
 				if ( ! array_key_exists( '_to', current( $currency_dates ) ) && ! array_key_exists( '_tender', current( $currency_dates ) ) ) {
-					$result[ $territory ] = key( $currency_dates );
+					$result[ $country_code ] = key( $currency_dates );
 				}
 			}
 		}
@@ -515,13 +515,13 @@ class WP_CLDR {
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 * @link http://www.iso.org/iso/currency_codes ISO 4217 currency codes
 	 *
-	 * @param string $country A two-letter ISO 3166-1 country code.
+	 * @param string $country_code A two-letter ISO 3166-1 country code.
 	 * @return string The three-letter ISO 4217 code for the currency currently used in that country.
 	 */
-	public function get_currency_for_country( $country ) {
+	public function get_currency_for_country( $country_code ) {
 		$currency_for_all_countries = $this->get_currency_for_all_countries();
-		if ( isset( $currency_for_all_countries[ $country ] ) ) {
-			return $currency_for_all_countries[ $country ];
+		if ( isset( $currency_for_all_countries[ $country_code ] ) ) {
+			return $currency_for_all_countries[ $country_code ];
 		}
 		return '';
 	}
@@ -536,8 +536,8 @@ class WP_CLDR {
 	 */
 	public function get_countries_for_all_currencies() {
 		$currency_for_all_countries = $this->get_currency_for_all_countries();
-		foreach ( $currency_for_all_countries as $country => $currency ) {
-			$result[ $currency ][] = $country;
+		foreach ( $currency_for_all_countries as $country_code => $currency ) {
+			$result[ $currency ][] = $country_code;
 		}
 		return $result;
 	}
@@ -592,21 +592,21 @@ class WP_CLDR {
 	}
 
 	/**
-	 * Gets the language spoken in a territory, in descending order of use.
+	 * Gets the language spoken in a country, in descending order of use.
 	 *
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 * @link http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html Detail on CLDR language information
 	 *
-	 * @param string $territory A two-letter ISO 3166-1 country code.
-	 * @return array An associative array with the key of a language code and the value of the percentage of population which speaks the language in that territory.
+	 * @param string $country_code A two-letter ISO 3166-1 country code.
+	 * @return array An associative array with the key of a language code and the value of the percentage of population which speaks the language in that country.
 	 */
-	public function get_languages_spoken( $territory ) {
+	public function get_languages_spoken( $country_code ) {
 
 		$result = array();
 		$json_file = $this->get_locale_bucket( 'supplemental', 'territoryInfo' );
 
-		if ( isset( $json_file['supplemental']['territoryInfo'][ $territory ]['languagePopulation'] ) ) {
-			foreach ( $json_file['supplemental']['territoryInfo'][ $territory ]['languagePopulation'] as $language => $info ) {
+		if ( isset( $json_file['supplemental']['territoryInfo'][ $country_code ]['languagePopulation'] ) ) {
+			foreach ( $json_file['supplemental']['territoryInfo'][ $country_code ]['languagePopulation'] as $language => $info ) {
 				$result[ $language ] = $info['_populationPercent'];
 			}
 		}
@@ -617,17 +617,17 @@ class WP_CLDR {
 	}
 
 	/**
-	 * Gets the most widely spoken language spoken in a territory.
+	 * Gets the most widely spoken language spoken in a country.
 	 *
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 * @link http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html Detail on CLDR language information
 	 * @link http://www.iso.org/iso/language_codes ISO 639 language codes
 	 *
-	 * @param string $territory A two-letter ISO 3166-1 country code.
-	 * @return string The ISO 639 code for the language most widely spoken in the territory.
+	 * @param string $country_code A two-letter ISO 3166-1 country code.
+	 * @return string The ISO 639 code for the language most widely spoken in the country.
 	 */
-	public function get_top_language_spoken( $territory ) {
-		$languages_spoken = $this->get_languages_spoken( $territory );
+	public function get_top_language_spoken( $country_code ) {
+		$languages_spoken = $this->get_languages_spoken( $country_code );
 		if ( ! empty( $languages_spoken ) ) {
 			return key( $languages_spoken );
 		}
@@ -640,20 +640,20 @@ class WP_CLDR {
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 * @link http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html CLDR's territory information
 	 *
-	 * @param string $territory Optional. A two-letter ISO 3166-1 country code.
+	 * @param string $country_code Optional. A two-letter ISO 3166-1 country code.
 	 * @return array CLDR's territory information.
 	 */
-	public function get_territory_info( $territory ) {
+	public function get_territory_info( $country_code ) {
 
 		$result = array();
 		$json_file = $this->get_locale_bucket( 'supplemental', 'territoryInfo' );
 
-		if ( isset( $json_file['supplemental']['territoryInfo'] ) && '' === $territory ) {
+		if ( isset( $json_file['supplemental']['territoryInfo'] ) && '' === $country_code ) {
 			return $json_file['supplemental']['territoryInfo'];
 		}
 
-		if ( isset( $json_file['supplemental']['territoryInfo'][ $territory ] ) ) {
-			return $json_file['supplemental']['territoryInfo'][ $territory ];
+		if ( isset( $json_file['supplemental']['territoryInfo'][ $country_code ] ) ) {
+			return $json_file['supplemental']['territoryInfo'][ $country_code ];
 		}
 
 		return array();
