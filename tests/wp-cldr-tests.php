@@ -21,130 +21,130 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->cldr = new WP_CLDR( 'en', false );
 	}
 
-	public function test_territory_name() {
+	public function test_get_territory_name() {
 
 		// Test country names.
-		$this->assertEquals( 'Allemagne', $this->cldr->territory_name( 'DE' , 'fr_FR' ) );
-		$this->assertEquals( 'ألمانيا', $this->cldr->territory_name( 'DE' , 'ar_AR' ) );
+		$this->assertEquals( 'Allemagne', $this->cldr->get_territory_name( 'DE' , 'fr_FR' ) );
+		$this->assertEquals( 'ألمانيا', $this->cldr->get_territory_name( 'DE' , 'ar_AR' ) );
 
 		// Test region names.
-		$this->assertEquals( 'Afrique', $this->cldr->territory_name( '002', 'fr_FR' ) );
-		$this->assertEquals( '亚洲', $this->cldr->territory_name( '142', 'zh-cn' ) );
+		$this->assertEquals( 'Afrique', $this->cldr->get_territory_name( '002', 'fr_FR' ) );
+		$this->assertEquals( '亚洲', $this->cldr->get_territory_name( '142', 'zh-cn' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->territory_name( 'bad-slug', 'fr_FR' ) );
-		$this->assertEquals( 'Africa', $this->cldr->territory_name( '002', 'badlocalecode' ) );
-		$this->assertEquals( 'Africa', $this->cldr->territory_name( '002', 'bad-locale-code' ) );
-		$this->assertEquals( 'Africa', $this->cldr->territory_name( '002', '' ) );
+		$this->assertEquals( '', $this->cldr->get_territory_name( 'bad-slug', 'fr_FR' ) );
+		$this->assertEquals( 'Africa', $this->cldr->get_territory_name( '002', 'badlocalecode' ) );
+		$this->assertEquals( 'Africa', $this->cldr->get_territory_name( '002', 'bad-locale-code' ) );
+		$this->assertEquals( 'Africa', $this->cldr->get_territory_name( '002', '' ) );
 	}
 
-	public function test_currency_name() {
+	public function test_get_currency_name() {
 
-		$this->assertEquals( 'dollar des États-Unis', $this->cldr->currency_name( 'USD', 'fr' ) );
-		$this->assertEquals( 'US Dollar', $this->cldr->currency_name( 'USD', 'en' ) );
+		$this->assertEquals( 'dollar des États-Unis', $this->cldr->get_currency_name( 'USD', 'fr' ) );
+		$this->assertEquals( 'US Dollar', $this->cldr->get_currency_name( 'USD', 'en' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->currency_name( 'bad-slug', 'en' ) );
-		$this->assertEquals( '', $this->cldr->currency_name( '' ) );
-		$this->assertEquals( 'US Dollar', $this->cldr->currency_name( 'USD', '' ) );
+		$this->assertEquals( '', $this->cldr->get_currency_name( 'bad-slug', 'en' ) );
+		$this->assertEquals( '', $this->cldr->get_currency_name( '' ) );
+		$this->assertEquals( 'US Dollar', $this->cldr->get_currency_name( 'USD', '' ) );
 	}
 
-	public function test_currency_symbol() {
+	public function test_get_currency_symbol() {
 
-		$this->assertEquals( 'US$', $this->cldr->currency_symbol( 'USD', 'zh' ) );
-		$this->assertEquals( '$', $this->cldr->currency_symbol( 'USD', 'en' ) );
+		$this->assertEquals( 'US$', $this->cldr->get_currency_symbol( 'USD', 'zh' ) );
+		$this->assertEquals( '$', $this->cldr->get_currency_symbol( 'USD', 'en' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->currency_symbol( 'bad-slug' ) );
-		$this->assertEquals( '', $this->cldr->currency_symbol( '' ) );
-		$this->assertEquals( '$', $this->cldr->currency_symbol( 'USD', '' ) );
+		$this->assertEquals( '', $this->cldr->get_currency_symbol( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->get_currency_symbol( '' ) );
+		$this->assertEquals( '$', $this->cldr->get_currency_symbol( 'USD', '' ) );
 	}
 
-	public function test_language_name() {
+	public function test_get_language_name() {
 
-		$this->assertEquals( 'français canadien', $this->cldr->language_name( 'fr-ca', 'fr' ) );
-		$this->assertEquals( 'Canadian French', $this->cldr->language_name( 'fr-ca' , 'en' ) );
-		$this->assertEquals( 'Deutsch', $this->cldr->language_name( 'de_DE' , 'de-DE' ) );
-		$this->assertEquals( 'ベンガル語', $this->cldr->language_name( 'bn_BD' , 'ja_JP' ) );
+		$this->assertEquals( 'français canadien', $this->cldr->get_language_name( 'fr-ca', 'fr' ) );
+		$this->assertEquals( 'Canadian French', $this->cldr->get_language_name( 'fr-ca' , 'en' ) );
+		$this->assertEquals( 'Deutsch', $this->cldr->get_language_name( 'de_DE' , 'de-DE' ) );
+		$this->assertEquals( 'ベンガル語', $this->cldr->get_language_name( 'bn_BD' , 'ja_JP' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->language_name( 'bad-slug' ) );
-		$this->assertEquals( '', $this->cldr->language_name( '' ) );
-		$this->assertEquals( 'Canadian French', $this->cldr->language_name( 'fr-ca' , '' ) );
+		$this->assertEquals( '', $this->cldr->get_language_name( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->get_language_name( '' ) );
+		$this->assertEquals( 'Canadian French', $this->cldr->get_language_name( 'fr-ca' , '' ) );
 	}
 
-	public function test_territories_by_locale() {
+	public function test_get_territories_by_locale() {
 
-		$territories_in_english = $this->cldr->territories_by_locale( 'en' );
+		$territories_in_english = $this->cldr->get_territories_by_locale( 'en' );
 		$this->assertArrayHasKey( 'US', $territories_in_english );
 		$this->assertEquals( 'United States', $territories_in_english['US'] );
 
 		// Test some bad slugs.
-		$all_territories = $this->cldr->territories_by_locale( 'bad-slug' );
+		$all_territories = $this->cldr->get_territories_by_locale( 'bad-slug' );
 		$this->assertEquals( 'United States', $all_territories['US'] );
 	}
 
-	public function test_languages_by_locale() {
+	public function test_get_languages_by_locale() {
 
-		$languages_in_english = $this->cldr->languages_by_locale( 'en' );
+		$languages_in_english = $this->cldr->get_languages_by_locale( 'en' );
 		$this->assertArrayHasKey( 'en', $languages_in_english );
 		$this->assertEquals( 'German', $languages_in_english['de'] );
 
 		// Test some bad slugs.
-		$all_languages = $this->cldr->languages_by_locale( 'bad-slug' );
+		$all_languages = $this->cldr->get_languages_by_locale( 'bad-slug' );
 		$this->assertEquals( 'English', $all_languages['en'] );
 	}
 
 	public function test_set_locale() {
 
 		$this->cldr->set_locale( 'fr' );
-		$this->assertEquals( 'Allemagne', $this->cldr->territory_name( 'DE' ) );
+		$this->assertEquals( 'Allemagne', $this->cldr->get_territory_name( 'DE' ) );
 
 		// Test some bad slugs.
 		$this->cldr->set_locale( 'bad-slug' );
-		$this->assertEquals( 'Germany', $this->cldr->territory_name( 'DE' ) );
+		$this->assertEquals( 'Germany', $this->cldr->get_territory_name( 'DE' ) );
 	}
 
 	public function test_wpcom_homepage_locales() {
 
 		// Test the wpcom homepage locales as of Feb 2016.
-		$this->assertEquals( 'ألمانيا', $this->cldr->territory_name( 'DE', 'ar' ) );
-		$this->assertEquals( 'Almaniya', $this->cldr->territory_name( 'DE', 'az' ) );
-		$this->assertEquals( 'Deutschland', $this->cldr->territory_name( 'DE', 'de' ) );
-		$this->assertEquals( 'Γερμανία', $this->cldr->territory_name( 'DE', 'el' ) );
-		$this->assertEquals( 'Germany', $this->cldr->territory_name( 'DE', 'en' ) );
-		$this->assertEquals( 'Alemania', $this->cldr->territory_name( 'DE', 'es' ) );
-		$this->assertEquals( 'آلمان', $this->cldr->territory_name( 'DE', 'fa' ) );
-		$this->assertEquals( 'Saksa', $this->cldr->territory_name( 'DE', 'fi' ) );
-		$this->assertEquals( 'Allemagne', $this->cldr->territory_name( 'DE', 'fr' ) );
-		$this->assertEquals( 'Allemagne', $this->cldr->territory_name( 'DE', 'fr-ca' ) );
-		$this->assertEquals( 'Saksa', $this->cldr->territory_name( 'DE', 'fi' ) );
-		$this->assertEquals( 'גרמניה', $this->cldr->territory_name( 'DE', 'he' ) );
-		$this->assertEquals( 'Jerman', $this->cldr->territory_name( 'DE', 'id' ) );
-		$this->assertEquals( 'Germania', $this->cldr->territory_name( 'DE', 'it' ) );
-		$this->assertEquals( 'ドイツ', $this->cldr->territory_name( 'DE', 'ja' ) );
-		$this->assertEquals( '독일', $this->cldr->territory_name( 'DE', 'ko' ) );
-		$this->assertEquals( 'Duitsland', $this->cldr->territory_name( 'DE', 'nl' ) );
-		$this->assertEquals( 'Niemcy', $this->cldr->territory_name( 'DE', 'pl' ) );
-		$this->assertEquals( 'Alemanha', $this->cldr->territory_name( 'DE', 'pt-br' ) );
-		$this->assertEquals( 'Germania', $this->cldr->territory_name( 'DE', 'ro' ) );
-		$this->assertEquals( 'Германия', $this->cldr->territory_name( 'DE', 'ru' ) );
-		$this->assertEquals( 'Tyskland', $this->cldr->territory_name( 'DE', 'sv' ) );
-		$this->assertEquals( 'เยอรมนี', $this->cldr->territory_name( 'DE', 'th' ) );
-		$this->assertEquals( 'Almanya', $this->cldr->territory_name( 'DE', 'tr' ) );
-		$this->assertEquals( 'Німеччина', $this->cldr->territory_name( 'DE', 'uk' ) );
-		$this->assertEquals( '德国', $this->cldr->territory_name( 'DE', 'zh-cn' ) );
-		$this->assertEquals( '德國', $this->cldr->territory_name( 'DE', 'zh-tw' ) );
+		$this->assertEquals( 'ألمانيا', $this->cldr->get_territory_name( 'DE', 'ar' ) );
+		$this->assertEquals( 'Almaniya', $this->cldr->get_territory_name( 'DE', 'az' ) );
+		$this->assertEquals( 'Deutschland', $this->cldr->get_territory_name( 'DE', 'de' ) );
+		$this->assertEquals( 'Γερμανία', $this->cldr->get_territory_name( 'DE', 'el' ) );
+		$this->assertEquals( 'Germany', $this->cldr->get_territory_name( 'DE', 'en' ) );
+		$this->assertEquals( 'Alemania', $this->cldr->get_territory_name( 'DE', 'es' ) );
+		$this->assertEquals( 'آلمان', $this->cldr->get_territory_name( 'DE', 'fa' ) );
+		$this->assertEquals( 'Saksa', $this->cldr->get_territory_name( 'DE', 'fi' ) );
+		$this->assertEquals( 'Allemagne', $this->cldr->get_territory_name( 'DE', 'fr' ) );
+		$this->assertEquals( 'Allemagne', $this->cldr->get_territory_name( 'DE', 'fr-ca' ) );
+		$this->assertEquals( 'Saksa', $this->cldr->get_territory_name( 'DE', 'fi' ) );
+		$this->assertEquals( 'גרמניה', $this->cldr->get_territory_name( 'DE', 'he' ) );
+		$this->assertEquals( 'Jerman', $this->cldr->get_territory_name( 'DE', 'id' ) );
+		$this->assertEquals( 'Germania', $this->cldr->get_territory_name( 'DE', 'it' ) );
+		$this->assertEquals( 'ドイツ', $this->cldr->get_territory_name( 'DE', 'ja' ) );
+		$this->assertEquals( '독일', $this->cldr->get_territory_name( 'DE', 'ko' ) );
+		$this->assertEquals( 'Duitsland', $this->cldr->get_territory_name( 'DE', 'nl' ) );
+		$this->assertEquals( 'Niemcy', $this->cldr->get_territory_name( 'DE', 'pl' ) );
+		$this->assertEquals( 'Alemanha', $this->cldr->get_territory_name( 'DE', 'pt-br' ) );
+		$this->assertEquals( 'Germania', $this->cldr->get_territory_name( 'DE', 'ro' ) );
+		$this->assertEquals( 'Германия', $this->cldr->get_territory_name( 'DE', 'ru' ) );
+		$this->assertEquals( 'Tyskland', $this->cldr->get_territory_name( 'DE', 'sv' ) );
+		$this->assertEquals( 'เยอรมนี', $this->cldr->get_territory_name( 'DE', 'th' ) );
+		$this->assertEquals( 'Almanya', $this->cldr->get_territory_name( 'DE', 'tr' ) );
+		$this->assertEquals( 'Німеччина', $this->cldr->get_territory_name( 'DE', 'uk' ) );
+		$this->assertEquals( '德国', $this->cldr->get_territory_name( 'DE', 'zh-cn' ) );
+		$this->assertEquals( '德國', $this->cldr->get_territory_name( 'DE', 'zh-tw' ) );
 	}
 
 	public function test_partial_locale_code() {
 
-		$this->assertEquals( 'Afrique', $this->cldr->territory_name( '002', 'fr' ) );
+		$this->assertEquals( 'Afrique', $this->cldr->get_territory_name( '002', 'fr' ) );
 	}
 
 	public function test_full_locale_code() {
 
-		$this->assertEquals( 'Afrique', $this->cldr->territory_name( '002', 'fr_FR' ) );
+		$this->assertEquals( 'Afrique', $this->cldr->get_territory_name( '002', 'fr_FR' ) );
 	}
 
 	public function test_wpcom_to_cldr_locale_mapping() {
@@ -206,24 +206,24 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 	}
 
-	public function test_telephone_code() {
+	public function test_get_telephone_code() {
 
-		$this->assertEquals( '1', $this->cldr->telephone_code( 'US' ) );
-		$this->assertEquals( '55', $this->cldr->telephone_code( 'BR' ) );
+		$this->assertEquals( '1', $this->cldr->get_telephone_code( 'US' ) );
+		$this->assertEquals( '55', $this->cldr->get_telephone_code( 'BR' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->telephone_code( 'bad-slug' ) );
-		$this->assertEquals( '', $this->cldr->telephone_code( '' ) );
+		$this->assertEquals( '', $this->cldr->get_telephone_code( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->get_telephone_code( '' ) );
 	}
 
-	public function test_first_day_of_week() {
+	public function test_get_first_day_of_week() {
 
-		$this->assertEquals( 'sun', $this->cldr->first_day_of_week( 'US' ) );
-		$this->assertEquals( 'sat', $this->cldr->first_day_of_week( 'QA' ) );
+		$this->assertEquals( 'sun', $this->cldr->get_first_day_of_week( 'US' ) );
+		$this->assertEquals( 'sat', $this->cldr->get_first_day_of_week( 'QA' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->first_day_of_week( 'bad-slug' ) );
-		$this->assertEquals( '', $this->cldr->first_day_of_week( '' ) );
+		$this->assertEquals( '', $this->cldr->get_first_day_of_week( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->get_first_day_of_week( '' ) );
 	}
 
 	public function test_get_currency_for_all_countries() {

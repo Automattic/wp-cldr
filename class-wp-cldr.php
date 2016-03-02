@@ -22,34 +22,34 @@
  *
  * ```
  * $cldr = new WP_CLDR();
- * $territories_in_english = $cldr->territories_by_locale( 'en' );
+ * $territories_in_english = $cldr->get_territories_by_locale( 'en' );
  * ```
  *
  * You can override the default locale per-call by passing in a language slug in the second parameter:
  *
  * ```
- * $germany_in_arabic = $cldr->territory_name( 'DE' , 'ar_AR' );
+ * $germany_in_arabic = $cldr->get_territory_name( 'DE' , 'ar_AR' );
  * ```
  *
  * Use a convenience parameter during instantiation to change the default locale
  *
  * ```
  * $cldr = new WP_CLDR( 'fr' );
- * $germany_in_french = $cldr->territory_name( 'DE' );
- * $us_dollar_in_french = $cldr->currency_name( 'USD' );
- * $canadian_french_in_french = $cldr->language_name( 'fr-ca' );
- * $canadian_french_in_english = $cldr->language_name( 'fr-ca' , 'en' );
- * $german_in_german = $cldr->language_name( 'de_DE' , 'de-DE' );
- * $bengali_in_japanese = $cldr->language_name( 'bn_BD' , 'ja_JP' );
- * $us_dollar_symbol_in_simplified_chinese = $cldr->currency_symbol( 'USD', 'zh' );
- * $africa_in_french = $cldr->territory_name( '002' );
+ * $germany_in_french = $cldr->get_territory_name( 'DE' );
+ * $us_dollar_in_french = $cldr->get_currency_name( 'USD' );
+ * $canadian_french_in_french = $cldr->get_language_name( 'fr-ca' );
+ * $canadian_french_in_english = $cldr->get_language_name( 'fr-ca' , 'en' );
+ * $german_in_german = $cldr->get_language_name( 'de_DE' , 'de-DE' );
+ * $bengali_in_japanese = $cldr->get_language_name( 'bn_BD' , 'ja_JP' );
+ * $us_dollar_symbol_in_simplified_chinese = $cldr->get_currency_symbol( 'USD', 'zh' );
+ * $africa_in_french = $cldr->get_territory_name( '002' );
  * ```
  *
  * Switch locales after the object has been created
  *
  * ```
  * $cldr->set_locale( 'en' );
- * $us_dollar_in_english = $cldr->currency_name( 'USD' );
+ * $us_dollar_in_english = $cldr->get_currency_name( 'USD' );
  * ```
  *
  * Testing
@@ -297,7 +297,7 @@ class WP_CLDR {
 	public function flush_all_wp_caches() {
 		$this->localized = array();
 
-		$locales = $this->languages_by_locale( 'en' );
+		$locales = $this->get_languages_by_locale( 'en' );
 		$supported_buckets = array( 'territories', 'currencies', 'languages', 'weekData', 'telephoneCodeData' );
 		foreach ( array_keys( $locales ) as $locale ) {
 			foreach ( $supported_buckets as $bucket ) {
@@ -365,7 +365,7 @@ class WP_CLDR {
 	 * @param string $locale         Optional. A WordPress locale code.
 	 * @return string The name of the territory in the provided locale.
 	 */
-	public function territory_name( $territory_code, $locale = '' ) {
+	public function get_territory_name( $territory_code, $locale = '' ) {
 		return $this->get_cldr_item( $territory_code, $locale, 'territories' );
 	}
 
@@ -378,7 +378,7 @@ class WP_CLDR {
 	 * @param string $locale        Optional. A WordPress locale code.
 	 * @return string The symbol for the currency in the provided locale.
 	 */
-	public function currency_symbol( $currency_code, $locale = '' ) {
+	public function get_currency_symbol( $currency_code, $locale = '' ) {
 		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
 		if ( isset( $currencies_array[ $currency_code ]['symbol'] ) ) {
 			return $currencies_array[ $currency_code ]['symbol'];
@@ -395,7 +395,7 @@ class WP_CLDR {
 	 * @param string $locale        Optional. A WordPress locale code.
 	 * @return string The name of the currency in the provided locale.
 	 */
-	public function currency_name( $currency_code, $locale = '' ) {
+	public function get_currency_name( $currency_code, $locale = '' ) {
 		$currencies_array = $this->get_locale_bucket( $locale, 'currencies' );
 		if ( isset( $currencies_array[ $currency_code ]['displayName'] ) ) {
 			return $currencies_array[ $currency_code ]['displayName'];
@@ -412,7 +412,7 @@ class WP_CLDR {
 	 * @param string $locale        Optional. A WordPress locale code.
 	 * @return string The name of the language in the provided locale.
 	 */
-	public function language_name( $language_code, $locale = '' ) {
+	public function get_language_name( $language_code, $locale = '' ) {
 		$cldr_matched_language_code = $this->get_cldr_locale( $language_code );
 
 		$language_name = $this->get_cldr_item( $cldr_matched_language_code, $locale, 'languages' );
@@ -434,7 +434,7 @@ class WP_CLDR {
 	 * @param string $locale Optional. A WordPress locale code.
 	 * @return array An associative array of ISO 3166-1 alpha-2 country codes and UN M.49 region codes, along with localized names, from CLDR
 	 */
-	public function territories_by_locale( $locale = '' ) {
+	public function get_territories_by_locale( $locale = '' ) {
 		return $this->get_locale_bucket( $locale, 'territories' );
 	}
 
@@ -446,7 +446,7 @@ class WP_CLDR {
 	 * @param string $locale Optional. A WordPress locale code.
 	 * @return array An associative array of ISO 639 codes and localized language names from CLDR
 	 */
-	public function languages_by_locale( $locale = '' ) {
+	public function get_languages_by_locale( $locale = '' ) {
 		return $this->get_locale_bucket( $locale, 'languages' );
 	}
 
@@ -459,7 +459,7 @@ class WP_CLDR {
 	 * @param string $country_code A two-letter ISO 3166 country code.
 	 * @return string The telephone code for the provided country.
 	 */
-	public function telephone_code( $country_code ) {
+	public function get_telephone_code( $country_code ) {
 		$json_file = $this->get_locale_bucket( 'supplemental', 'telephoneCodeData' );
 		if ( isset( $json_file['supplemental']['telephoneCodeData'][ $country_code ][0]['telephoneCountryCode'] ) ) {
 			return $json_file['supplemental']['telephoneCodeData'][ $country_code ][0]['telephoneCountryCode'];
@@ -476,7 +476,7 @@ class WP_CLDR {
 	 * @param string $country_code A two-letter ISO 3166 country code.
 	 * @return string The first three characters, in lowercase, of the English name for the day considered to be the start of the week.
 	 */
-	public function first_day_of_week( $country_code ) {
+	public function get_first_day_of_week( $country_code ) {
 		$json_file = $this->get_locale_bucket( 'supplemental', 'weekData' );
 		if ( isset( $json_file['supplemental']['weekData']['firstDay'][ $country_code ] ) ) {
 			return $json_file['supplemental']['weekData']['firstDay'][ $country_code ];

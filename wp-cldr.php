@@ -58,7 +58,7 @@ function wp_cldr_settings() {
 	$languages = get_available_languages();
 	$translations = wp_get_available_translations();
 	$locales = array_merge( $default, $translations );
-	$territories = $cldr->territories_by_locale();
+	$territories = $cldr->get_territories_by_locale();
 	?>
 
 	<div class="wrap">
@@ -99,26 +99,26 @@ function wp_cldr_settings() {
 	echo '<br>';
 
 	esc_html_e( 'Mapped to CLDR JSON path:', 'wp-cldr' );
-	echo ' <code> ' . esc_html( $cldr->get_cldr_locale( $locale ) ) . '</code> ' . esc_html( $cldr->language_name( $locale ) ) . ' / ' . esc_html( $cldr->language_name( $locale, 'en' ) ) . '<br>';
+	echo ' <code> ' . esc_html( $cldr->get_cldr_locale( $locale ) ) . '</code> ' . esc_html( $cldr->get_language_name( $locale ) ) . ' / ' . esc_html( $cldr->get_language_name( $locale, 'en' ) ) . '<br>';
 
 	$example_territories = array( 'US', 'CN', '002' );
 	esc_html_e( 'Example territory names:', 'wp-cldr' );
 	foreach ( $example_territories as $territory ) {
-		echo ' <code>' . esc_html( $territory ) . '</code> ' . esc_html( $cldr->territory_name( $territory ) );
+		echo ' <code>' . esc_html( $territory ) . '</code> ' . esc_html( $cldr->get_territory_name( $territory ) );
 	}
 	echo '<br>';
 
 	$example_languages = array( 'en', 'zh_TW', 'en_ZA' );
 	esc_html_e( 'Example language names:', 'wp-cldr' );
 	foreach ( $example_languages as $language ) {
-		echo ' <code>' . esc_html( $language ) . '</code> ' . esc_html( $cldr->language_name( $language ) );
+		echo ' <code>' . esc_html( $language ) . '</code> ' . esc_html( $cldr->get_language_name( $language ) );
 	}
 	echo '<br>';
 
 	$example_currencies = array( 'USD', 'JPY', 'ZAR' );
 	esc_html_e( 'Example currency names and symbols:', 'wp-cldr' );
 	foreach ( $example_currencies as $currency ) {
-		echo ' <code>' . esc_html( $currency ) . '</code> ' . esc_html( $cldr->currency_name( $currency ) ) . ' / ' . esc_html( $cldr->currency_symbol( $currency ) );
+		echo ' <code>' . esc_html( $currency ) . '</code> ' . esc_html( $cldr->get_currency_name( $currency ) ) . ' / ' . esc_html( $cldr->get_currency_symbol( $currency ) );
 	}
 	echo '<br>';
 ?>
@@ -150,13 +150,13 @@ function wp_cldr_settings() {
 	<?php
 
 	esc_html_e( 'Country code:', 'wp-cldr' );
-	echo ' <code>' . esc_html( $country ) . '</code> ' . esc_html( $cldr->territory_name( $country ) ) . ' / ' . esc_html( $cldr->territory_name( $country, 'en' ) ) . '<br>';
+	echo ' <code>' . esc_html( $country ) . '</code> ' . esc_html( $cldr->get_territory_name( $country ) ) . ' / ' . esc_html( $cldr->get_territory_name( $country, 'en' ) ) . '<br>';
 
 	esc_html_e( 'Telephone code:', 'wp-cldr' );
-	echo ' <code>' . esc_html( $country ) . '</code> ' . esc_html( $cldr->telephone_code( $country ) ) . '<br>';
+	echo ' <code>' . esc_html( $country ) . '</code> ' . esc_html( $cldr->get_telephone_code( $country ) ) . '<br>';
 
 	esc_html_e( 'First day of week:', 'wp-cldr' );
-	echo ' <code>' . esc_html( $country ) . '</code>' . esc_html( $cldr->first_day_of_week( $country ) ) . '<br>';
+	echo ' <code>' . esc_html( $country ) . '</code>' . esc_html( $cldr->get_first_day_of_week( $country ) ) . '<br>';
 
 	esc_html_e( 'Most spoken language:', 'wp-cldr' );
 	$most_spoken_language = $cldr->get_top_language_spoken( $country );
@@ -165,7 +165,7 @@ function wp_cldr_settings() {
 
 	esc_html_e( 'Currency:', 'wp-cldr' );
 	$currency_code = $cldr->get_currency_for_country( $country );
-	$currency_name = $cldr->currency_name( $currency_code );
+	$currency_name = $cldr->get_currency_name( $currency_code );
 	echo ' <code>' . esc_html( $country ) . '</code>' . esc_html( $currency_code ) . ', ' . esc_html( $currency_name ) . '<br>';
 }
 ?>
