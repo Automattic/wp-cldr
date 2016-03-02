@@ -536,8 +536,8 @@ class WP_CLDR {
 	 */
 	public function get_countries_for_all_currencies() {
 		$currency_for_all_countries = $this->get_currency_for_all_countries();
-		foreach ( $currency_for_all_countries as $country_code => $currency ) {
-			$result[ $currency ][] = $country_code;
+		foreach ( $currency_for_all_countries as $country_code => $currency_code ) {
+			$result[ $currency_code ][] = $country_code;
 		}
 		return $result;
 	}
@@ -548,40 +548,40 @@ class WP_CLDR {
 	 * @link http://www.iso.org/iso/currency_codes ISO 4217 currency codes
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 *
-	 * @param string $currency A three-letter ISO 4217 currency code.
+	 * @param string $currency_code A three-letter ISO 4217 currency code.
 	 * @return array The ISO 3166 codes for the countries which currently the currency.
 	 */
-	public function get_countries_for_currency( $currency ) {
+	public function get_countries_for_currency( $currency_code ) {
 		$countries_for_all_currencies = $this->get_countries_for_all_currencies();
-		if ( isset( $countries_for_all_currencies[ $currency ] ) ) {
-			return $countries_for_all_currencies[ $currency ];
+		if ( isset( $countries_for_all_currencies[ $currency_code ] ) ) {
+			return $countries_for_all_currencies[ $currency_code ];
 		}
 		return array();
 	}
 
 	/**
-	 * Gets the territories contained by a region code.
+	 * Gets the countries contained by a region code.
 	 *
 	 * @link http://www.unicode.org/cldr/charts/latest/supplemental/territory_containment_un_m_49.html CLDR info page on territory containment
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 * @link http://unstats.un.org/unsd/methods/m49/m49regin.htm UN M.49 region codes
 	 *
-	 * @param string $region A UN M.49 region code or a two-letter ISO 3166-1 country code.
-	 * @return array The territories included in that region, or the country if $region is a country.
+	 * @param string $region_code A UN M.49 region code or a two-letter ISO 3166-1 country code.
+	 * @return array The countries included in that region, or the country if $region_code is a country.
 	 */
-	public function get_territories_contained( $region ) {
+	public function get_territories_contained( $region_code ) {
 
-		// If $region is a country code, return it.
-		if ( preg_match( '/[A-Z]{2}/', $region ) ) {
-			return array( $region );
+		// If $region_code is a country code, return it.
+		if ( preg_match( '/[A-Z]{2}/', $region_code ) ) {
+			return array( $region_code );
 		}
 
 		// If it's a region code, recursively find the contained country codes.
-		if ( preg_match( '/\d{3}/', $region ) ) {
+		if ( preg_match( '/\d{3}/', $region_code ) ) {
 			$result = array();
 			$json_file = $this->get_locale_bucket( 'supplemental', 'territoryContainment' );
-			if ( isset( $json_file['supplemental']['territoryContainment'][ $region ]['_contains'] ) ) {
-				foreach ( $json_file['supplemental']['territoryContainment'][ $region ]['_contains'] as $contained_region ) {
+			if ( isset( $json_file['supplemental']['territoryContainment'][ $region_code ]['_contains'] ) ) {
+				foreach ( $json_file['supplemental']['territoryContainment'][ $region_code ]['_contains'] as $contained_region ) {
 					$result = array_merge( $result, $this->get_territories_contained( $contained_region ) );
 				}
 				return $result;
