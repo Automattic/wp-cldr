@@ -98,7 +98,7 @@ function wp_cldr_settings() {
 	}
 	echo '<br>';
 
-	esc_html_e( 'Mapped to CLDR locale:', 'wp-cldr' );
+	esc_html_e( 'Mapped to CLDR JSON path:', 'wp-cldr' );
 	echo ' <code> ' . esc_html( $cldr->get_cldr_locale( $locale ) ) . '</code> ' . esc_html( $cldr->language_name( $locale ) ) . ' / ' . esc_html( $cldr->language_name( $locale, 'en' ) ) . '<br>';
 
 	$example_territories = array( 'US', 'CN', '002' );
