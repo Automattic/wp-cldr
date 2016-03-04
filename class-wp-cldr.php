@@ -572,12 +572,12 @@ class WP_CLDR {
 	public function get_territories_contained( $region_code ) {
 
 		// If $region_code is a country code, return it.
-		if ( preg_match( '/[A-Z]{2}/', $region_code ) ) {
+		if ( preg_match( '/^[A-Z]{2}$/', $region_code ) ) {
 			return array( $region_code );
 		}
 
 		// If it's a region code, recursively find the contained country codes.
-		if ( preg_match( '/\d{3}/', $region_code ) ) {
+		if ( preg_match( '/^\d{3}$/', $region_code ) ) {
 			$result = array();
 			$json_file = $this->get_locale_bucket( 'supplemental', 'territoryContainment' );
 			if ( isset( $json_file['supplemental']['territoryContainment'][ $region_code ]['_contains'] ) ) {
