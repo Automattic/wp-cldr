@@ -73,25 +73,25 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'Canadian French', $this->cldr->get_language_name( 'fr-ca' , '' ) );
 	}
 
-	public function test_get_territories_by_locale() {
+	public function test_get_territories() {
 
-		$territories_in_english = $this->cldr->get_territories_by_locale( 'en' );
+		$territories_in_english = $this->cldr->get_territories();
 		$this->assertArrayHasKey( 'US', $territories_in_english );
 		$this->assertEquals( 'United States', $territories_in_english['US'] );
 
 		// Test some bad slugs.
-		$all_territories = $this->cldr->get_territories_by_locale( 'bad-slug' );
+		$all_territories = $this->cldr->get_territories( 'bad-slug' );
 		$this->assertEquals( 'United States', $all_territories['US'] );
 	}
 
-	public function test_get_languages_by_locale() {
+	public function test_get_languages() {
 
-		$languages_in_english = $this->cldr->get_languages_by_locale( 'en' );
+		$languages_in_english = $this->cldr->get_languages();
 		$this->assertArrayHasKey( 'en', $languages_in_english );
 		$this->assertEquals( 'German', $languages_in_english['de'] );
 
 		// Test some bad slugs.
-		$all_languages = $this->cldr->get_languages_by_locale( 'bad-slug' );
+		$all_languages = $this->cldr->get_languages( 'bad-slug' );
 		$this->assertEquals( 'English', $all_languages['en'] );
 	}
 
