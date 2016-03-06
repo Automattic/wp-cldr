@@ -334,28 +334,6 @@ class WP_CLDR {
 	}
 
 	/**
-	 * Gets the localized value for a single data item in a bucket of localized CLDR data.
-	 *
-	 * @param string $key    A key of a CLDR data item.
-	 * @param string $locale A WordPress locale code.
-	 * @param string $bucket A CLDR data item.
-	 * @return string The localized CLDR data item in the selected locale.
-	 */
-	private function get_cldr_item( $key, $locale, $bucket ) {
-		if ( ! is_string( $key ) || ! strlen( $key ) ) {
-			return '';
-		}
-
-		$bucket_array = $this->get_locale_bucket( $locale, $bucket );
-
-		if ( isset( $bucket_array[ $key ] ) ) {
-			return (string) $bucket_array[ $key ];
-		}
-
-		return '';
-	}
-
-	/**
 	 * Gets a localized country or region name.
 	 *
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
@@ -366,7 +344,11 @@ class WP_CLDR {
 	 * @return string The name of the territory in the provided locale.
 	 */
 	public function get_territory_name( $territory_code, $locale = '' ) {
-		return $this->get_cldr_item( $territory_code, $locale, 'territories' );
+		$territories_array = $this->get_territories_by_locale( $locale );
+		if ( isset( $territories_array[ $territory_code ] ) ) {
+			return $territories_array[ $territory_code ];
+		}
+		return '';
 	}
 
 	/**
@@ -415,14 +397,18 @@ class WP_CLDR {
 	public function get_language_name( $language_code, $locale = '' ) {
 		$cldr_matched_language_code = $this->get_cldr_locale( $language_code );
 
-		$language_name = $this->get_cldr_item( $cldr_matched_language_code, $locale, 'languages' );
-
-		// If no match for locale (language-COUNTRY), try falling back to CLDR-matched language code only.
-		if ( empty( $language_name ) ) {
-			$language_name = $this->get_cldr_item( strtok( $language_code, '-_' ), $locale, 'languages' );
+		$languages = $this->get_languages_by_locale( $locale );
+		if ( isset( $languages[ $cldr_matched_language_code ] ) ) {
+			return $languages[ $cldr_matched_language_code ];
 		}
 
-		return $language_name;
+		// If no match for a full language code (e.g. `en-NZ`), check for language code only (e.g. `en`).
+		$language_only_cldr_code = strtok( $cldr_matched_language_code, '-_' );
+		if ( isset( $languages[ $language_only_cldr_code ] ) ) {
+			return $languages[ $language_only_cldr_code ];
+		}
+
+		return '';
 	}
 
 	/**
