@@ -185,7 +185,7 @@ class WP_CLDR {
 	 *
 	 * @param string $cldr_locale The CLDR locale.
 	 * @param string $bucket The CLDR data item.
-	 * @return array  An array with the CLDR data from the file, or an empty array if no match with any CLDR data files.
+	 * @return array An array with the CLDR data from the file, or an empty array if no match with any CLDR data files.
 	 */
 	public static function get_cldr_json_file( $cldr_locale, $bucket ) {
 		$base_path = __DIR__ . '/json/v' . WP_CLDR::CLDR_VERSION;
@@ -222,6 +222,7 @@ class WP_CLDR {
 	 *
 	 * @param string $locale Optional. The locale.
 	 * @param string $bucket Optional. The CLDR data item.
+	 * @return bool Whether or not the locale bucket was successfully initialized.
 	 */
 	private function initialize_locale_bucket( $locale = 'en', $bucket = 'territories' ) {
 
@@ -238,16 +239,15 @@ class WP_CLDR {
 
 		$json_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 
-		// If no language-country locale CLDR file, fall back to a language-only CLDR file.
+		// If there's no language-country locale CLDR file, try falling back to a language-only CLDR file.
 		if ( empty( $json_file ) && 'supplemental' !== $bucket ) {
 			$cldr_locale = strtok( $cldr_locale, '-_' );
 			$json_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 		}
 
-		// If no language CLDR file, fall back to English CLDR file.
-		if ( empty( $json_file ) && 'supplemental' !== $bucket ) {
-			$cldr_locale = 'en';
-			$json_file = self::get_cldr_json_file( $cldr_locale, $bucket );
+		// If no CLDR file, return false.
+		if ( empty( $json_file ) ) {
+			return false;
 		}
 
 		// Do some performance-enhancing pre-processing of data items, then put into cache
@@ -278,6 +278,8 @@ class WP_CLDR {
 		if ( $this->use_cache ) {
 			wp_cache_set( $cache_key, $this->localized[ $locale ][ $bucket ], WP_CLDR::CACHE_GROUP );
 		}
+
+		return true;
 	}
 
 	/**
@@ -307,29 +309,35 @@ class WP_CLDR {
 	}
 
 	/**
-	 * Returns data for a single CLDR data item in a locale.
+	 * Returns a bucket of CLDR data for a locale.
 	 *
 	 * @param string $locale A WordPress locale code.
 	 * @param string $bucket A CLDR data item.
-	 * @return array An associative array where keys are WordPress locales and values are CLDR data items
+	 * @return array An associative array with the contents of the locale bucket.
 	 */
 	private function get_locale_bucket( $locale, $bucket ) {
 		if ( empty( $locale ) ) {
 			$locale = $this->locale;
 		}
 
+		// Check the in-memory array.
 		if ( isset( $this->localized[ $locale ][ $bucket ] ) ) {
 			return $this->localized[ $locale ][ $bucket ];
 		}
 
-		// Maybe that bucket hasn't been initialized on this locale, let's try again.
-		$this->initialize_locale_bucket( $locale, $bucket );
-
-		if ( isset( $this->localized[ $locale ][ $bucket ] ) ) {
+		// If it's not in memory, initialize the locale bucket which loads the in-memory array.
+		if ( $this->initialize_locale_bucket( $locale, $bucket ) ) {
 			return $this->localized[ $locale ][ $bucket ];
 		}
 
-		// Really not found.
+		// If the locale bucket cannot be initialized, locale-specific data files probably
+		// aren't available so fall back to English via a recursive call of this method.
+		$english_fallback = $this->get_locale_bucket( 'en', $bucket );
+		if ( ! empty( $english_fallback ) ) {
+			return $english_fallback;
+		}
+
+		// Since everything else failed, return an empty array.
 		return array();
 	}
 
