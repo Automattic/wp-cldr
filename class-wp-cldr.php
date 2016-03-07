@@ -563,6 +563,7 @@ class WP_CLDR {
 	 * @return array An associative array of ISO 3166 country codes and the ISO 4217 code for the currency currently used in each country.
 	 */
 	public function get_currency_for_all_countries() {
+		$result = array();
 		$json_file = $this->get_locale_bucket( 'supplemental', 'currencyData' );
 
 		// This CLDR item has a history of all the currencies ever used in a country
