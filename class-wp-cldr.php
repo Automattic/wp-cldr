@@ -392,7 +392,7 @@ class WP_CLDR {
 	 * @return string The name of the territory in the provided locale.
 	 */
 	public function get_territory_name( $territory_code, $locale = '' ) {
-		$territories_array = $this->get_territories_by_locale( $locale );
+		$territories_array = $this->get_territories( $locale );
 		if ( isset( $territories_array[ $territory_code ] ) ) {
 			return $territories_array[ $territory_code ];
 		}
@@ -445,7 +445,7 @@ class WP_CLDR {
 	public function get_language_name( $language_code, $locale = '' ) {
 		$cldr_matched_language_code = self::get_cldr_locale( $language_code );
 
-		$languages = $this->get_languages_by_locale( $locale );
+		$languages = $this->get_languages( $locale );
 		if ( isset( $languages[ $cldr_matched_language_code ] ) ) {
 			return $languages[ $cldr_matched_language_code ];
 		}

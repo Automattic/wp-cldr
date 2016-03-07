@@ -144,7 +144,7 @@ function wp_cldr_settings() {
 		<th width="40%" align="left"><label><?php esc_html_e( 'Countries', 'wp-cldr' ); ?></label></th>
 		<td>
 			<select name="country" id="country">
-				<?php foreach ( $cldr->get_territories_by_locale() as $slug => $name ) {
+				<?php foreach ( $cldr->get_territories() as $slug => $name ) {
 					if ( 2 === strlen( $slug ) && 'ZZ' !== $slug ) { ?>
 						<option value="<?php esc_attr_e( $slug ); ?>"<?php echo (string) $slug === $country ? ' selected="selected"' : ''; ?>>
 							<?php esc_attr_e( $name ); ?>
