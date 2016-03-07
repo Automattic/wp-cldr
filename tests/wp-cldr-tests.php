@@ -93,7 +93,7 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 		// Test some bad slugs.
 		try {
-			$all_territories = $this->cldr->get_territories_by_locale( 'bad-slug' );
+			$all_territories = $this->cldr->get_territories( 'bad-slug' );
 			$this->assertEquals( 'United States', $all_territories['US'] );
 		} catch ( WP_CLDR_Exception $e ) {
 			$this->assertTrue( true );
@@ -109,7 +109,7 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 		// Test some bad slugs.
 		try {
-			$all_languages = $this->cldr->get_languages_by_locale( 'bad-slug' );
+			$all_languages = $this->cldr->get_languages( 'bad-slug' );
 			$this->assertEquals( 'English', $all_languages['en'] );
 		} catch ( WP_CLDR_Exception $e ) {
 			$this->assertTrue( true );

@@ -109,12 +109,12 @@ class WP_CLDR {
 	}
 
 	/**
-	 * Get custom properties
+	 * Gets custom properties.
 	 *
 	 * - locale: gets the locale
 	 *
-	 * @param  string $key property name
-	 * @return             property value
+	 * @param string $key Property name.
+	 * @return string Property value.
 	 */
 	public function __get( $key ) {
 
@@ -125,12 +125,13 @@ class WP_CLDR {
 	}
 
 	/**
-	 * Set custom properties
+	 * Sets custom properties.
 	 *
 	 * - locale: sets the locale and makes sure the bucket is initialized
 	 *
-	 * @param  string $key   property name
-	 * @return        $value property value
+	 * @param string $key Property name.
+	 * @param string $value Property value.
+	 * @return mixed Property value, or false if .
 	 */
 	public function __set( $key, $value ) {
 
@@ -258,6 +259,7 @@ class WP_CLDR {
 	 * @param string $cldr_locale The CLDR locale.
 	 * @param string $bucket The CLDR data item.
 	 * @return array An array with the CLDR data from the file, or an empty array if no match with any CLDR data files.
+	 * @throws WP_CLDR_Exception If a JSON file is missing.
 	 */
 	public function get_cldr_json_file( $cldr_locale, $bucket ) {
 		$cldr_json_path = $this->get_cldr_json_path( $cldr_locale, $bucket );
@@ -300,6 +302,7 @@ class WP_CLDR {
 	 * @param string $locale Optional. The locale.
 	 * @param string $bucket Optional. The CLDR data item.
 	 * @return bool Whether or not the locale bucket was successfully initialized.
+	 * @throws WP_CLDR_Exception If a JSON file is missing.
 	 */
 	private function initialize_locale_bucket( $locale, $bucket = 'territories' ) {
 
@@ -385,6 +388,7 @@ class WP_CLDR {
 	 * @param string $locale A WordPress locale code.
 	 * @param string $bucket A CLDR data item.
 	 * @return array An associative array with the contents of the locale bucket.
+	 * @throws WP_CLDR_Exception If the locale bucket isn't properly initialized.
 	 */
 	private function get_locale_bucket( $locale, $bucket ) {
 		if ( ! $this->initialized ) {
@@ -728,13 +732,43 @@ class WP_CLDR {
  * Custom WP_CLDR Exception
  */
 class WP_CLDR_Exception extends Exception {
+
+	/**
+	 * The error for a missing JSON file.
+	 */
 	const JSON_MISSING = 1;
+
+	/**
+	 * The error for failure to initialize the variable.
+	 */
 	const NOT_INITIALIZED = 2;
 
+	/**
+	 * The message.
+	 *
+	 * @var string
+	 */
 	protected $message;
+
+	/**
+	 * The message ID.
+	 *
+	 * @var integer
+	 */
 	private $message_id;
+
+	/**
+	 * The detailed message associatd with an exception.
+	 *
+	 * @var array
+	 */
 	private $detailed_message;
 
+	/**
+	 * Constructs a new instance of the Exception.
+	 *
+	 * @param integer $message_id The message ID.
+	 */
 	public function __construct( $message_id ) {
 		if ( is_numeric( $message_id ) ) {
 			switch ( $message_id ) {
@@ -753,7 +787,8 @@ class WP_CLDR_Exception extends Exception {
 	}
 
 	/**
-	 * Gets a more detailed HTML message about the error
+	 * Gets a more detailed HTML message about the error.
+	 *
 	 * @return string Detailed HTML message
 	 */
 	public function getDetailedMessage() {

@@ -33,7 +33,7 @@ function wp_cldr_menu() {
 }
 
 /**
- * Gets the settings and examples page for the plugin.
+ * Checks for exceptions then gets the settings and examples page for the plugin.
  */
 function wp_cldr_settings() {
 
@@ -52,13 +52,19 @@ function wp_cldr_settings() {
 			<p><?php
 			echo wp_kses( $e->getDetailedMessage(), array(
 				'a' => array( 'href' => array() ),
-				'p' => array() )
+				'p' => array(),
+				)
 			); ?></p>
 		</div><?php
 	}
 
 }
 
+/**
+ * Displays the settings and examples page for the plugin.
+ *
+ * @param Object $cldr An instance of the WP_CLDR class.
+ */
 function wp_cldr_display_settings( WP_CLDR $cldr ) {
 	if ( isset( $_GET['country'] ) && 2 === strlen( sanitize_text_field( wp_unslash( $_GET['country'] ) ) ) ) {
 		$country = sanitize_text_field( wp_unslash( $_GET['country'] ) );
@@ -66,7 +72,7 @@ function wp_cldr_display_settings( WP_CLDR $cldr ) {
 		$country = 'US';
 	}
 	$default = array(
-		array(
+		'en_US' => array(
 			'language' => 'en_US',
 			'english_name' => 'English (US)',
 			'native_name' => 'English (US)',
@@ -194,7 +200,7 @@ function wp_cldr_display_settings( WP_CLDR $cldr ) {
 		</td>
 		<td>
 			<input type="hidden" name="page" value="wp-cldr">
-			<input type="hidden" name="locale" value="<?php esc_attr_e( $locale ); ?>">
+			<input type="hidden" name="locale" value="<?php esc_attr_e( $cldr->locale ); ?>">
 			<?php submit_button( 'Update examples', 'secondary', '', false ); ?>
 		</td>
 	</tr>
@@ -210,7 +216,7 @@ function wp_cldr_display_settings( WP_CLDR $cldr ) {
 	echo '<code>' . esc_html( $country ) . '</code> ' . esc_html( $locale_territory_name );
 	$english_territory_name = $cldr->get_territory_name( $country, 'en-US' );
 	if ( $english_territory_name !== $locale_territory_name ) {
-		echo ' / ' . esc_html( $cldr->get_territory_name( $country, 'en-US' ) );
+		echo ' / ' . esc_html( $english_territory_name );
 	}
 	echo '<br>';
 
