@@ -53,7 +53,7 @@ Open up a new issue on Github at https://github.com/Automattic/wp-cldr/issues. W
 ### The default locale is English
 ```
 $cldr = new WP_CLDR();
-$territories_in_english = $cldr->get_territories_by_locale();
+$territories_in_english = $cldr->get_territories();
 ```
 
 ### You can override the default locale per-call by passing in a language slug in the second parameter

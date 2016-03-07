@@ -22,7 +22,7 @@
  *
  * ```
  * $cldr = new WP_CLDR();
- * $territories_in_english = $cldr->get_territories_by_locale( 'en' );
+ * $territories_in_english = $cldr->get_territories();
  * ```
  *
  * You can override the default locale per-call by passing in a language slug in the second parameter:
@@ -338,7 +338,7 @@ class WP_CLDR {
 	public function flush_all_wp_caches() {
 		$this->localized = array();
 
-		$locales = $this->get_languages_by_locale( 'en' );
+		$locales = $this->get_languages();
 		$supported_buckets = array( 'territories', 'currencies', 'languages', 'weekData', 'telephoneCodeData' );
 		foreach ( array_keys( $locales ) as $locale ) {
 			foreach ( $supported_buckets as $bucket ) {
@@ -482,7 +482,7 @@ class WP_CLDR {
 	 * @param string $locale Optional. A WordPress locale code.
 	 * @return array An associative array of ISO 3166-1 alpha-2 country codes and UN M.49 region codes, along with localized names, from CLDR
 	 */
-	public function get_territories_by_locale( $locale = '' ) {
+	public function get_territories( $locale = '' ) {
 		return $this->get_locale_bucket( $locale, 'territories' );
 	}
 
@@ -494,7 +494,7 @@ class WP_CLDR {
 	 * @param string $locale Optional. A WordPress locale code.
 	 * @return array An associative array of ISO 639 codes and localized language names from CLDR
 	 */
-	public function get_languages_by_locale( $locale = '' ) {
+	public function get_languages( $locale = '' ) {
 		return $this->get_locale_bucket( $locale, 'languages' );
 	}
 
