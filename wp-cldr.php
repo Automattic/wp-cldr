@@ -121,7 +121,7 @@ function wp_cldr_display_settings( WP_CLDR $cldr ) {
 	}
 	echo '<br>';
 
-	$mapped_cldr_locale = $cldr->get_best_available_cldr_json_locale( $cldr->locale, 'territories' );
+	$mapped_cldr_locale = WP_CLDR::get_best_available_cldr_json_locale( $cldr->locale, 'territories' );
 	if ( empty( $mapped_cldr_locale ) ) {
 		echo '<br><i>';
 		esc_html_e( 'CLDR files not available for this WordPress locale.', 'wp-cldr' );

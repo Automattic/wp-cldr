@@ -152,7 +152,7 @@ class WP_CLDR {
 	 * @param string $wp_locale A WordPress locale code.
 	 * @return string The equivalent CLDR locale code.
 	 */
-	public function get_cldr_locale( $wp_locale ) {
+	public static function get_cldr_locale( $wp_locale ) {
 
 		// This array captures the WordPress locales that are significantly different from CLDR locales.
 		$wp2cldr = array(
@@ -219,7 +219,7 @@ class WP_CLDR {
 	 * @param string $bucket The CLDR data item.
 	 * @return string An array with the CLDR data from the file, or an empty array if no match with any CLDR data files.
 	 */
-	public function get_cldr_json_path( $cldr_locale, $bucket ) {
+	public static function get_cldr_json_path( $cldr_locale, $bucket ) {
 
 		$base_path = __DIR__ . '/json/v' . WP_CLDR::CLDR_VERSION;
 
@@ -247,8 +247,8 @@ class WP_CLDR {
 	 * @param string $bucket The CLDR data item.
 	 * @return bool Whether or not the CLDR JSON file is available.
 	 */
-	public function is_cldr_json_available( $cldr_locale, $bucket ) {
-		$cldr_json_file_path = $this->get_cldr_json_path( $cldr_locale, $bucket );
+	public static function is_cldr_json_available( $cldr_locale, $bucket ) {
+		$cldr_json_file_path = self::get_cldr_json_path( $cldr_locale, $bucket );
 		return is_readable( $cldr_json_file_path );
 	}
 
@@ -262,7 +262,7 @@ class WP_CLDR {
 	public function get_cldr_json_file( $cldr_locale, $bucket ) {
 		$cldr_json_path = $this->get_cldr_json_path( $cldr_locale, $bucket );
 
-		if ( $this->is_cldr_json_available( $cldr_locale, $bucket ) ) {
+		if ( self::is_cldr_json_available( $cldr_locale, $bucket ) ) {
 			$json_raw = file_get_contents( $cldr_json_path );
 			$json_decoded = json_decode( $json_raw, true );
 			return $json_decoded;
@@ -278,16 +278,16 @@ class WP_CLDR {
 	 * @param string $bucket The CLDR data item.
 	 * @return string The best available CLDR JSON locale, or an empty string if no JSON locale is available.
 	 */
-	public function get_best_available_cldr_json_locale( $locale, $bucket ) {
-		$cldr_locale = $this->get_cldr_locale( $locale );
+	public static function get_best_available_cldr_json_locale( $locale, $bucket ) {
+		$cldr_locale = self::get_cldr_locale( $locale );
 
-		if ( $this->is_cldr_json_available( $cldr_locale, $bucket ) ) {
+		if ( self::is_cldr_json_available( $cldr_locale, $bucket ) ) {
 			return $cldr_locale;
 		}
 
 		// If there's no language-country locale CLDR file, try falling back to a language-only CLDR file.
 		$language_only_cldr_locale = strtok( $cldr_locale, '-_' );
-		if ( $this->is_cldr_json_available( $language_only_cldr_locale, $bucket ) ) {
+		if ( self::is_cldr_json_available( $language_only_cldr_locale, $bucket ) ) {
 			return $language_only_cldr_locale;
 		}
 
@@ -313,13 +313,13 @@ class WP_CLDR {
 			}
 		}
 
-		$cldr_locale = $this->get_best_available_cldr_json_locale( $locale, $bucket );
+		$cldr_locale = self::get_best_available_cldr_json_locale( $locale, $bucket );
 
 		if ( empty( $cldr_locale ) ) {
 			throw new WP_CLDR_Exception( WP_CLDR_Exception::JSON_MISSING );
 		}
 
-		$json_file = $this->get_cldr_json_file( $cldr_locale, $bucket );
+		$json_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 
 		// Do some performance-enhancing pre-processing of data items, then put into cache
 		// organized by WordPress locale.
