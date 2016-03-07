@@ -42,12 +42,29 @@ function wp_cldr_settings() {
 	} else {
 		$locale = get_locale();
 	}
+
+	try {
+		wp_cldr_display_settings( new WP_CLDR( $locale ) );
+	} catch ( WP_CLDR_Exception $e ) {
+		?><div class="wrap">
+			<h1><?php esc_html_e( 'WP CLDR settings and info', 'wp-cldr' ); ?></h1>
+			<h2 class="error"><?php echo esc_html( $e->getMessage() ); ?></h2>
+			<p><?php
+			echo wp_kses( $e->getDetailedMessage(), array(
+				'a' => array( 'href' => array() ),
+				'p' => array() )
+			); ?></p>
+		</div><?php
+	}
+
+}
+
+function wp_cldr_display_settings( WP_CLDR $cldr ) {
 	if ( isset( $_GET['country'] ) && 2 === strlen( sanitize_text_field( wp_unslash( $_GET['country'] ) ) ) ) {
 		$country = sanitize_text_field( wp_unslash( $_GET['country'] ) );
 	} else {
 		$country = 'US';
 	}
-	$cldr = new WP_CLDR( $locale, false );
 	$default = array(
 		array(
 			'language' => 'en_US',
@@ -55,6 +72,7 @@ function wp_cldr_settings() {
 			'native_name' => 'English (US)',
 		),
 	);
+
 	$languages = get_available_languages();
 	$translations = wp_get_available_translations();
 	$locales = array_merge( $default, $translations );
@@ -75,7 +93,7 @@ function wp_cldr_settings() {
 			wp_dropdown_languages( array(
 				'name'         => 'locale',
 				'id'           => 'locale',
-				'selected'     => $locale,
+				'selected'     => $cldr->locale,
 				'languages'    => $languages,
 			) );
 			?>
@@ -103,7 +121,7 @@ function wp_cldr_settings() {
 	}
 	echo '<br>';
 
-	$mapped_cldr_locale = WP_CLDR::get_best_available_cldr_json_locale( $locale, 'territories' );
+	$mapped_cldr_locale = $cldr->get_best_available_cldr_json_locale( $cldr->locale, 'territories' );
 	if ( empty( $mapped_cldr_locale ) ) {
 		echo '<br><i>';
 		esc_html_e( 'CLDR files not available for this WordPress locale.', 'wp-cldr' );

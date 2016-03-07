@@ -44,7 +44,7 @@
  * Switch locales after the object has been created:
  *
  * ```
- * $cldr->set_locale( 'en' );
+ * $cldr->locale = 'en';
  * $us_dollar_in_english = $cldr->get_currency_name( 'USD' );
  * ```
  *
@@ -59,7 +59,15 @@
  */
 class WP_CLDR {
 	/**
+	 * Whether the class was initialized properly.
+	 *
+	 * @var boolean
+	 */
+	private $initialized = false;
+
+	/**
 	 * The current locale.
+	 * This property is directly accessible via __get and __set
 	 *
 	 * @var string
 	 */
@@ -97,17 +105,45 @@ class WP_CLDR {
 	 */
 	public function __construct( $locale = 'en', $use_cache = true ) {
 		$this->use_cache = $use_cache;
-		$this->set_locale( $locale );
+		$this->__set( 'locale', $locale );
 	}
 
 	/**
-	 * Sets the locale.
+	 * Get custom properties
 	 *
-	 * @param string $locale A WordPress locale code.
+	 * - locale: gets the locale
+	 *
+	 * @param  string $key property name
+	 * @return             property value
 	 */
-	public function set_locale( $locale ) {
-		$this->locale = $locale;
-		$this->initialize_locale_bucket( $locale );
+	public function __get( $key ) {
+
+		switch ( $key ) {
+			case 'locale':
+				return $this->$key;
+		}
+	}
+
+	/**
+	 * Set custom properties
+	 *
+	 * - locale: sets the locale and makes sure the bucket is initialized
+	 *
+	 * @param  string $key   property name
+	 * @return        $value property value
+	 */
+	public function __set( $key, $value ) {
+
+		switch ( $key ) {
+			case 'locale':
+				$this->initialized = $this->initialize_locale_bucket( $value );
+
+				if ( $this->initialized ) {
+					return $this->locale = $value;
+				}
+
+				return false;
+		}
 	}
 
 	/**
@@ -116,7 +152,7 @@ class WP_CLDR {
 	 * @param string $wp_locale A WordPress locale code.
 	 * @return string The equivalent CLDR locale code.
 	 */
-	public static function get_cldr_locale( $wp_locale ) {
+	public function get_cldr_locale( $wp_locale ) {
 
 		// This array captures the WordPress locales that are significantly different from CLDR locales.
 		$wp2cldr = array(
@@ -183,7 +219,7 @@ class WP_CLDR {
 	 * @param string $bucket The CLDR data item.
 	 * @return string An array with the CLDR data from the file, or an empty array if no match with any CLDR data files.
 	 */
-	public static function get_cldr_json_path( $cldr_locale, $bucket ) {
+	public function get_cldr_json_path( $cldr_locale, $bucket ) {
 
 		$base_path = __DIR__ . '/json/v' . WP_CLDR::CLDR_VERSION;
 
@@ -211,8 +247,8 @@ class WP_CLDR {
 	 * @param string $bucket The CLDR data item.
 	 * @return bool Whether or not the CLDR JSON file is available.
 	 */
-	public static function is_cldr_json_available( $cldr_locale, $bucket ) {
-		$cldr_json_file_path = self::get_cldr_json_path( $cldr_locale, $bucket );
+	public function is_cldr_json_available( $cldr_locale, $bucket ) {
+		$cldr_json_file_path = $this->get_cldr_json_path( $cldr_locale, $bucket );
 		return is_readable( $cldr_json_file_path );
 	}
 
@@ -223,16 +259,16 @@ class WP_CLDR {
 	 * @param string $bucket The CLDR data item.
 	 * @return array An array with the CLDR data from the file, or an empty array if no match with any CLDR data files.
 	 */
-	public static function get_cldr_json_file( $cldr_locale, $bucket ) {
-		$cldr_json_path = self::get_cldr_json_path( $cldr_locale, $bucket );
+	public function get_cldr_json_file( $cldr_locale, $bucket ) {
+		$cldr_json_path = $this->get_cldr_json_path( $cldr_locale, $bucket );
 
-		if ( self::is_cldr_json_available( $cldr_locale, $bucket ) ) {
+		if ( $this->is_cldr_json_available( $cldr_locale, $bucket ) ) {
 			$json_raw = file_get_contents( $cldr_json_path );
 			$json_decoded = json_decode( $json_raw, true );
 			return $json_decoded;
 		}
 
-		return array();
+		throw new WP_CLDR_Exception( WP_CLDR_Exception::JSON_MISSING );
 	}
 
 	/**
@@ -242,16 +278,16 @@ class WP_CLDR {
 	 * @param string $bucket The CLDR data item.
 	 * @return string The best available CLDR JSON locale, or an empty string if no JSON locale is available.
 	 */
-	public static function get_best_available_cldr_json_locale( $locale, $bucket ) {
-		$cldr_locale = self::get_cldr_locale( $locale );
+	public function get_best_available_cldr_json_locale( $locale, $bucket ) {
+		$cldr_locale = $this->get_cldr_locale( $locale );
 
-		if ( self::is_cldr_json_available( $cldr_locale, $bucket ) ) {
+		if ( $this->is_cldr_json_available( $cldr_locale, $bucket ) ) {
 			return $cldr_locale;
 		}
 
 		// If there's no language-country locale CLDR file, try falling back to a language-only CLDR file.
 		$language_only_cldr_locale = strtok( $cldr_locale, '-_' );
-		if ( self::is_cldr_json_available( $language_only_cldr_locale, $bucket ) ) {
+		if ( $this->is_cldr_json_available( $language_only_cldr_locale, $bucket ) ) {
 			return $language_only_cldr_locale;
 		}
 
@@ -277,13 +313,13 @@ class WP_CLDR {
 			}
 		}
 
-		$cldr_locale = self::get_best_available_cldr_json_locale( $locale, $bucket );
+		$cldr_locale = $this->get_best_available_cldr_json_locale( $locale, $bucket );
 
 		if ( empty( $cldr_locale ) ) {
-			return false;
+			throw new WP_CLDR_Exception( WP_CLDR_Exception::JSON_MISSING );
 		}
 
-		$json_file = self::get_cldr_json_file( $cldr_locale, $bucket );
+		$json_file = $this->get_cldr_json_file( $cldr_locale, $bucket );
 
 		// Do some performance-enhancing pre-processing of data items, then put into cache
 		// organized by WordPress locale.
@@ -351,6 +387,10 @@ class WP_CLDR {
 	 * @return array An associative array with the contents of the locale bucket.
 	 */
 	private function get_locale_bucket( $locale, $bucket ) {
+		if ( ! $this->initialized ) {
+			throw new WP_CLDR_Exception( WP_CLDR_Exception::NOT_INITIALIZED );
+		}
+
 		if ( empty( $locale ) ) {
 			$locale = $this->locale;
 		}
@@ -680,5 +720,42 @@ class WP_CLDR {
 			return $json_file['supplemental']['territoryInfo'][ $country_code ];
 		}
 		return array();
+	}
+}
+
+/**
+ * Custom WP_CLDR Exception
+ */
+class WP_CLDR_Exception extends Exception {
+	const JSON_MISSING = 1;
+	const NOT_INITIALIZED = 2;
+
+	protected $message;
+	private $message_id;
+	private $detailed_message;
+
+	public function __construct( $message_id ) {
+		if ( is_numeric( $message_id ) ) {
+			switch ( $message_id ) {
+				case self::JSON_MISSING:
+					$this->message = 'JSON files are missing.';
+					$this->detailed_message = 'WP_CLDR cannot function without the CLDR JSON files. Please <a href="https://github.com/Automattic/wp-cldr">download them here</a>.';
+					break;
+				case self::NOT_INITIALIZED:
+					$this->message = 'Not initialized';
+					$this->detailed_message = 'WP_CLDR was not initialized properly.';
+					break;
+			}
+		} else {
+			$this->message = $message_id;
+		}
+	}
+
+	/**
+	 * Gets a more detailed HTML message about the error
+	 * @return string Detailed HTML message
+	 */
+	public function getDetailedMessage() {
+		return $this->detailed_message;
 	}
 }

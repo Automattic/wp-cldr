@@ -33,8 +33,20 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 		// Test some bad slugs.
 		$this->assertEquals( '', $this->cldr->get_territory_name( 'bad-slug', 'fr_FR' ) );
-		$this->assertEquals( 'Africa', $this->cldr->get_territory_name( '002', 'badlocalecode' ) );
-		$this->assertEquals( 'Africa', $this->cldr->get_territory_name( '002', 'bad-locale-code' ) );
+		try {
+			$this->assertEquals( 'Africa', $this->cldr->get_territory_name( '002', 'badlocalecode' ) );
+			$this->assertTrue( false );
+		} catch ( WP_CLDR_Exception $e ) {
+			$this->assertTrue( true );
+		}
+
+		try {
+			$this->assertEquals( 'Africa', $this->cldr->get_territory_name( '002', 'bad-locale-code' ) );
+			$this->assertTrue( false );
+		} catch ( WP_CLDR_Exception $e ) {
+			$this->assertTrue( true );
+		}
+
 		$this->assertEquals( 'Africa', $this->cldr->get_territory_name( '002', '' ) );
 	}
 
@@ -80,8 +92,13 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'United States', $territories_in_english['US'] );
 
 		// Test some bad slugs.
-		$all_territories = $this->cldr->get_territories( 'bad-slug' );
-		$this->assertEquals( 'United States', $all_territories['US'] );
+		try {
+			$all_territories = $this->cldr->get_territories_by_locale( 'bad-slug' );
+			$this->assertEquals( 'United States', $all_territories['US'] );
+		} catch ( WP_CLDR_Exception $e ) {
+			$this->assertTrue( true );
+		}
+
 	}
 
 	public function test_get_languages() {
@@ -91,18 +108,26 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'German', $languages_in_english['de'] );
 
 		// Test some bad slugs.
-		$all_languages = $this->cldr->get_languages( 'bad-slug' );
-		$this->assertEquals( 'English', $all_languages['en'] );
+		try {
+			$all_languages = $this->cldr->get_languages_by_locale( 'bad-slug' );
+			$this->assertEquals( 'English', $all_languages['en'] );
+		} catch ( WP_CLDR_Exception $e ) {
+			$this->assertTrue( true );
+		}
 	}
 
 	public function test_set_locale() {
 
-		$this->cldr->set_locale( 'fr' );
+		$this->cldr->locale = 'fr';
 		$this->assertEquals( 'Allemagne', $this->cldr->get_territory_name( 'DE' ) );
 
 		// Test some bad slugs.
-		$this->cldr->set_locale( 'bad-slug' );
-		$this->assertEquals( 'Germany', $this->cldr->get_territory_name( 'DE' ) );
+		try {
+			$this->cldr->locale = 'bad-slug';
+		} catch ( WP_CLDR_Exception $e ) {
+			$this->assertTrue( true );
+		}
+		$this->assertNotEquals( 'Germany', $this->cldr->get_territory_name( 'DE' ) );
 	}
 
 	public function test_wpcom_homepage_locales() {
