@@ -1,7 +1,14 @@
-<phpunit testdox="true" stop-on-failure="false" backupGlobals="false" colors="true">
-  <testsuites>
-    <testsuite>
-      <file>./tests/wp-cldr-tests.php</file>
-    </testsuite>
-  </testsuites>
+<phpunit
+	stopOnFailure="false"
+	backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	verbose="true">
+    <testsuites>
+        <testsuite>
+            <file>./tests/wp-cldr-tests.php</file>
+        </testsuite>
+    </testsuites>
 </phpunit>

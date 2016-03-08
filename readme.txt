@@ -7,25 +7,24 @@ Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WP CLDR makes it easier to localize a website, store, or blog by giving developers convenient access to the Common Locale Data Repository.
+Gives WordPress developers easy access to localized country, region, language, currency, and calendar info.
 
 == Description ==
 
-This plugin provides WordPress developers with easy access to localized country/region names, language names, currency names/symbols/usage, and other localization info from the [Unicode Common Locale Data Repository (CLDR)](http://cldr.unicode.org/).
+This plugin provides WordPress developers with easy access to localized country, language, currency, region, and calendar info from the [Unicode Common Locale Data Repository](http://cldr.unicode.org/).
 
-With the plugin active, WordPress developers will have access across more than 100 WordPress locales to localized data items including:
+With the plugin active, WordPress developers can access the following for over 100 WordPress locales:
 
-* Localized names for territories including ISO 3166 country codes and UN M.49 region codes.
-* Localized currency names and symbols for ISO 4317 currency codes.
-* Information on currency usage in different countries.
-* Localized language names for ISO 639 language codes.
-* Localized calendar information including the first day of the week in different countries.
-* Telephone codes for different countries.
-* See various functions of the class in action on the plugin's settings page.
-
-CLDR is a library of localization data coordinated by Unicode. It emphasizes [common, everyday usage](http://cldr.unicode.org/translation/country-names) and is available in over 700 language-region locales. It is [updated every six months](http://cldr.unicode.org/index/downloads) and used by [all major software systems](http://cldr.unicode.org/#TOC-Who-uses-CLDR-). CLDR data is licensed under [Unicode's data files and software license](http://unicode.org/copyright.html#Exhibit1) which is on [the list of approved GPLv2 compatible licenses](https://www.gnu.org/philosophy/license-list.html#Unicode).
+* Names for countries (and ISO 3166 country codes).
+* Names for regions (and UN M.49 region codes, plus countries included in each region).
+* Names and symbols for currencies (and ISO 4317 currency codes).
+* Names for languages (and ISO 639 language codes).
+* Calendar information including the first day of the week in different countries.
+* Country information including most spoken language, currency, telephone codes, and population.
 
 More information in the [detailed API documentation](https://automattic.github.io/wp-cldr/class-WP_CLDR.html).
+
+CLDR is a library of localization data coordinated by Unicode. It emphasizes [common, everyday usage](http://cldr.unicode.org/translation/country-names) and is available in over 700 language-region locales. It is [updated every six months](http://cldr.unicode.org/index/downloads) and used by [all major software systems](http://cldr.unicode.org/#TOC-Who-uses-CLDR-). CLDR data is licensed under [Unicode's data files and software license](http://unicode.org/copyright.html#Exhibit1) which is on [the list of approved GPLv2 compatible licenses](https://www.gnu.org/philosophy/license-list.html#Unicode).
 
 == Installation ==
 

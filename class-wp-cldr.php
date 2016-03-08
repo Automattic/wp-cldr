@@ -10,11 +10,7 @@
  */
 
 /**
- * Use CLDR localization data in WordPress.
- *
- * A class that fetches localized territory and language names, currency names/symbols,
- * and other localization info from the JSON distribution of Unicode's Common Locale
- * Data Repository (CLDR).
+ * Gives WordPress developers easy access to localized country, region, language, currency, and calendar info from the [Unicode Common Locale Data Repository](http://cldr.unicode.org/).
  *
  * Examples:
  *
@@ -31,7 +27,7 @@
  * $germany_in_arabic = $cldr->get_territory_name( 'DE' , 'ar_AR' );
  * ```
  *
- * Use a convenience parameter during instantiation to change the default locale
+ * Use a convenience parameter during instantiation to change the default locale:
  *
  * ```
  * $cldr = new WP_CLDR( 'fr' );
@@ -45,15 +41,16 @@
  * $africa_in_french = $cldr->get_territory_name( '002' );
  * ```
  *
- * Switch locales after the object has been created
+ * Switch locales after the object has been created:
  *
  * ```
  * $cldr->set_locale( 'en' );
  * $us_dollar_in_english = $cldr->get_currency_name( 'USD' );
  * ```
  *
- * Testing
- * The class included a set of PHPUnit tests. To run them, call `phpunit` from the plugin directory.
+ * Testing:
+ *
+ * The class includes a suite of PHPUnit tests. To run them, call `phpunit` from the plugin directory.
  *
  * @link http://cldr.unicode.org
  * @link https://github.com/unicode-cldr/cldr-json
@@ -127,8 +124,6 @@ class WP_CLDR {
 			'zh-tw' => 'zh-Hant',
 			'zh' => 'zh-Hans',
 			'als' => 'gsw',
-			'pt'	=> 'pt-PT',
-			'pt-br'	=> 'pt', // In CLDR, the root `pt` locale is Brazilian Portuguese.
 			'el-po'	=> 'el',
 			'me' => 'sr-Latn-ME',
 			'tl' => 'fil',
@@ -156,6 +151,7 @@ class WP_CLDR {
 		);
 
 		// Convert underscores to dashes and everything to lowercase.
+		$cleaned_up_wp_locale = '';
 		$cleaned_up_wp_locale = str_replace( '_', '-', $wp_locale );
 		$cleaned_up_wp_locale = strtolower( $cleaned_up_wp_locale );
 
@@ -185,7 +181,7 @@ class WP_CLDR {
 	 *
 	 * @param string $cldr_locale A CLDR locale.
 	 * @param string $bucket The CLDR data item.
-	 * @return array An array with the CLDR data from the file, or an empty array if no match with any CLDR data files.
+	 * @return string An array with the CLDR data from the file, or an empty array if no match with any CLDR data files.
 	 */
 	public static function get_cldr_json_path( $cldr_locale, $bucket ) {
 
@@ -269,7 +265,7 @@ class WP_CLDR {
 	 * @param string $bucket Optional. The CLDR data item.
 	 * @return bool Whether or not the locale bucket was successfully initialized.
 	 */
-	private function initialize_locale_bucket( $locale = 'en', $bucket = 'territories' ) {
+	private function initialize_locale_bucket( $locale, $bucket = 'territories' ) {
 
 		$cache_key = "cldr-$locale-$bucket";
 
@@ -443,9 +439,9 @@ class WP_CLDR {
 	 * @return string The name of the language in the provided locale.
 	 */
 	public function get_language_name( $language_code, $locale = '' ) {
-		$cldr_matched_language_code = self::get_cldr_locale( $language_code );
-
 		$languages = $this->get_languages( $locale );
+
+		$cldr_matched_language_code = self::get_cldr_locale( $language_code );
 		if ( isset( $languages[ $cldr_matched_language_code ] ) ) {
 			return $languages[ $cldr_matched_language_code ];
 		}
@@ -533,6 +529,7 @@ class WP_CLDR {
 		// so we need to loop through them to find one without a `_to` ending date
 		// and without a `_tender` flag which are always false indicating
 		// the currency wasn't legal tender.
+		$result = array();
 		if ( isset( $json_file['supplemental']['currencyData']['region'] ) ) {
 			foreach ( $json_file['supplemental']['currencyData']['region'] as $country_code => $currencies ) {
 				foreach ( $currencies as $currency_dates ) {
@@ -541,9 +538,8 @@ class WP_CLDR {
 					}
 				}
 			}
-			return $result;
 		}
-		return array();
+		return $result;
 	}
 
 	/**
@@ -572,14 +568,14 @@ class WP_CLDR {
 	 * @return array An associative array of ISO 4217 currency codes and then an array of the ISO 3166 codes for countries which currently each currency.
 	 */
 	public function get_countries_for_all_currencies() {
+		$result = array();
 		$currency_for_all_countries = $this->get_currency_for_all_countries();
 		if ( isset( $currency_for_all_countries ) ) {
 			foreach ( $currency_for_all_countries as $country_code => $currency_code ) {
 				$result[ $currency_code ][] = $country_code;
 			}
-			return $result;
 		}
-		return array();
+		return $result;
 	}
 
 	/**
@@ -617,22 +613,21 @@ class WP_CLDR {
 		}
 
 		// If it's a region code, recursively find the contained country codes.
+		$result = array();
 		if ( preg_match( '/^\d{3}$/', $region_code ) ) {
-			$result = array();
 			$json_file = $this->get_locale_bucket( 'supplemental', 'territoryContainment' );
 			if ( isset( $json_file['supplemental']['territoryContainment'][ $region_code ]['_contains'] ) ) {
 				foreach ( $json_file['supplemental']['territoryContainment'][ $region_code ]['_contains'] as $contained_region ) {
 					$result = array_merge( $result, $this->get_territories_contained( $contained_region ) );
 				}
-				return $result;
 			}
 		}
 
-		return array();
+		return $result;
 	}
 
 	/**
-	 * Gets the language spoken in a country, in descending order of use.
+	 * Gets the languages spoken in a country, in descending order of use.
 	 *
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 * @link http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html Detail on CLDR language information
@@ -641,19 +636,15 @@ class WP_CLDR {
 	 * @return array An associative array with the key of a language code and the value of the percentage of population which speaks the language in that country.
 	 */
 	public function get_languages_spoken( $country_code ) {
-
-		$result = array();
 		$json_file = $this->get_locale_bucket( 'supplemental', 'territoryInfo' );
-
+		$result = array();
 		if ( isset( $json_file['supplemental']['territoryInfo'][ $country_code ]['languagePopulation'] ) ) {
 			foreach ( $json_file['supplemental']['territoryInfo'][ $country_code ]['languagePopulation'] as $language => $info ) {
 				$result[ $language ] = $info['_populationPercent'];
 			}
 			arsort( $result );
-			return $result;
 		}
-
-		return array();
+		return $result;
 	}
 
 	/**
@@ -666,7 +657,7 @@ class WP_CLDR {
 	 * @param string $country_code A two-letter ISO 3166-1 country code.
 	 * @return string The ISO 639 code for the language most widely spoken in the country.
 	 */
-	public function get_top_language_spoken( $country_code ) {
+	public function get_most_spoken_language( $country_code ) {
 		$languages_spoken = $this->get_languages_spoken( $country_code );
 		if ( ! empty( $languages_spoken ) ) {
 			return key( $languages_spoken );
@@ -675,7 +666,7 @@ class WP_CLDR {
 	}
 
 	/**
-	 * Gets GDP, population, and language information.
+	 * Gets GDP, population, and language information for a country.
 	 *
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 * @link http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html CLDR's territory information
@@ -684,18 +675,10 @@ class WP_CLDR {
 	 * @return array CLDR's territory information.
 	 */
 	public function get_territory_info( $country_code ) {
-
-		$result = array();
 		$json_file = $this->get_locale_bucket( 'supplemental', 'territoryInfo' );
-
-		if ( isset( $json_file['supplemental']['territoryInfo'] ) && '' === $country_code ) {
-			return $json_file['supplemental']['territoryInfo'];
-		}
-
 		if ( isset( $json_file['supplemental']['territoryInfo'][ $country_code ] ) ) {
 			return $json_file['supplemental']['territoryInfo'][ $country_code ];
 		}
-
 		return array();
 	}
 }
