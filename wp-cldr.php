@@ -65,11 +65,12 @@ function wp_cldr_settings() {
 	<?php esc_html_e( 'This plugin provides WordPress developers with easy access to localized country/region names, language names, currency names/symbols/usage, and other localization info from the Unicode Common Locale Data Repository (CLDR). Here are some examples:', 'wp-cldr' );
 	echo '<br>'; ?>
 
+	<br>
 	<form method="get" name='locale'>
 	<table width="60%">
 	<tr>
-		<th width="40%" align="left"><label><?php esc_html_e( 'WordPress locales', 'wp-cldr' ); ?></label></th>
-		<td>
+		<th width="150" align="left"><label><?php esc_html_e( 'WordPress locale:', 'wp-cldr' ); ?></label></th>
+		<td width="400">
 			<?php
 			wp_dropdown_languages( array(
 				'name'         => 'locale',
@@ -82,7 +83,7 @@ function wp_cldr_settings() {
 		<td>
 			<input type="hidden" name="page" value="wp-cldr">
 			<input type="hidden" name="country" value="<?php esc_attr_e( $country ); ?>">
-			<?php submit_button( 'Update examples', 'secondary' ); ?>
+			<?php submit_button( 'Update examples', 'secondary', '', false ); ?>
 		</td>
 	</tr>
 	</table>
@@ -90,7 +91,7 @@ function wp_cldr_settings() {
 
 	<?php
 
-	esc_html_e( 'WordPress locale:', 'wp-cldr' );
+	esc_html_e( 'WordPress locale code:', 'wp-cldr' );
 	echo ' <code> ' . esc_html( $locale ) . '</code> ';
 	if ( isset( $locales[ $locale ]['native_name'] ) ) {
 		echo esc_html( $locales[ $locale ]['native_name'] );
@@ -138,11 +139,12 @@ function wp_cldr_settings() {
 	}
 ?>
 
+	<br>
 	<form method="get" name='country'>
 	<table width="60%">
 	<tr>
-		<th width="40%" align="left"><label><?php esc_html_e( 'Countries', 'wp-cldr' ); ?></label></th>
-		<td>
+		<th width="150" align="left"><label><?php esc_html_e( 'Country:', 'wp-cldr' ); ?></label></th>
+		<td width="400">
 			<select name="country" id="country">
 				<?php foreach ( $cldr->get_territories() as $slug => $name ) {
 					if ( 2 === strlen( $slug ) && 'ZZ' !== $slug ) { ?>
@@ -156,7 +158,7 @@ function wp_cldr_settings() {
 		<td>
 			<input type="hidden" name="page" value="wp-cldr">
 			<input type="hidden" name="locale" value="<?php esc_attr_e( $locale ); ?>">
-			<?php submit_button( 'Update examples', 'secondary' ); ?>
+			<?php submit_button( 'Update examples', 'secondary', '', false ); ?>
 		</td>
 	</tr>
 	</table>
