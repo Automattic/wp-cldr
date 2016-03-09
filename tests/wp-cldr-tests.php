@@ -149,15 +149,6 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 	public function test_wpcom_to_cldr_locale_mapping() {
 
-		// Portuguese.
-		$this->assertEquals( 'pt-PT', $this->cldr->get_cldr_locale( 'pt' ) );
-
-		// Brazilian Portuguese.
-		$this->assertEquals( 'pt', $this->cldr->get_cldr_locale( 'pt-br' ) );
-		$this->assertEquals( 'pt', $this->cldr->get_cldr_locale( 'pt-BR' ) );
-		$this->assertEquals( 'pt', $this->cldr->get_cldr_locale( 'pt_br' ) );
-		$this->assertEquals( 'pt', $this->cldr->get_cldr_locale( 'pt_BR' ) );
-
 		// Chinese variants.
 		$this->assertEquals( 'zh-Hans', $this->cldr->get_cldr_locale( 'zh-cn' ) );
 		$this->assertEquals( 'zh-Hant', $this->cldr->get_cldr_locale( 'zh-tw' ) );
@@ -290,15 +281,15 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( array(), $this->cldr->get_languages_spoken( '' ) );
 	}
 
-	public function test_get_top_language_spoken() {
+	public function test_get_most_spoken_language() {
 
-		$this->assertEquals( 'en', $this->cldr->get_top_language_spoken( 'US' ) );
-		$this->assertEquals( 'fr', $this->cldr->get_top_language_spoken( 'FR' ) );
-		$this->assertEquals( 'zh_Hans', $this->cldr->get_top_language_spoken( 'CN' ) );
+		$this->assertEquals( 'en', $this->cldr->get_most_spoken_language( 'US' ) );
+		$this->assertEquals( 'fr', $this->cldr->get_most_spoken_language( 'FR' ) );
+		$this->assertEquals( 'zh_Hans', $this->cldr->get_most_spoken_language( 'CN' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->get_top_language_spoken( 'bad-slug' ) );
-		$this->assertEquals( '', $this->cldr->get_top_language_spoken( '' ) );
+		$this->assertEquals( '', $this->cldr->get_most_spoken_language( 'bad-slug' ) );
+		$this->assertEquals( '', $this->cldr->get_most_spoken_language( '' ) );
 	}
 
 	public function test_get_territory_info() {
