@@ -87,7 +87,7 @@ class WP_CLDR {
 	/**
 	 * The CLDR version, which the class uses to determine path to JSON files.
 	 */
-	const CLDR_VERSION = '28.0.2';
+	const CLDR_VERSION = '29.0.0';
 
 	/**
 	 * Constructs a new instance of the class, including setting defaults for locale and caching.
@@ -118,36 +118,18 @@ class WP_CLDR {
 	 */
 	public static function get_cldr_locale( $wp_locale ) {
 
-		// This array captures the WordPress locales that are significantly different from CLDR locales.
+		// Some WordPress locales are significantly different from CLDR locales.
 		$wp2cldr = array(
-			'zh-cn' => 'zh-Hans',
-			'zh-tw' => 'zh-Hant',
-			'zh' => 'zh-Hans',
-			'als' => 'gsw',
-			'el-po'	=> 'el',
-			'me' => 'sr-Latn-ME',
-			'tl' => 'fil',
+			'ary' => 'ar-MA',
 			'mya' => 'my',
-			'tir' => 'ti',
-			'bal' => 'ca',
-			'bel' => 'be',
-			'dzo' => 'dz',
-			'fuc' => 'ff',
-			'ido' => 'io',
-			'ike' => 'iu',
-			'haw-us' => 'haw',
-			'kin' => 'rw',
-			'lin' => 'ln',
-			'me-me' => 'sr-Latn-ME',
-			'mhr' => 'chm',
-			'mri' => 'mi',
-			'ory' => 'or',
-			'ph' => 'fil',
-			'roh' => 'rm',
-			'srd' => 'sc',
-			'tuk' => 'tk',
+			'no' => 'nb',
+			'oci' => 'oc',
+			'tl' => 'fil',
+			'zh-cn' => 'zh-Hans',
 			'zh-hk' => 'zh-Hant',
 			'zh-sg' => 'zh-Hans',
+			'zh-tw' => 'zh-Hant',
+			'zh' => 'zh-Hans',
 		);
 
 		// Convert underscores to dashes and everything to lowercase.
@@ -185,22 +167,18 @@ class WP_CLDR {
 	 */
 	public static function get_cldr_json_path( $cldr_locale, $bucket ) {
 
-		$base_path = __DIR__ . '/json/v' . WP_CLDR::CLDR_VERSION;
+		$base_path = __DIR__ . '/data/' . WP_CLDR::CLDR_VERSION;
 
-		switch ( $bucket ) {
-			case 'territories':
-			case 'languages':
-				$relative_path = "cldr-localenames-modern/main/$cldr_locale";
-				break;
-
-			case 'currencies':
-				$relative_path = "cldr-numbers-modern/main/$cldr_locale";
+		switch ( $cldr_locale ) {
+			case 'supplemental':
+				$relative_path = 'supplemental';
 				break;
 
 			default:
-				$relative_path = 'cldr-core/supplemental';
+				$relative_path = "main/$cldr_locale";
 				break;
 		}
+
 		return "$base_path/$relative_path/$bucket.json";
 	}
 
@@ -286,7 +264,8 @@ class WP_CLDR {
 		$json_file = self::get_cldr_json_file( $cldr_locale, $bucket );
 
 		// Do some performance-enhancing pre-processing of data items, then put into cache
-		// organized by WordPress locale.
+		// organized by WordPress $locale instead of $cldr_locale (which isn't visible
+		// outside this method).
 		switch ( $bucket ) {
 			case 'territories':
 			case 'languages':
@@ -304,6 +283,10 @@ class WP_CLDR {
 			case 'currencies':
 			 	$this->localized[ $locale ][ $bucket ] = $json_file['main'][ $cldr_locale ]['numbers'][ $bucket ];
 			 	break;
+
+			case 'timeZoneNames':
+				$this->localized[ $locale ][ $bucket ] = $json_file['main'][ $cldr_locale ]['dates'][ $bucket ];
+				break;
 
 			default:
 				$this->localized[ $locale ][ $bucket ] = $json_file;
@@ -680,5 +663,62 @@ class WP_CLDR {
 			return $json_file['supplemental']['territoryInfo'][ $country_code ];
 		}
 		return array();
+	}
+
+	/**
+	 * Recursively builds an associative array of the time zone IDs and their localized display names.
+	 *
+	 * @link http://www.iana.org/time-zones IANA time zone
+	 * @link http://unicode.org/reports/tr35/tr35-dates.html#Time_Zone_Names CLDR info on time zone names
+	 *
+	 * @param string $zones An array of time zone data from CLDR JSON files.
+	 * @param string $id_start Optional. The start of the time zone ID (used for recursive calls).
+	 * @return array An associative array of time zone IDs (e.g. `Europe/Istanbul`) and the localized exemplar city names.
+	 */
+	private function build_cities_array( $zones, $id_start = '' ) {
+		$result = array();
+		foreach ( $zones as $id => $array ) {
+			if ( isset( $array['exemplarCity'] ) ) {
+				$result[ $id_start . $id ] = $array['exemplarCity'];
+			} elseif ( is_array( $array ) ) {
+				$result = array_merge( $result, $this->build_cities_array( $array, $id_start . $id . '/' ) );
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Gets the time zone city names -- aka exemplars -- for a locale.
+	 *
+	 * @link http://www.iana.org/time-zones IANA time zone
+	 * @link http://unicode.org/reports/tr35/tr35-dates.html#Time_Zone_Names CLDR info on time zone names
+	 *
+	 * @param string $locale Optional. A WordPress locale code.
+	 * @return array As associative array of time zone IDs (e.g. `Europe/Istanbul`) and the localized exemplar city for each.
+	 */
+	public function get_time_zone_cities( $locale = '' ) {
+		$time_zone_cities_json = $this->get_locale_bucket( $locale, 'timeZoneNames' );
+		if ( ! empty( $time_zone_cities_json['zone'] ) ) {
+			return $this->build_cities_array( $time_zone_cities_json['zone'] );
+		}
+		return array();
+	}
+
+	/**
+	 * Gets the time zone city name -- aka exemplar -- for a time zone ID.
+	 *
+	 * @link http://www.iana.org/time-zones IANA time zone
+	 * @link http://unicode.org/reports/tr35/tr35-dates.html#Time_Zone_Names CLDR info on time zone names
+	 *
+	 * @param string $time_zone_id An IANA time zone ID (e.g. `Europe/Istanbul`).
+	 * @param string $locale Optional. A WordPress locale code.
+	 * @return string The localized name of the time zone exemplar city.
+	 */
+	public function get_time_zone_city( $time_zone_id, $locale = '' ) {
+		$time_zone_cities = $this->get_time_zone_cities( $locale );
+		if ( ! empty( $time_zone_cities[ $time_zone_id ] ) ) {
+			return $time_zone_cities[ $time_zone_id ];
+		}
+		return '';
 	}
 }

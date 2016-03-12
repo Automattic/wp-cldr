@@ -1,13 +1,22 @@
 <?php
-
-/* script for pruning unneeded files from https://github.com/unicode-cldr/cldr-json
+/** Script for pruning unneeded files from https://github.com/unicode-cldr/cldr-json
  *
- * Before executing this script, first run get-cldr-files.sh
+ * Before executing this script, first do "bash get-cldr-files.sh"
  *
-*/
+ * @package wp-cldr
+ */
 
-include_once 'class-wp-cldr.php';
+require_once 'class-wp-cldr.php';
 
+// The second parameter, false, tell the class to not use caching which means we can avoid loading WordPress.
+$cldr = new WP_CLDR( 'en', false );
+$cldr_version = WP_CLDR::CLDR_VERSION;
+
+/**
+ * Recursively removes a directory and its contents.
+ *
+ * @param string $directory A directory or file path.
+ */
 function remove_directory( $directory ) {
 	foreach ( glob( "$directory/*" ) as $file ) {
 		unlink( $file );
@@ -15,78 +24,87 @@ function remove_directory( $directory ) {
 	rmdir( $directory );
 }
 
-// from wpcom as of Feb 2016
-$wpcom_locales = array( 'af', 'als', 'am', 'ar', 'arc', 'as', 'ast', 'av', 'ay', 'az', 'ba', 'be', 'bg', 'bm',
-	'bn', 'bo', 'br', 'bs', 'ca', 'ce', 'ckb', 'cs', 'csb', 'cv', 'cy', 'da', 'de', 'dv', 'dz', 'el', 'el-po',
-	'en', 'en-gb', 'eo', 'es', 'et', 'eu', 'fa', 'fi', 'fil', 'fo', 'fr', 'fr-be', 'fr-ca', 'fr-ch', 'fur',
-	'fy', 'ga', 'gd', 'gl', 'gn', 'gu', 'he', 'hi', 'hr', 'hu', 'hy', 'ia', 'id', 'ii', 'ilo', 'is', 'it', 'ja',
-	'ka', 'km', 'kn', 'ko', 'kk', 'ks', 'ku', 'kv', 'ky', 'la', 'li', 'lo', 'lv', 'lt', 'mk', 'ml', 'mwl', 'mn',
-	'mr', 'ms', 'mya', 'nah', 'nap', 'ne', 'nds', 'nl', 'nn', 'no', 'non', 'nv', 'oc', 'or', 'os', 'pa', 'pl',
-	'ps', 'pt', 'pt-br','qu', 'ro', 'ru', 'rup', 'sc', 'sd', 'si', 'sk', 'sl', 'so', 'sq', 'sr', 'su', 'sv',
-	'ta', 'te', 'th', 'tl', 'tir', 'tr', 'tt', 'ty', 'udm', 'ug', 'uk', 'ur', 'uz', 'vec', 'vi', 'wa', 'xal',
-	'yi', 'yo', 'za', 'zh-cn', 'zh-tw', );
-echo 'wpcom locales -- ' . count( $wpcom_locales ) . "\n";
+// WordPress.com locales with over 1k translations as of April 2015.
+$wpcom_locales_with_over_1k_translations_at_march_2015 = array( 'az', 'de', 'ja', 'id', 'pt-br', 'it', 'he', 'es', 'fr', 'nl', 'tr', 'hu', 'ru', 'ko', 'ar', 'sq', 'fr-ca', 'fa', 'zh-tw', 'zh-cn', 'sv', 'ga', 'el', 'fi', 'gl', 'bs', 'pt', 'ca', 'sr', 'hr', 'pl', 'nn', 'el-po', 'da', 'gd', 'th', 'cs', 'eo', 'ckb', 'mya', 'cy', 'ro', 'te', 'no', 'bg', 'sk', 'lt', 'ug', 'fr-be', 'vi', 'nb', 'ms', 'km', 'uk', 'eu', 'ky', 'br', 'es-pr', 'fr-ch', 'si', 'ta', 'as', 'mk', 'tl', 'su', 'is', 'et', 'lv', 'af', 'bn', 'oc', 'ur', 'kk', 'ne', 'mwl', 'hi', 'en-gb', 'mhr', 'mn', 'zh', 'sl', 'mr', 'ml', 'so', 'sah', 'fo', 'zh-hk', 'ast' );
+echo 'wpcom locales -- ' . count( $wpcom_locales_with_over_1k_translations_at_march_2015 ) . "\n";
 
-// from wporg locales.php as of Feb 2016
-$wporg_locales = array( 'aa', 'ae', 'af', 'ak', 'am', 'an', 'ar', 'arq', 'ary', 'as', 'ast', 'av', 'ay', 'az',
-	'azb', 'az_TR', 'ba', 'bal', 'bcc', 'bel', 'bg_BG', 'bh', 'bi', 'bm', 'bn_BD', 'bo', 'bre', 'bs_BA', 'ca',
-	'ce','ceb', 'ch', 'ckb', 'co', 'cr', 'cs_CZ', 'csb', 'cu', 'cv', 'cy', 'da_DK', 'de_DE', 'de_CH', 'dv', 'dzo',
-	'ee', 'el-po', 'el', 'art_xemoji', 'en_US', 'en_AU', 'en_CA', 'en_GB', 'en_NZ', 'en_ZA', 'eo', 'es_ES', 'es_AR',
-	'es_CL', 'es_CO', 'es_GT', 'es_MX', 'es_PE', 'es_PR', 'es_VE', 'et', 'eu', 'fa_IR', 'fa_AF', 'fuc', 'fi', 'fj',
-	'fo', 'fr_FR', 'fr_BE', 'fr_CA', 'fr-ch', 'frp', 'fur', 'fy', 'ga', 'gd', 'gl_ES', 'gn', 'gsw', 'gu', 'ha',
-	'haw_US', 'haz', 'he_IL', 'hi_IN', 'hr', 'hu_HU', 'hy', 'ia', 'id_ID', 'ido', 'ike', 'ilo', 'is_IS', 'it_IT',
-	'ja', 'jv_ID', 'ka_GE', 'kab', 'kal', 'kin', 'kk', 'km', 'kmr', 'kn', 'ko_KR', 'ks', 'ky_KY', 'la', 'lb_LU',
-	'li', 'lin', 'lo', 'lt_LT', 'lv', 'me_ME', 'mg_MG', 'mhr', 'mk_MK', 'ml_IN', 'mn', 'mr', 'mri', 'mrj', 'ms_MY',
-	'mwl', 'my_MM', 'ne_NP', 'nb_NO', 'nl_NL', 'nl_BE', 'nn_NO', 'no', 'oci', 'orm', 'ory', 'os', 'pa_IN', 'pl_PL',
-	'pt_BR', 'pt_PT', 'ps', 'rhg', 'ro_RO', 'roh', 'ru_RU', 'rue', 'rup_MK', 'sah', 'sa_IN', 'si_LK', 'sk_SK',
-	'sl_SI', 'snd', 'so_SO', 'sq', 'sr_RS', 'srd', 'su_ID', 'sv_SE', 'sw', 'szl', 'ta_IN', 'ta_LK', 'tah', 'te', 'tg',
-	'th', 'tir', 'tlh', 'tl', 'tr_TR', 'tt_RU', 'tuk', 'twd', 'tzm', 'udm', 'ug_CN', 'uk', 'ur', 'uz_UZ', 'vec', 'vi',
-	'wa', 'xmf', 'yi', 'yor', 'zh_CN', 'zh_HK', 'zh-sg', 'zh_TW', 'zh', );
-echo 'wporg locales -- ' . count( $wporg_locales ) . "\n";
+// Locales from Languages menu of a fresh WordPress.org install in early March 2016.
+$wporg_site_languages_menu_at_march_2016 = array( 'en', 'ar', 'ary', 'az', 'azb', 'bg_BG', 'bn_BD', 'bs_BA', 'ca', 'ceb', 'cy', 'da_DK', 'de_CH', 'de_DE', 'de_DE_formal', 'el', 'en_AU', 'en_CA', 'en_GB', 'en_NZ', 'en_ZA', 'eo', 'es_AR', 'es_CL', 'es_CO', 'es_ES', 'es_GT', 'es_MX', 'es_PE', 'es_VE', 'et', 'eu', 'fa_IR', 'fi', 'fr_BE', 'fr_CA', 'fr_FR', 'gd', 'gl_ES', 'haz', 'he_IL', 'hi_IN', 'hr', 'hu_HU', 'hy', 'id_ID', 'is_IS', 'it_IT', 'ja', 'ka_GE', 'ko_KR', 'lt_LT', 'ms_MY', 'my_MM', 'nb_NO', 'nl_NL', 'nl_NL_formal', 'nn_NO', 'oci', 'pl_PL', 'ps', 'pt_BR', 'pt_PT', 'ro_RO', 'ru_RU', 'sk_SK', 'sl_SI', 'sq', 'sr_RS', 'sv_SE', 'th', 'tl', 'tr_TR', 'ug_CN', 'uk', 'vi', 'zh_CN', 'zh_TW' );
+echo 'wporg locales -- ' . count( $wporg_site_languages_menu_at_march_2016 ) . "\n";
 
-$wp_locales = array_unique( array_merge( $wpcom_locales, $wporg_locales ) );
-echo 'combined locales -- ' . count( $wp_locales ) . "\n";
+$wp_locales = array_unique( array_merge( $wpcom_locales_with_over_1k_translations_at_march_2015, $wporg_site_languages_menu_at_march_2016 ) );
+echo 'combined unique wp locales including English -- ' . count( $wp_locales ) . "\n";
 
-$cldr_directories_to_prune = array( 'cldr-localenames-modern/main', 'cldr-numbers-modern/main' );
-$files_to_keep = array( 'localeDisplayNames.json', 'territories.json', 'languages.json', 'currencies.json', 'numbers.json' );
+// Load the list of all CLDR locales from its JSON file then delete that file.
+$cldr_available_locales_path = __DIR__ . "/data/$cldr_version/availableLocales.json";
+$cldr_available_locales_json = json_decode( file_get_contents( $cldr_available_locales_path ), true );
+$cldr_available_locales_full = $cldr_available_locales_json['availableLocales']['full'];
+unlink( $cldr_available_locales_path );
 
-// the second parameter, false, tell the class to not use caching which means we can avoid loading wordpress for these tests
-$cldr = new WP_CLDR( 'en', false );
-
+// Build a list of the CLDR locales that we want to keep, based on mapping from the WP locales.
 foreach ( $wp_locales as $wp_locale ) {
-	// work around for inconsistency where Brazilian Portuguese (pt-BR) uses "pt" for its directory name
-	if ( 'pt-br' === $wp_locale ) {
-		$wp_locales_mapped_to_cldr_directories[] = 'pt';
+	$wp_locale_mapped_to_cldr = $cldr->get_cldr_locale( $wp_locale );
+	if ( in_array( $wp_locale_mapped_to_cldr, $cldr_available_locales_full, true ) ) {
+		$cldr_locales_to_keep[] = $wp_locale_mapped_to_cldr;
 	} else {
-		$wp_locales_mapped_to_cldr_directories[] = $cldr->get_cldr_locale( $wp_locale );
+		// If there's no language-country locale CLDR file, try falling back to a language-only CLDR file.
+		$wp_locale_mapped_to_language_only_cldr = strtok( $wp_locale_mapped_to_cldr, '-_' );
+		if ( in_array( $wp_locale_mapped_to_language_only_cldr, $cldr_available_locales_full, true ) ) {
+			$cldr_locales_to_keep[] = $wp_locale_mapped_to_language_only_cldr;
+		}
 	}
 }
 
-foreach ( $cldr_directories_to_prune as $directory ) {
-	$dir = "./json/v28.0.2/$directory";
-	$cldr_directories = scandir( $dir );
-	$deleted_locales = 0;
-	$retained_locales = 0;
-	$files_pruned_from_retained_locales = 0;
+// Report some stats on locales.
+echo 'combined CLDR JSON file locales -- ' . count( $cldr_locales_to_keep ) . "\n";
+$cldr_locales_to_keep = array_unique( $cldr_locales_to_keep );
+echo 'combined unique CLDR JSON file locales -- ' . count( $cldr_locales_to_keep ) . "\n\n";
+asort( $cldr_locales_to_keep );
 
-	foreach ( $cldr_directories as $cldr_directory ) {
-		if ( in_array( $cldr_directory, $wp_locales_mapped_to_cldr_directories, true ) ) {
-			$retained_locales++;
-			$locale_directory_files = scandir( "$dir/$cldr_directory" );
-			foreach ( $locale_directory_files as $file ) {
-				if ( ! in_array( $file, $files_to_keep, true ) && '.' !== $file && '..' !== $file ) {
-					unlink( "$dir/$cldr_directory/$file" );
-					$files_pruned_from_retained_locales++;
-				}
-			}
-		} else if ( ! in_array( $cldr_directory, array( '.', '..', '.DS_Store' ), true ) ) {
-			remove_directory( "$dir/$cldr_directory" );
-			$deleted_locales++;
+$locale_files_to_keep = array( 'timeZoneNames.json', 'ca-generic.json', 'dateFields.json', 'territories.json', 'languages.json', 'currencies.json', 'numbers.json' );
+$cldr_json_directory = "./data/$cldr_version/main/";
+$deleted_locales = 0;
+$retained_locales = 0;
+$files_pruned_from_retained_locales = 0;
+
+// Iterate through the CLDR `main` directory, removing locales and files we don't want.
+foreach ( new DirectoryIterator( $cldr_json_directory ) as $cldr_main_item ) {
+	if ( $cldr_main_item->isDot() ) {
+		continue;
+	}
+	if ( ! in_array( $cldr_main_item->getFileName(), $cldr_locales_to_keep, true ) ) {
+		remove_directory( $cldr_main_item->getPathName() );
+		$deleted_locales++;
+		continue;
+	}
+	$retained_locales++;
+	foreach ( new DirectoryIterator( "{$cldr_main_item->getPathName()}" ) as $cldr_locales_item ) {
+		if ( $cldr_locales_item->isDot() ) {
+			continue;
+		}
+		if ( ! in_array( $cldr_locales_item->getFileName(), $locale_files_to_keep, true ) ) {
+			unlink( $cldr_locales_item->getPathName() );
+			$files_pruned_from_retained_locales++;
+			continue;
 		}
 	}
+}
 
-	echo "\n\n$directory:\n";
-	echo "  CLDR locales deleted = $deleted_locales\n";
-	echo "  CLDR locales retained = $retained_locales\n";
-	echo "  files pruned from retained CLDR locales = $files_pruned_from_retained_locales\n";
+echo "CLDR locales deleted = $deleted_locales\n";
+echo "CLDR locales retained = $retained_locales\n";
+echo "files pruned from retained CLDR locales = $files_pruned_from_retained_locales\n";
+
+echo "\nWordPress locales without CLDR JSON file:\n";
+foreach ( $wp_locales as $wp_locale ) {
+	$cldr_locale = $cldr->get_cldr_locale( $wp_locale );
+	$cldr_json_file = $cldr->get_cldr_json_file( $cldr_locale, 'territories' );
+
+	if ( empty( $cldr_json_file ) ) {
+		$cldr_locale = strtok( $cldr_locale, '-_' );
+		$cldr_json_file = $cldr->get_cldr_json_file( $cldr_locale, 'territories' );
+	}
+
+	if ( empty( $cldr_json_file ) ) {
+		echo "'$wp_locale' -- found no match for CLDR file $cldr_locale\n";
+	}
 }
