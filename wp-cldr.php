@@ -5,7 +5,7 @@
  * Plugin URI:  https://github.com/Automattic/wp-cldr
  * Author:      Automattic
  * Author URI:  https://automattic.com
- * Version:     1.0
+ * Version:     0.9
  * Text Domain: wp-cldr
  * Domain Path: /languages/
  * License:     GPLv2 or later
@@ -62,8 +62,10 @@ function wp_cldr_settings() {
 
 	<div class="wrap">
 	<h1><?php esc_html_e( 'WP CLDR settings and info', 'wp-cldr' ); ?></h1>
-	<?php esc_html_e( 'This plugin gives WordPress developers easy access to localized country, region, language, currency, and calendar info from the Unicode Common Locale Data Repository. Here are some examples:', 'wp-cldr' );
-	echo '<br>'; ?>
+	<?php esc_html_e( 'This plugin gives WordPress developers easy access to localized country, region, language, currency, and calendar info from the Unicode Common Locale Data Repository. See examples below. More at: ', 'wp-cldr' ); ?>
+	<a href="http://automattic.github.io/wp-cldr/class-WP_CLDR.html" ><?php esc_html_e( 'Detailed API documentation', 'wp-cldr' ); ?></a>,
+	<a href="https://github.com/Automattic/wp-cldr" ><?php esc_html_e( 'GitHub repo', 'wp-cldr' ); ?></a>.
+	<br>
 
 	<br>
 	<form method="get" name='locale'>
@@ -155,8 +157,17 @@ function wp_cldr_settings() {
 			echo ' <code>' . esc_html( $currency ) . '</code> ' . esc_html( $cldr->get_currency_name( $currency ) ) . ' / ' . esc_html( $cldr->get_currency_symbol( $currency ) );
 		}
 		echo '<br>';
+		echo '<i>';
+		esc_html_e( 'Example time zone cities', 'wp-cldr' );
+		echo '</i> —';
+		$example_time_zones = array( 'America/Los_Angeles', 'Asia/Hong_Kong', 'Europe/Paris' );
+		foreach ( $example_time_zones as $city ) {
+			echo ' <code>' . esc_html( $city ) . '</code> ' . esc_html( $cldr->get_time_zone_city( $city ) );
+		}
+		echo '<br>';
 	}
-?>
+
+	?>
 
 	<br>
 	<form method="get" name='country'>
@@ -225,7 +236,19 @@ function wp_cldr_settings() {
 	echo '</i> — ';
 	$territory_info = $cldr->get_territory_info( $country );
 	$population = $territory_info['_population'];
-	$fmt = new NumberFormatter( $locale, NumberFormatter::DECIMAL );
-	echo esc_html( $fmt->format( $population ) ) . '<br>';
+	if ( class_exists( 'NumberFormatter' ) ) {
+		// Use locale formatting rules.
+		$fmt = new NumberFormatter( $locale, NumberFormatter::DECIMAL );
+		echo esc_html( $fmt->format( $population ) ) . '<br>';
+	} else {
+		// Use default formatting rules.
+		echo esc_html( number_format( $population ) );
+	}
+
+	echo '<br><br><br><br>';
+	$plugin_path = WP_PLUGIN_DIR . '/wp-cldr/wp-cldr.php';
+	$plugin_info = get_plugin_data( $plugin_path );
+	echo 'Plugin version ' . esc_html( $plugin_info['Version'] ) . '<br>';
+	echo 'CLDR version ' . esc_html( WP_CLDR::CLDR_VERSION );
 }
 ?>
