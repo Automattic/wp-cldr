@@ -61,13 +61,9 @@ function wp_cldr_settings() {
 	?>
 
 	<div class="wrap">
-	<h1><?php esc_html_e( 'WP CLDR settings and info', 'wp-cldr' ); ?></h1>
-	<?php esc_html_e( 'This plugin gives WordPress developers easy access to localized country, region, language, currency, and calendar info from the Unicode Common Locale Data Repository. See examples below. More at: ', 'wp-cldr' ); ?>
-	<a href="http://automattic.github.io/wp-cldr/class-WP_CLDR.html" ><?php esc_html_e( 'Detailed API documentation', 'wp-cldr' ); ?></a>,
-	<a href="https://github.com/Automattic/wp-cldr" ><?php esc_html_e( 'GitHub repo', 'wp-cldr' ); ?></a>.
-	<br>
-
-	<br>
+	<h1><?php esc_html_e( 'WP CLDR examples and info', 'wp-cldr' ); ?></h1>
+	<?php esc_html_e( 'This plugin gives WordPress developers easy access to localized country, region, language, currency, and calendar info from the Unicode Common Locale Data Repository.', 'wp-cldr' ); ?>
+	<h2><?php esc_html_e( 'Examples', 'wp-cldr' ); ?></h2>
 	<form method="get" name='locale'>
 	<table width="75%">
 	<tr>
@@ -244,11 +240,21 @@ function wp_cldr_settings() {
 		// Use default formatting rules.
 		echo esc_html( number_format( $population ) );
 	}
-
-	echo '<br><br><br><br>';
+	?>
+	<h2><?php esc_html_e( 'Active Version Information', 'wp-cldr' ); ?></h2>
+	<?php
 	$plugin_path = WP_PLUGIN_DIR . '/wp-cldr/wp-cldr.php';
 	$plugin_info = get_plugin_data( $plugin_path );
-	echo 'Plugin version ' . esc_html( $plugin_info['Version'] ) . '<br>';
-	echo 'CLDR version ' . esc_html( WP_CLDR::CLDR_VERSION );
+	?>
+	<ul>
+		<li><?php echo esc_html( sprintf( __( 'wp-cldr plugin version: %s', 'wp-cldr' ), $plugin_info['Version'] ) ); ?></li>
+		<li><?php echo esc_html( sprintf( __( 'CLDR version: %s', 'wp-cldr' ), WP_CLDR::CLDR_VERSION ) ); ?></li>
+	</ul>
+	<h2><?php esc_html_e( 'External Links', 'wp-cldr' );?> <span class="dashicons dashicons-external"></span></h2>
+	<ul>
+		<li><a href="http://cldr.unicode.org/" target="_blank">Unicode Common Locale Data Repository</a></li>
+		<li><a href="https://github.com/Automattic/wp-cldr" target="_blank"><?php esc_html_e( 'wp-cldr plugin GitHub repo', 'wp-cldr' ); ?></a></li>
+		<li><a href="http://automattic.github.io/wp-cldr/class-WP_CLDR.html" target="_blank"><?php esc_html_e( 'wp-cldr plugin detailed API documentation', 'wp-cldr' ); ?></a></li>
+	</ul>
+	<?php
 }
-?>
