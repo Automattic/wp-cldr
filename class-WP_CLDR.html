@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class WP_CLDR | wp-cldr</title>
+
+	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
+	<link rel="stylesheet" href="resources/style.css?49f43d3208c5d7e33fa16d36107a345bf11cc00d">
+
+</head>
+
+<body>
+	<nav id="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="index.html" class="navbar-brand">wp-cldr</a>
+			</div>
+			<div class="collapse navbar-collapse">
+
+                <form id="search" class="navbar-form navbar-left" role="search">
+                    <input type="hidden" name="cx" value="">
+                    <input type="hidden" name="ie" value="UTF-8">
+                    <div class="form-group">
+                        <input type="text" name="q" class="search-query form-control" placeholder="Search">
+					</div>
+				</form>
+
+				<ul class="nav navbar-nav">
+					<li>
+<span>Package</span>					</li>
+					<li class="active">
+<span>Class</span>					</li>
+
+
+
+
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div id="left">
+	<div id="menu">
+
+		<div id="groups">
+				<h3>Packages</h3>
+			<ul>
+					<li>
+						<a href="package-wp.cldr.html">
+							wp-cldr						</a>
+							</li>
+			</ul>
+		</div>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-WP_CLDR.html">WP_CLDR</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+	<div id="rightInner">
+<div id="content" class="class">
+	<h1>Class WP_CLDR</h1>
+
+
+	<div class="description">
+	<p>Gives WordPress developers easy access to localized country, region, language, currency, and calendar info from the <a href="http://cldr.unicode.org/">Unicode Common Locale Data Repository</a>.</p>
+
+<p>Examples:</p>
+
+<p>The default locale is English:</p>
+
+<pre><code>$cldr = new WP_CLDR();
+$territories_in_english = $cldr-&gt;get_territories();
+</code></pre>
+
+<p>You can override the default locale per-call by passing in a language slug in the second parameter:</p>
+
+<pre><code>$germany_in_arabic = $cldr-&gt;get_territory_name( 'DE' , 'ar_AR' );
+</code></pre>
+
+<p>Use a convenience parameter during instantiation to change the default locale:</p>
+
+<pre><code>$cldr = new WP_CLDR( 'fr' );
+$germany_in_french = $cldr-&gt;get_territory_name( 'DE' );
+$us_dollar_in_french = $cldr-&gt;get_currency_name( 'USD' );
+$canadian_french_in_french = $cldr-&gt;get_language_name( 'fr-ca' );
+$canadian_french_in_english = $cldr-&gt;get_language_name( 'fr-ca' , 'en' );
+$german_in_german = $cldr-&gt;get_language_name( 'de_DE' , 'de-DE' );
+$bengali_in_japanese = $cldr-&gt;get_language_name( 'bn_BD' , 'ja_JP' );
+$us_dollar_symbol_in_simplified_chinese = $cldr-&gt;get_currency_symbol( 'USD', 'zh' );
+$africa_in_french = $cldr-&gt;get_territory_name( '002' );
+</code></pre>
+
+<p>Switch locales after the object has been created:</p>
+
+<pre><code>$cldr-&gt;set_locale( 'en' );
+$us_dollar_in_english = $cldr-&gt;get_currency_name( 'USD' );
+</code></pre>
+
+<p>Testing:</p>
+
+<p>The class includes a suite of PHPUnit tests. To run them, call <code>phpunit</code> from the plugin directory.</p>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="alert alert-info">
+		
+		
+		
+		<b>Package:</b> <a href="package-wp.cldr.html">wp-cldr</a><br>
+
+				<b>Link:</b>
+				<a href="http://cldr.unicode.org">http://cldr.unicode.org</a><br>
+				<b>Link:</b>
+				<a href="https://github.com/unicode-cldr/cldr-json">https://github.com/unicode-cldr/cldr-json</a><br>
+				<b>Autounit:</b>
+				wp-cldr<br>
+			<b>Located at</b> <a href="source-class-WP_CLDR.html#12-724" title="Go to source code"></a>
+		<br>
+	</div>
+
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading"><h2>Methods summary</h2></div>
+			<table class="summary table table-bordered table-striped methods" id="methods">
+		<tr data-order="__construct" id="___construct">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#___construct">#</a>
+			<code><a href="source-class-WP_CLDR.html#92-101" title="Go to source code">__construct</a>( <span>string <var>$locale</var> = <span class="php-quote">'en'</span></span>, <span>boolean <var>$use_cache</var> = <span class="php-keyword1">true</span> </span> )</code>
+
+			<div class="description short">
+				<p>Constructs a new instance of the class, including setting defaults for locale and caching.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Constructs a new instance of the class, including setting defaults for locale and caching.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$locale</var></dt>
+						<dd>Optional. A WordPress locale code.</dd>
+						<dt><var>$use_cache</var></dt>
+						<dd>Optional. Whether to use caching (primarily used to suppress caching for unit testing).</dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="set_locale" id="_set_locale">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_set_locale">#</a>
+			<code><a href="source-class-WP_CLDR.html#103-111" title="Go to source code">set_locale</a>( <span>string <var>$locale</var></span> )</code>
+
+			<div class="description short">
+				<p>Sets the locale.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Sets the locale.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$locale</var></dt>
+						<dd>A WordPress locale code.</dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_cldr_locale" id="_get_cldr_locale">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_cldr_locale">#</a>
+			<code><a href="source-class-WP_CLDR.html#113-159" title="Go to source code">get_cldr_locale</a>( <span>string <var>$wp_locale</var></span> )</code>
+
+			<div class="description short">
+				<p>Gets CLDR code for the equivalent WordPress locale code.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets CLDR code for the equivalent WordPress locale code.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$wp_locale</var></dt>
+						<dd>A WordPress locale code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>The equivalent CLDR locale code.
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_cldr_json_path" id="_get_cldr_json_path">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_cldr_json_path">#</a>
+			<code><a href="source-class-WP_CLDR.html#161-183" title="Go to source code">get_cldr_json_path</a>( <span>string <var>$cldr_locale</var></span>, <span>string <var>$bucket</var></span> )</code>
+
+			<div class="description short">
+				<p>Gets the absolute path of a CLDR JSON file for a given WordPress locale and CLDR data item.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets the absolute path of a CLDR JSON file for a given WordPress locale and CLDR data item.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$cldr_locale</var></dt>
+						<dd>A CLDR locale.</dd>
+						<dt><var>$bucket</var></dt>
+						<dd>The CLDR data item.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>An array with the CLDR data from the file, or an empty array if no match with any CLDR data files.
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="is_cldr_json_available" id="_is_cldr_json_available">
+
+			<td class="attributes"><code>
+				 public static
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_is_cldr_json_available">#</a>
+			<code><a href="source-class-WP_CLDR.html#185-195" title="Go to source code">is_cldr_json_available</a>( <span>string <var>$cldr_locale</var></span>, <span>string <var>$bucket</var></span> )</code>
+
+			<div class="description short">
+				<p>Checks to see if there is an installed CLDR JSON file for a given CLDR locale and data item.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Checks to see if there is an installed CLDR JSON file for a given CLDR locale and data item.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$cldr_locale</var></dt>
+						<dd>The CLDR locale.</dd>
+						<dt><var>$bucket</var></dt>
+						<dd>The CLDR data item.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean<br>Whether or not the CLDR JSON file is available.
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_cldr_json_file" id="_get_cldr_json_file">
+
+			<td class="attributes"><code>
+				 public static
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_cldr_json_file">#</a>
+			<code><a href="source-class-WP_CLDR.html#197-214" title="Go to source code">get_cldr_json_file</a>( <span>string <var>$cldr_locale</var></span>, <span>string <var>$bucket</var></span> )</code>
+
+			<div class="description short">
+				<p>Loads a CLDR JSON data file.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Loads a CLDR JSON data file.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$cldr_locale</var></dt>
+						<dd>The CLDR locale.</dd>
+						<dt><var>$bucket</var></dt>
+						<dd>The CLDR data item.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>An array with the CLDR data from the file, or an empty array if no match with any CLDR data files.
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_best_available_cldr_json_locale" id="_get_best_available_cldr_json_locale">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_best_available_cldr_json_locale">#</a>
+			<code><a href="source-class-WP_CLDR.html#216-237" title="Go to source code">get_best_available_cldr_json_locale</a>( <span>string <var>$locale</var></span>, <span>string <var>$bucket</var></span> )</code>
+
+			<div class="description short">
+				<p>Uses fallback logic to get the best available CLDR JSON locale for a given WordPress locale.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Uses fallback logic to get the best available CLDR JSON locale for a given WordPress locale.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$locale</var></dt>
+						<dd>A WordPress locale code.</dd>
+						<dt><var>$bucket</var></dt>
+						<dd>The CLDR data item.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>The best available CLDR JSON locale, or an empty string if no JSON locale is available.
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="flush_wp_cache_for_locale_bucket" id="_flush_wp_cache_for_locale_bucket">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_flush_wp_cache_for_locale_bucket">#</a>
+			<code><a href="source-class-WP_CLDR.html#303-312" title="Go to source code">flush_wp_cache_for_locale_bucket</a>( <span>string <var>$locale</var></span>, <span>string <var>$bucket</var></span> )</code>
+
+			<div class="description short">
+				<p>Flushes the WordPress object cache for a single CLDR data item for a single locale.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Flushes the WordPress object cache for a single CLDR data item for a single locale.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$locale</var></dt>
+						<dd>A WordPress locale code.</dd>
+						<dt><var>$bucket</var></dt>
+						<dd>A CLDR data item.</dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="flush_all_wp_caches" id="_flush_all_wp_caches">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_flush_all_wp_caches">#</a>
+			<code><a href="source-class-WP_CLDR.html#314-327" title="Go to source code">flush_all_wp_caches</a>( )</code>
+
+			<div class="description short">
+				<p>Clears the WordPress object cache for all CLDR data items across all locales.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Clears the WordPress object cache for all CLDR data items across all locales.</p>
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_territory_name" id="_get_territory_name">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_territory_name">#</a>
+			<code><a href="source-class-WP_CLDR.html#363-379" title="Go to source code">get_territory_name</a>( <span>string <var>$territory_code</var></span>, <span>string <var>$locale</var> = <span class="php-quote">''</span> </span> )</code>
+
+			<div class="description short">
+				<p>Gets a localized country or region name.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets a localized country or region name.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$territory_code</var></dt>
+						<dd>An ISO 3166-1 country code, or a UN M.49 region code.</dd>
+						<dt><var>$locale</var></dt>
+						<dd>Optional. A WordPress locale code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>The name of the territory in the provided locale.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+							<a href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">UN M.49 region codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_currency_symbol" id="_get_currency_symbol">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_currency_symbol">#</a>
+			<code><a href="source-class-WP_CLDR.html#381-396" title="Go to source code">get_currency_symbol</a>( <span>string <var>$currency_code</var></span>, <span>string <var>$locale</var> = <span class="php-quote">''</span> </span> )</code>
+
+			<div class="description short">
+				<p>Gets a localized currency symbol.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets a localized currency symbol.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$currency_code</var></dt>
+						<dd>An ISO 4217 currency code.</dd>
+						<dt><var>$locale</var></dt>
+						<dd>Optional. A WordPress locale code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>The symbol for the currency in the provided locale.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/currency_codes">ISO 4217 currency codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_currency_name" id="_get_currency_name">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_currency_name">#</a>
+			<code><a href="source-class-WP_CLDR.html#398-413" title="Go to source code">get_currency_name</a>( <span>string <var>$currency_code</var></span>, <span>string <var>$locale</var> = <span class="php-quote">''</span> </span> )</code>
+
+			<div class="description short">
+				<p>Gets a localized currency name.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets a localized currency name.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$currency_code</var></dt>
+						<dd>An ISO 4217 currency code.</dd>
+						<dt><var>$locale</var></dt>
+						<dd>Optional. A WordPress locale code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>The name of the currency in the provided locale.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/currency_codes">ISO 4217 currency codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_language_name" id="_get_language_name">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_language_name">#</a>
+			<code><a href="source-class-WP_CLDR.html#415-439" title="Go to source code">get_language_name</a>( <span>string <var>$language_code</var></span>, <span>string <var>$locale</var> = <span class="php-quote">''</span> </span> )</code>
+
+			<div class="description short">
+				<p>Gets a localized language name.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets a localized language name.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$language_code</var></dt>
+						<dd>An ISO 639 language code.</dd>
+						<dt><var>$locale</var></dt>
+						<dd>Optional. A WordPress locale code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>The name of the language in the provided locale.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/language_codes">ISO 639 language codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_territories" id="_get_territories">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_territories">#</a>
+			<code><a href="source-class-WP_CLDR.html#441-452" title="Go to source code">get_territories</a>( <span>string <var>$locale</var> = <span class="php-quote">''</span> </span> )</code>
+
+			<div class="description short">
+				<p>Gets all country and region names in a locale.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets all country and region names in a locale.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$locale</var></dt>
+						<dd>Optional. A WordPress locale code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>An associative array of ISO 3166-1 alpha-2 country codes and UN M.49 region codes, along with localized names, from CLDR
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+							<a href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">UN M.49 region codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_languages" id="_get_languages">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_languages">#</a>
+			<code><a href="source-class-WP_CLDR.html#454-464" title="Go to source code">get_languages</a>( <span>string <var>$locale</var> = <span class="php-quote">''</span> </span> )</code>
+
+			<div class="description short">
+				<p>Gets all language names in a locale.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets all language names in a locale.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$locale</var></dt>
+						<dd>Optional. A WordPress locale code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>An associative array of ISO 639 codes and localized language names from CLDR
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/language_codes">ISO 639 language codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_telephone_code" id="_get_telephone_code">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_telephone_code">#</a>
+			<code><a href="source-class-WP_CLDR.html#466-481" title="Go to source code">get_telephone_code</a>( <span>string <var>$country_code</var></span> )</code>
+
+			<div class="description short">
+				<p>Gets telephone code for a country.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets telephone code for a country.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$country_code</var></dt>
+						<dd>A two-letter ISO 3166 country code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>The telephone code for the provided country.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://unicode.org/reports/tr35/tr35-info.html#Telephone_Code_Data">CLDR Telephone Code Data</a><br>
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_first_day_of_week" id="_get_first_day_of_week">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_first_day_of_week">#</a>
+			<code><a href="source-class-WP_CLDR.html#483-498" title="Go to source code">get_first_day_of_week</a>( <span>string <var>$country_code</var></span> )</code>
+
+			<div class="description short">
+				<p>Gets the day which typically starts a calendar week in a country.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets the day which typically starts a calendar week in a country.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$country_code</var></dt>
+						<dd>A two-letter ISO 3166 country code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>The first three characters, in lowercase, of the English name for the day considered to be the start of the week.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://unicode.org/reports/tr35/tr35-dates.html#Week_Data">CLDR week data</a><br>
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_currency_for_all_countries" id="_get_currency_for_all_countries">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_currency_for_all_countries">#</a>
+			<code><a href="source-class-WP_CLDR.html#500-526" title="Go to source code">get_currency_for_all_countries</a>( )</code>
+
+			<div class="description short">
+				<p>Gets the currency used in each country worldwide.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets the currency used in each country worldwide.</p>
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>An associative array of ISO 3166 country codes and the ISO 4217 code for the currency currently used in each country.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+							<a href="http://www.iso.org/iso/currency_codes">ISO 4217 currency codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_currency_for_country" id="_get_currency_for_country">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_currency_for_country">#</a>
+			<code><a href="source-class-WP_CLDR.html#528-543" title="Go to source code">get_currency_for_country</a>( <span>string <var>$country_code</var></span> )</code>
+
+			<div class="description short">
+				<p>Gets the currency currently used in a country.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets the currency currently used in a country.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$country_code</var></dt>
+						<dd>A two-letter ISO 3166-1 country code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>The three-letter ISO 4217 code for the currency currently used in that country.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+							<a href="http://www.iso.org/iso/currency_codes">ISO 4217 currency codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_countries_for_all_currencies" id="_get_countries_for_all_currencies">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_countries_for_all_currencies">#</a>
+			<code><a href="source-class-WP_CLDR.html#545-562" title="Go to source code">get_countries_for_all_currencies</a>( )</code>
+
+			<div class="description short">
+				<p>Gets the countries that use each currency in use today.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets the countries that use each currency in use today.</p>
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>An associative array of ISO 4217 currency codes and then an array of the ISO 3166 codes for countries which currently each currency.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/currency_codes">ISO 4217 currency codes</a><br>
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_countries_for_currency" id="_get_countries_for_currency">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_countries_for_currency">#</a>
+			<code><a href="source-class-WP_CLDR.html#564-579" title="Go to source code">get_countries_for_currency</a>( <span>string <var>$currency_code</var></span> )</code>
+
+			<div class="description short">
+				<p>Gets the countries that use a particular currency.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets the countries that use a particular currency.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$currency_code</var></dt>
+						<dd>A three-letter ISO 4217 currency code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>The ISO 3166 codes for the countries which currently the currency.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/currency_codes">ISO 4217 currency codes</a><br>
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_territories_contained" id="_get_territories_contained">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_territories_contained">#</a>
+			<code><a href="source-class-WP_CLDR.html#581-610" title="Go to source code">get_territories_contained</a>( <span>string <var>$region_code</var></span> )</code>
+
+			<div class="description short">
+				<p>Gets the countries contained by a region code.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets the countries contained by a region code.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$region_code</var></dt>
+						<dd>A UN M.49 region code or a two-letter ISO 3166-1 country code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>The countries included in that region, or the country if $region_code is a country.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.unicode.org/cldr/charts/latest/supplemental/territory_containment_un_m_49.html">CLDR info page on territory containment</a><br>
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+							<a href="http://unstats.un.org/unsd/methods/m49/m49regin.htm">UN M.49 region codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_languages_spoken" id="_get_languages_spoken">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_languages_spoken">#</a>
+			<code><a href="source-class-WP_CLDR.html#612-631" title="Go to source code">get_languages_spoken</a>( <span>string <var>$country_code</var></span> )</code>
+
+			<div class="description short">
+				<p>Gets the languages spoken in a country, in descending order of use.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets the languages spoken in a country, in descending order of use.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$country_code</var></dt>
+						<dd>A two-letter ISO 3166-1 country code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>An associative array with the key of a language code and the value of the percentage of population which speaks the language in that country.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+							<a href="http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html">Detail on CLDR language information</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_most_spoken_language" id="_get_most_spoken_language">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_most_spoken_language">#</a>
+			<code><a href="source-class-WP_CLDR.html#633-649" title="Go to source code">get_most_spoken_language</a>( <span>string <var>$country_code</var></span> )</code>
+
+			<div class="description short">
+				<p>Gets the most widely spoken language spoken in a country.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets the most widely spoken language spoken in a country.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$country_code</var></dt>
+						<dd>A two-letter ISO 3166-1 country code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>The ISO 639 code for the language most widely spoken in the country.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+							<a href="http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html">Detail on CLDR language information</a><br>
+							<a href="http://www.iso.org/iso/language_codes">ISO 639 language codes</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_territory_info" id="_get_territory_info">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_territory_info">#</a>
+			<code><a href="source-class-WP_CLDR.html#651-666" title="Go to source code">get_territory_info</a>( <span>string <var>$country_code</var></span> )</code>
+
+			<div class="description short">
+				<p>Gets GDP, population, and language information for a country.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets GDP, population, and language information for a country.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$country_code</var></dt>
+						<dd>Optional. A two-letter ISO 3166-1 country code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>CLDR's territory information.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iso.org/iso/country_codes">ISO 3166 country codes</a><br>
+							<a href="http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html">CLDR&#039;s territory information</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_time_zone_cities" id="_get_time_zone_cities">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_time_zone_cities">#</a>
+			<code><a href="source-class-WP_CLDR.html#690-705" title="Go to source code">get_time_zone_cities</a>( <span>string <var>$locale</var> = <span class="php-quote">''</span> </span> )</code>
+
+			<div class="description short">
+				<p>Gets the time zone city names -- aka exemplars -- for a locale.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets the time zone city names -- aka exemplars -- for a locale.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$locale</var></dt>
+						<dd>Optional. A WordPress locale code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>As associative array of time zone IDs (e.g. <code>Europe/Istanbul</code>) and the localized exemplar city for each.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iana.org/time-zones">IANA time zone</a><br>
+							<a href="http://unicode.org/reports/tr35/tr35-dates.html#Time_Zone_Names">CLDR info on time zone names</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_time_zone_city" id="_get_time_zone_city">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_time_zone_city">#</a>
+			<code><a href="source-class-WP_CLDR.html#707-723" title="Go to source code">get_time_zone_city</a>( <span>string <var>$time_zone_id</var></span>, <span>string <var>$locale</var> = <span class="php-quote">''</span> </span> )</code>
+
+			<div class="description short">
+				<p>Gets the time zone city name -- aka exemplar -- for a time zone ID.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Gets the time zone city name -- aka exemplar -- for a time zone ID.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$time_zone_id</var></dt>
+						<dd>An IANA time zone ID (e.g. <code>Europe/Istanbul</code>).</dd>
+						<dt><var>$locale</var></dt>
+						<dd>Optional. A WordPress locale code.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>The localized name of the time zone exemplar city.
+					</div>
+
+
+					<h4>Link</h4>
+					<div class="list">
+							<a href="http://www.iana.org/time-zones">IANA time zone</a><br>
+							<a href="http://unicode.org/reports/tr35/tr35-dates.html#Time_Zone_Names">CLDR info on time zone names</a><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+			</table>
+		</div>
+
+
+
+
+
+
+
+
+		<div class="panel panel-default">
+            <div class="panel-heading"><h2>Constants summary</h2></div>
+			<table class="summary table table-bordered table-striped constants" id="constants">
+			<tr data-order="CACHE_GROUP" id="CACHE_GROUP">
+
+				<td class="attributes"><code>string</code></td>
+				<td class="name">
+					<code>
+						<a href="source-class-WP_CLDR.html#82-85" title="Go to source code"><b>CACHE_GROUP</b></a>
+					</code>
+
+					<div class="description short">
+						<p>The cache group name to use for the WordPress object cache.</p>
+					</div>
+
+					<div class="description detailed hidden">
+						<p>The cache group name to use for the WordPress object cache.</p>
+
+					</div>
+				</td>
+				<td class="value">
+					<div>
+						<a href="#CACHE_GROUP" class="anchor">#</a>
+						<code><span class="php-quote">'wp-cldr'</span></code>
+					</div>
+				</td>
+			</tr>
+			<tr data-order="CLDR_VERSION" id="CLDR_VERSION">
+
+				<td class="attributes"><code>string</code></td>
+				<td class="name">
+					<code>
+						<a href="source-class-WP_CLDR.html#87-90" title="Go to source code"><b>CLDR_VERSION</b></a>
+					</code>
+
+					<div class="description short">
+						<p>The CLDR version, which the class uses to determine path to JSON files.</p>
+					</div>
+
+					<div class="description detailed hidden">
+						<p>The CLDR version, which the class uses to determine path to JSON files.</p>
+
+					</div>
+				</td>
+				<td class="value">
+					<div>
+						<a href="#CLDR_VERSION" class="anchor">#</a>
+						<code><span class="php-quote">'29.0.0'</span></code>
+					</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+
+
+
+
+</div>
+	</div>
+
+	<div id="footer">
+		wp-cldr API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>
