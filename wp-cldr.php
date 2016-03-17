@@ -243,8 +243,7 @@ function wp_cldr_settings() {
 	?>
 	<h2><?php esc_html_e( 'Active Version Information', 'wp-cldr' ); ?></h2>
 	<?php
-	$plugin_path = WP_PLUGIN_DIR . '/wp-cldr/wp-cldr.php';
-	$plugin_info = get_plugin_data( $plugin_path );
+	$plugin_info = get_plugin_data( __FILE__ );
 	?>
 	<ul>
 		<li><?php echo esc_html( sprintf( __( 'wp-cldr plugin version: %s', 'wp-cldr' ), $plugin_info['Version'] ) ); ?></li>
