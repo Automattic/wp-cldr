@@ -10,7 +10,7 @@
  */
 
 /**
- * Gives WordPress developers easy access to localized country, region, language, currency, and calendar info from the [Unicode Common Locale Data Repository](http://cldr.unicode.org/).
+ * This plugin gives WordPress developers easy access to localized country, region, language, currency, time zone, and calendar info from the [Unicode Common Locale Data Repository](http://cldr.unicode.org/).
  *
  * Examples:
  *
@@ -548,7 +548,7 @@ class WP_CLDR {
 	 * @link http://www.iso.org/iso/currency_codes ISO 4217 currency codes
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 *
-	 * @return array An associative array of ISO 4217 currency codes and then an array of the ISO 3166 codes for countries which currently each currency.
+	 * @return array An associative array of ISO 4217 currency codes and then an array of the ISO 3166 codes for countries which currently use each currency.
 	 */
 	public function get_countries_for_all_currencies() {
 		$result = array();
@@ -568,7 +568,7 @@ class WP_CLDR {
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 *
 	 * @param string $currency_code A three-letter ISO 4217 currency code.
-	 * @return array The ISO 3166 codes for the countries which currently the currency.
+	 * @return array The ISO 3166 codes for the countries which currently use the currency.
 	 */
 	public function get_countries_for_currency( $currency_code ) {
 		$countries_for_all_currencies = $this->get_countries_for_all_currencies();
@@ -654,7 +654,7 @@ class WP_CLDR {
 	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
 	 * @link http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html CLDR's territory information
 	 *
-	 * @param string $country_code Optional. A two-letter ISO 3166-1 country code.
+	 * @param string $country_code A two-letter ISO 3166-1 country code.
 	 * @return array CLDR's territory information.
 	 */
 	public function get_territory_info( $country_code ) {

@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: WP CLDR
- * Description: Gives WordPress developers easy access to localized country, region, language, currency, and calendar info from the <a href="http://cldr.unicode.org/">Unicode Common Locale Data Repository</a>. See <a href="http://automattic.github.io/wp-cldr/class-WP_CLDR.html">API documentation</a>.
+ * Description: Gives WordPress developers easy access to localized country, region, language, currency, time zone, and calendar info from the <a href="http://cldr.unicode.org/">Unicode Common Locale Data Repository</a>. See <a href="http://automattic.github.io/wp-cldr/class-WP_CLDR.html">API documentation</a>.
  * Plugin URI:  https://github.com/Automattic/wp-cldr
  * Author:      Automattic
  * Author URI:  https://automattic.com
- * Version:     0.9
+ * Version:     1.0
  * Text Domain: wp-cldr
- * Domain Path: /languages/
+ * Domain Path: /languages
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
@@ -37,16 +37,18 @@ function wp_cldr_menu() {
  */
 function wp_cldr_settings() {
 
+	// Load the text domain for the plugin (loading here not earlier because translations are only needed for this page).
+	load_plugin_textdomain( 'wp-cldr', false, basename( __DIR__ ) . '/languages/' );
+
+	$locale = get_locale();
 	if ( isset( $_GET['locale'] ) && 1 < strlen( sanitize_text_field( wp_unslash( $_GET['locale'] ) ) ) ) {
 		$locale = sanitize_text_field( wp_unslash( $_GET['locale'] ) );
-	} else {
-		$locale = get_locale();
 	}
+	$country = 'US';
 	if ( isset( $_GET['country'] ) && 2 === strlen( sanitize_text_field( wp_unslash( $_GET['country'] ) ) ) ) {
 		$country = sanitize_text_field( wp_unslash( $_GET['country'] ) );
-	} else {
-		$country = 'US';
 	}
+
 	$cldr = new WP_CLDR( $locale, false );
 	$default = array(
 		array(
@@ -62,7 +64,7 @@ function wp_cldr_settings() {
 
 	<div class="wrap">
 	<h1><?php esc_html_e( 'WP CLDR examples and info', 'wp-cldr' ); ?></h1>
-	<?php esc_html_e( 'This plugin gives WordPress developers easy access to localized country, region, language, currency, and calendar info from the Unicode Common Locale Data Repository.', 'wp-cldr' ); ?>
+	<?php esc_html_e( 'This plugin gives WordPress developers easy access to localized country, region, language, currency, time zone, and calendar info from the Unicode Common Locale Data Repository.', 'wp-cldr' ); ?>
 	<h2><?php esc_html_e( 'Examples', 'wp-cldr' ); ?></h2>
 	<form method="get" name='locale'>
 	<table width="75%">
@@ -103,9 +105,8 @@ function wp_cldr_settings() {
 
 	$mapped_cldr_locale = WP_CLDR::get_best_available_cldr_json_locale( $locale, 'territories' );
 	if ( empty( $mapped_cldr_locale ) ) {
-		echo '<br><i>';
 		esc_html_e( 'CLDR files not available for this WordPress locale.', 'wp-cldr' );
-		echo '</i> — ';
+		echo '<br>';
 	} else {
 		echo '<i>';
 		esc_html_e( 'Mapped to CLDR JSON path', 'wp-cldr' );
@@ -241,19 +242,19 @@ function wp_cldr_settings() {
 		echo esc_html( number_format( $population ) );
 	}
 	?>
-	<h2><?php esc_html_e( 'Active Version Information', 'wp-cldr' ); ?></h2>
+	<h2><?php esc_html_e( 'Version information', 'wp-cldr' ); ?></h2>
 	<?php
 	$plugin_info = get_plugin_data( __FILE__ );
 	?>
 	<ul>
-		<li><?php echo esc_html( sprintf( __( 'wp-cldr plugin version: %s', 'wp-cldr' ), $plugin_info['Version'] ) ); ?></li>
-		<li><?php echo esc_html( sprintf( __( 'CLDR version: %s', 'wp-cldr' ), WP_CLDR::CLDR_VERSION ) ); ?></li>
+		<li><?php echo esc_html( sprintf( __( 'WP CLDR plugin: %s', 'wp-cldr' ), $plugin_info['Version'] ) ); ?></li>
+		<li><?php echo esc_html( sprintf( __( 'CLDR: %s', 'wp-cldr' ), WP_CLDR::CLDR_VERSION ) ); ?></li>
 	</ul>
-	<h2><?php esc_html_e( 'External Links', 'wp-cldr' );?> <span class="dashicons dashicons-external"></span></h2>
+	<h2><?php esc_html_e( 'External links', 'wp-cldr' );?> <span class="dashicons dashicons-external"></span></h2>
 	<ul>
 		<li><a href="http://cldr.unicode.org/" target="_blank">Unicode Common Locale Data Repository</a></li>
-		<li><a href="https://github.com/Automattic/wp-cldr" target="_blank"><?php esc_html_e( 'wp-cldr plugin GitHub repo', 'wp-cldr' ); ?></a></li>
-		<li><a href="http://automattic.github.io/wp-cldr/class-WP_CLDR.html" target="_blank"><?php esc_html_e( 'wp-cldr plugin detailed API documentation', 'wp-cldr' ); ?></a></li>
+		<li><a href="https://github.com/Automattic/wp-cldr" target="_blank"><?php esc_html_e( 'WP CLDR plugin GitHub repo', 'wp-cldr' ); ?></a></li>
+		<li><a href="https://automattic.github.io/wp-cldr/class-WP_CLDR.html" target="_blank"><?php esc_html_e( 'WP CLDR plugin detailed API documentation', 'wp-cldr' ); ?></a></li>
 	</ul>
 	<?php
 }
