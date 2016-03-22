@@ -3,7 +3,7 @@ Contributors: stuwest, jblz, automattic
 Tags: i18n, internationalization, L10n, localization, unicode, CLDR
 Requires at least: 4.4
 Tested up to: 4.4.2
-Stable tag: 0.9
+Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,7 +11,7 @@ Gives WordPress developers easy access to localized country, region, language, c
 
 == Description ==
 
-This plugin provides WordPress developers with easy access to localized country, language, currency, region, and calendar info from the [Unicode Common Locale Data Repository](http://cldr.unicode.org/).
+This plugin gives WordPress developers easy access to localized country, region, language, currency, time zone, and calendar info from the [Unicode Common Locale Data Repository](http://cldr.unicode.org/).
 
 With the plugin active, WordPress developers can access the following for over 100 WordPress locales:
 
@@ -19,7 +19,7 @@ With the plugin active, WordPress developers can access the following for over 1
 * Names for regions (and UN M.49 region codes, plus countries included in each region).
 * Names for languages (and ISO 639 language codes).
 * Names and symbols for currencies (and ISO 4317 currency codes).
-* Names for time zone example cities.
+* Names for time zone example cities (and IANA time zone IDs).
 * Calendar information including the first day of the week in different countries.
 * Country information including telephone codes, most spoken languages, currency, and population.
 
@@ -34,7 +34,7 @@ Follow along with or contribute to the development of this plugin at https://git
 1. Upload the folder to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. See the plugin in action via its settings page.
-1. Build CLDR data into your site by using [functions in the API documentation](https://automattic.github.io/wp-cldr/class-WP_CLDR.html)
+1. Build CLDR data into your site by using [methods in the API documentation](https://automattic.github.io/wp-cldr/class-WP_CLDR.html)
 
 == Frequently Asked Questions ==
 
@@ -66,6 +66,10 @@ Open up a new issue on GitHub at https://github.com/Automattic/wp-cldr/issues. W
 4. Examples of data available for the locale `hi_IN`, Hindi
 
 == Changelog ==
+
+= 1.0 (Mar 21, 2016) =
+
+* Documentation & localization cleanup
 
 = 0.9 (Mar 17, 2016) =
 

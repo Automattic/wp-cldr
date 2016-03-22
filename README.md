@@ -4,7 +4,7 @@ Gives WordPress developers easy access to localized country, region, language, c
 
 == Description ==
 
-This plugin provides WordPress developers with easy access to localized country, language, currency, region, and calendar info from the [Unicode Common Locale Data Repository](http://cldr.unicode.org/).
+This plugin gives WordPress developers easy access to localized country, region, language, currency, time zone, and calendar info from the [Unicode Common Locale Data Repository](http://cldr.unicode.org/).
 
 With the plugin active, WordPress developers can access the following for over 100 WordPress locales:
 
@@ -13,7 +13,7 @@ With the plugin active, WordPress developers can access the following for over 1
 * Names and symbols for currencies (and ISO 4317 currency codes).
 * Names for languages (and ISO 639 language codes).
 * Names and symbols for currencies (and ISO 4317 currency codes).
-* Names for time zone example cities.
+* Names for time zone example cities (and IANA time zone IDs).
 * Calendar information including the first day of the week in different countries.
 * Country information including telephone codes, most spoken languages, currency, and population.
 
@@ -26,7 +26,7 @@ CLDR is a library of localization data coordinated by Unicode. It emphasizes [co
 1. Upload the folder to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. See the plugin in action via its settings page.
-1. Build CLDR data into your site by using [functions in the API documentation](https://automattic.github.io/wp-cldr/class-WP_CLDR.html)
+1. Build CLDR data into your site by using [methods in the API documentation](https://automattic.github.io/wp-cldr/class-WP_CLDR.html)
 
 == Frequently Asked Questions ==
 
