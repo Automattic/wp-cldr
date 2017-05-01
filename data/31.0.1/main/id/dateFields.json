@@ -1,0 +1,590 @@
+{
+  "main": {
+    "id": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13259 $",
+          "_cldrVersion": "31.0.1"
+        },
+        "language": "id"
+      },
+      "dates": {
+        "fields": {
+          "era": {
+            "displayName": "Era"
+          },
+          "era-short": {
+            "displayName": "Era"
+          },
+          "era-narrow": {
+            "displayName": "Era"
+          },
+          "year": {
+            "displayName": "Tahun",
+            "relative-type--1": "tahun lalu",
+            "relative-type-0": "tahun ini",
+            "relative-type-1": "tahun depan",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "Dalam {0} tahun"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} tahun yang lalu"
+            }
+          },
+          "year-short": {
+            "displayName": "thn.",
+            "relative-type--1": "tahun lalu",
+            "relative-type-0": "tahun ini",
+            "relative-type-1": "tahun depan",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} thn"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} thn lalu"
+            }
+          },
+          "year-narrow": {
+            "displayName": "thn.",
+            "relative-type--1": "tahun lalu",
+            "relative-type-0": "tahun ini",
+            "relative-type-1": "tahun depan",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} thn"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} thn"
+            }
+          },
+          "quarter": {
+            "displayName": "Kuartal",
+            "relative-type--1": "Kuartal lalu",
+            "relative-type-0": "Kuartal ini",
+            "relative-type-1": "Kuartal berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dalam {0} kuartal"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} kuartal yang lalu"
+            }
+          },
+          "quarter-short": {
+            "displayName": "krtl.",
+            "relative-type--1": "Kuartal lalu",
+            "relative-type-0": "Kuartal ini",
+            "relative-type-1": "Kuartal berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} krtl."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} krtl. lalu"
+            }
+          },
+          "quarter-narrow": {
+            "displayName": "krtl.",
+            "relative-type--1": "Kuartal lalu",
+            "relative-type-0": "Kuartal ini",
+            "relative-type-1": "Kuartal berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} krtl."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} krtl."
+            }
+          },
+          "month": {
+            "displayName": "Bulan",
+            "relative-type--1": "bulan lalu",
+            "relative-type-0": "bulan ini",
+            "relative-type-1": "Bulan berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "Dalam {0} bulan"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} bulan yang lalu"
+            }
+          },
+          "month-short": {
+            "displayName": "bln.",
+            "relative-type--1": "bulan lalu",
+            "relative-type-0": "bulan ini",
+            "relative-type-1": "Bulan berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} bln"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} bln lalu"
+            }
+          },
+          "month-narrow": {
+            "displayName": "bln.",
+            "relative-type--1": "bulan lalu",
+            "relative-type-0": "bulan ini",
+            "relative-type-1": "Bulan berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} bln."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} bln."
+            }
+          },
+          "week": {
+            "displayName": "Minggu",
+            "relative-type--1": "minggu lalu",
+            "relative-type-0": "minggu ini",
+            "relative-type-1": "minggu depan",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "Dalam {0} minggu"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} minggu yang lalu"
+            },
+            "relativePeriod": "minggu ke-{0}"
+          },
+          "week-short": {
+            "displayName": "mgg.",
+            "relative-type--1": "minggu lalu",
+            "relative-type-0": "minggu ini",
+            "relative-type-1": "minggu depan",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} mgg"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} mgg lalu"
+            },
+            "relativePeriod": "mgg ke-{0}"
+          },
+          "week-narrow": {
+            "displayName": "mgg.",
+            "relative-type--1": "minggu lalu",
+            "relative-type-0": "minggu ini",
+            "relative-type-1": "minggu depan",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} mgg."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} mgg."
+            },
+            "relativePeriod": "mgg {0}"
+          },
+          "weekOfMonth": {
+            "displayName": "Week Of Month"
+          },
+          "weekOfMonth-short": {
+            "displayName": "Week Of Month"
+          },
+          "weekOfMonth-narrow": {
+            "displayName": "Week Of Month"
+          },
+          "day": {
+            "displayName": "Hari",
+            "relative-type--2": "kemarin dulu",
+            "relative-type--1": "kemarin",
+            "relative-type-0": "hari ini",
+            "relative-type-1": "besok",
+            "relative-type-2": "lusa",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "Dalam {0} hari"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} hari yang lalu"
+            }
+          },
+          "day-short": {
+            "displayName": "h",
+            "relative-type--2": "kemarin dulu",
+            "relative-type--1": "kemarin",
+            "relative-type-0": "hari ini",
+            "relative-type-1": "besok",
+            "relative-type-2": "lusa",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dalam {0} h"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} h lalu"
+            }
+          },
+          "day-narrow": {
+            "displayName": "h",
+            "relative-type--2": "kemarin dulu",
+            "relative-type--1": "kemarin",
+            "relative-type-0": "hari ini",
+            "relative-type-1": "besok",
+            "relative-type-2": "lusa",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} h"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} h"
+            }
+          },
+          "dayOfYear": {
+            "displayName": "Day Of Year"
+          },
+          "dayOfYear-short": {
+            "displayName": "Day Of Year"
+          },
+          "dayOfYear-narrow": {
+            "displayName": "Day Of Year"
+          },
+          "weekday": {
+            "displayName": "Hari dalam Seminggu"
+          },
+          "weekday-short": {
+            "displayName": "Hari dalam Seminggu"
+          },
+          "weekday-narrow": {
+            "displayName": "Hari dalam Seminggu"
+          },
+          "weekdayOfMonth": {
+            "displayName": "Weekday Of Month"
+          },
+          "weekdayOfMonth-short": {
+            "displayName": "Weekday Of Month"
+          },
+          "weekdayOfMonth-narrow": {
+            "displayName": "Weekday Of Month"
+          },
+          "sun": {
+            "relative-type--1": "hari Minggu lalu",
+            "relative-type-0": "hari Minggu ini",
+            "relative-type-1": "hari Minggu berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dalam {0} hari Minggu"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} hari Minggu yang lalu"
+            }
+          },
+          "sun-short": {
+            "relative-type--1": "Min. lalu",
+            "relative-type-0": "Min. ini",
+            "relative-type-1": "Min. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} Min."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Min. lalu"
+            }
+          },
+          "sun-narrow": {
+            "relative-type--1": "Min. lalu",
+            "relative-type-0": "Min. ini",
+            "relative-type-1": "Min. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Min."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Min."
+            }
+          },
+          "mon": {
+            "relative-type--1": "Senin lalu",
+            "relative-type-0": "Senin ini",
+            "relative-type-1": "Senin berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dalam {0} Senin"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Senin lalu"
+            }
+          },
+          "mon-short": {
+            "relative-type--1": "Sen. lalu",
+            "relative-type-0": "Sen. ini",
+            "relative-type-1": "Sen. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} Sen."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Sen. lalu"
+            }
+          },
+          "mon-narrow": {
+            "relative-type--1": "Sen. lalu",
+            "relative-type-0": "Sen. ini",
+            "relative-type-1": "Sen. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Sen."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Sen."
+            }
+          },
+          "tue": {
+            "relative-type--1": "Selasa lalu",
+            "relative-type-0": "Selasa ini",
+            "relative-type-1": "Selasa berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dalam {0} Selasa"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Selasa lalu"
+            }
+          },
+          "tue-short": {
+            "relative-type--1": "Sel. lalu",
+            "relative-type-0": "Sel. ini",
+            "relative-type-1": "Sel. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} Sel."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Sel. lalu"
+            }
+          },
+          "tue-narrow": {
+            "relative-type--1": "Sel. lalu",
+            "relative-type-0": "Sel. ini",
+            "relative-type-1": "Sel. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Sel."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Sel."
+            }
+          },
+          "wed": {
+            "relative-type--1": "Rabu lalu",
+            "relative-type-0": "Rabu ini",
+            "relative-type-1": "Rabu berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dalam {0} Rabu"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Rabu lalu"
+            }
+          },
+          "wed-short": {
+            "relative-type--1": "Rab. lalu",
+            "relative-type-0": "Rab. ini",
+            "relative-type-1": "Rab. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} Rab."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Rab. lalu"
+            }
+          },
+          "wed-narrow": {
+            "relative-type--1": "Rab. lalu",
+            "relative-type-0": "Rab. ini",
+            "relative-type-1": "Rab. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Rab."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Rab."
+            }
+          },
+          "thu": {
+            "relative-type--1": "Kamis lalu",
+            "relative-type-0": "Kamis ini",
+            "relative-type-1": "Kamis berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dalam {0} Kamis"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Kamis lalu"
+            }
+          },
+          "thu-short": {
+            "relative-type--1": "Kam. lalu",
+            "relative-type-0": "Kam. ini",
+            "relative-type-1": "Kam. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} Kam."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Kam. lalu"
+            }
+          },
+          "thu-narrow": {
+            "relative-type--1": "Kam. lalu",
+            "relative-type-0": "Kam. ini",
+            "relative-type-1": "Kam. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Kam."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Kam."
+            }
+          },
+          "fri": {
+            "relative-type--1": "Jumat lalu",
+            "relative-type-0": "Jumat ini",
+            "relative-type-1": "Jumat berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dalam {0} Jumat"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Jumat lalu"
+            }
+          },
+          "fri-short": {
+            "relative-type--1": "Jum. lalu",
+            "relative-type-0": "Jum. ini",
+            "relative-type-1": "Jum. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} Jum."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Jum. lalu"
+            }
+          },
+          "fri-narrow": {
+            "relative-type--1": "Jum. lalu",
+            "relative-type-0": "Jum. ini",
+            "relative-type-1": "Jum. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Jum."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Jum."
+            }
+          },
+          "sat": {
+            "relative-type--1": "Sabtu lalu",
+            "relative-type-0": "Sabtu ini",
+            "relative-type-1": "Sabtu berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dalam {0} Sabtu"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Sabtu lalu"
+            }
+          },
+          "sat-short": {
+            "relative-type--1": "Sab. lalu",
+            "relative-type-0": "Sab. ini",
+            "relative-type-1": "Sab. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} Sab."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} Sab. lalu"
+            }
+          },
+          "sat-narrow": {
+            "relative-type--1": "Sab. lalu",
+            "relative-type-0": "Sab. ini",
+            "relative-type-1": "Sab. berikutnya",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Sab."
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Sab."
+            }
+          },
+          "dayperiod-short": {
+            "displayName": "AM/PM"
+          },
+          "dayperiod": {
+            "displayName": "AM/PM"
+          },
+          "dayperiod-narrow": {
+            "displayName": "AM/PM"
+          },
+          "hour": {
+            "displayName": "Jam",
+            "relative-type-0": "jam ini",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "Dalam {0} jam"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} jam yang lalu"
+            }
+          },
+          "hour-short": {
+            "displayName": "jam",
+            "relative-type-0": "jam ini",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "Dalam {0} jam"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} jam lalu"
+            }
+          },
+          "hour-narrow": {
+            "displayName": "j",
+            "relative-type-0": "jam ini",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} jam"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} jam"
+            }
+          },
+          "minute": {
+            "displayName": "Menit",
+            "relative-type-0": "menit ini",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "Dalam {0} menit"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} menit yang lalu"
+            }
+          },
+          "minute-short": {
+            "displayName": "mnt.",
+            "relative-type-0": "menit ini",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} mnt"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} mnt lalu"
+            }
+          },
+          "minute-narrow": {
+            "displayName": "m",
+            "relative-type-0": "menit ini",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} mnt"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} mnt"
+            }
+          },
+          "second": {
+            "displayName": "Detik",
+            "relative-type-0": "sekarang",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "Dalam {0} detik"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} detik yang lalu"
+            }
+          },
+          "second-short": {
+            "displayName": "dtk.",
+            "relative-type-0": "sekarang",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "dlm {0} dtk"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "{0} dtk lalu"
+            }
+          },
+          "second-narrow": {
+            "displayName": "d",
+            "relative-type-0": "sekarang",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} dtk"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} dtk"
+            }
+          },
+          "zone": {
+            "displayName": "Zona Waktu"
+          },
+          "zone-short": {
+            "displayName": "Zona Waktu"
+          },
+          "zone-narrow": {
+            "displayName": "Zona Waktu"
+          }
+        }
+      }
+    }
+  }
+}
