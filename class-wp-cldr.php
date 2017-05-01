@@ -671,7 +671,7 @@ class WP_CLDR {
 	 * @link http://www.iana.org/time-zones IANA time zone
 	 * @link http://unicode.org/reports/tr35/tr35-dates.html#Time_Zone_Names CLDR info on time zone names
 	 *
-	 * @param string $zones An array of time zone data from CLDR JSON files.
+	 * @param array $zones An array of time zone data from CLDR JSON files.
 	 * @param string $id_start Optional. The start of the time zone ID (used for recursive calls).
 	 * @return array An associative array of time zone IDs (e.g. `Europe/Istanbul`) and the localized exemplar city names.
 	 */
