@@ -10,6 +10,8 @@ require_once 'class-wp-cldr.php';
 
 // The second parameter, false, tell the class to not use caching which means we can avoid loading WordPress.
 $cldr = new WP_CLDR( 'en', false );
+
+// Be sure to update CLDR_VERSION in the class if you're upgrading to a new CLDR version.
 $cldr_version = WP_CLDR::CLDR_VERSION;
 
 /**

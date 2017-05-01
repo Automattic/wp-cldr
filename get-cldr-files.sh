@@ -7,7 +7,7 @@ if [ "wp-cldr" != "${PWD##*/}" ]; then
 fi
 
 # set the CLDR version
-CLDRVERSION="29.0.0"
+CLDRVERSION="31.0.1"
 
 # remove any existing data files for this CLDR version
 rm -rf data/$CLDRVERSION
