@@ -25,11 +25,11 @@ function remove_directory( $directory ) {
 }
 
 // WordPress.com locales with over 1k translations as of April 2015.
-$wpcom_locales_with_over_1k_translations_at_march_2015 = array( 'az', 'de', 'ja', 'id', 'pt-br', 'it', 'he', 'es', 'fr', 'nl', 'tr', 'hu', 'ru', 'ko', 'ar', 'sq', 'fr-ca', 'fa', 'zh-tw', 'zh-cn', 'sv', 'ga', 'el', 'fi', 'gl', 'bs', 'pt', 'ca', 'sr', 'hr', 'pl', 'nn', 'el-po', 'da', 'gd', 'th', 'cs', 'eo', 'ckb', 'mya', 'cy', 'ro', 'te', 'no', 'bg', 'sk', 'lt', 'ug', 'fr-be', 'vi', 'nb', 'ms', 'km', 'uk', 'eu', 'ky', 'br', 'es-pr', 'fr-ch', 'si', 'ta', 'as', 'mk', 'tl', 'su', 'is', 'et', 'lv', 'af', 'bn', 'oc', 'ur', 'kk', 'ne', 'mwl', 'hi', 'en-gb', 'mhr', 'mn', 'zh', 'sl', 'mr', 'ml', 'so', 'sah', 'fo', 'zh-hk', 'ast' );
+$wpcom_locales_with_over_1k_translations_at_march_2015 = [ 'az', 'de', 'ja', 'id', 'pt-br', 'it', 'he', 'es', 'fr', 'nl', 'tr', 'hu', 'ru', 'ko', 'ar', 'sq', 'fr-ca', 'fa', 'zh-tw', 'zh-cn', 'sv', 'ga', 'el', 'fi', 'gl', 'bs', 'pt', 'ca', 'sr', 'hr', 'pl', 'nn', 'el-po', 'da', 'gd', 'th', 'cs', 'eo', 'ckb', 'mya', 'cy', 'ro', 'te', 'no', 'bg', 'sk', 'lt', 'ug', 'fr-be', 'vi', 'nb', 'ms', 'km', 'uk', 'eu', 'ky', 'br', 'es-pr', 'fr-ch', 'si', 'ta', 'as', 'mk', 'tl', 'su', 'is', 'et', 'lv', 'af', 'bn', 'oc', 'ur', 'kk', 'ne', 'mwl', 'hi', 'en-gb', 'mhr', 'mn', 'zh', 'sl', 'mr', 'ml', 'so', 'sah', 'fo', 'zh-hk', 'ast' ];
 echo 'wpcom locales -- ' . count( $wpcom_locales_with_over_1k_translations_at_march_2015 ) . "\n";
 
 // Locales from Languages menu of a fresh WordPress.org install in early March 2016.
-$wporg_site_languages_menu_at_march_2016 = array( 'en', 'ar', 'ary', 'az', 'azb', 'bg_BG', 'bn_BD', 'bs_BA', 'ca', 'ceb', 'cy', 'da_DK', 'de_CH', 'de_DE', 'de_DE_formal', 'el', 'en_AU', 'en_CA', 'en_GB', 'en_NZ', 'en_ZA', 'eo', 'es_AR', 'es_CL', 'es_CO', 'es_ES', 'es_GT', 'es_MX', 'es_PE', 'es_VE', 'et', 'eu', 'fa_IR', 'fi', 'fr_BE', 'fr_CA', 'fr_FR', 'gd', 'gl_ES', 'haz', 'he_IL', 'hi_IN', 'hr', 'hu_HU', 'hy', 'id_ID', 'is_IS', 'it_IT', 'ja', 'ka_GE', 'ko_KR', 'lt_LT', 'ms_MY', 'my_MM', 'nb_NO', 'nl_NL', 'nl_NL_formal', 'nn_NO', 'oci', 'pl_PL', 'ps', 'pt_BR', 'pt_PT', 'ro_RO', 'ru_RU', 'sk_SK', 'sl_SI', 'sq', 'sr_RS', 'sv_SE', 'th', 'tl', 'tr_TR', 'ug_CN', 'uk', 'vi', 'zh_CN', 'zh_TW' );
+$wporg_site_languages_menu_at_march_2016 = [ 'en', 'ar', 'ary', 'az', 'azb', 'bg_BG', 'bn_BD', 'bs_BA', 'ca', 'ceb', 'cy', 'da_DK', 'de_CH', 'de_DE', 'de_DE_formal', 'el', 'en_AU', 'en_CA', 'en_GB', 'en_NZ', 'en_ZA', 'eo', 'es_AR', 'es_CL', 'es_CO', 'es_ES', 'es_GT', 'es_MX', 'es_PE', 'es_VE', 'et', 'eu', 'fa_IR', 'fi', 'fr_BE', 'fr_CA', 'fr_FR', 'gd', 'gl_ES', 'haz', 'he_IL', 'hi_IN', 'hr', 'hu_HU', 'hy', 'id_ID', 'is_IS', 'it_IT', 'ja', 'ka_GE', 'ko_KR', 'lt_LT', 'ms_MY', 'my_MM', 'nb_NO', 'nl_NL', 'nl_NL_formal', 'nn_NO', 'oci', 'pl_PL', 'ps', 'pt_BR', 'pt_PT', 'ro_RO', 'ru_RU', 'sk_SK', 'sl_SI', 'sq', 'sr_RS', 'sv_SE', 'th', 'tl', 'tr_TR', 'ug_CN', 'uk', 'vi', 'zh_CN', 'zh_TW' ];
 echo 'wporg locales -- ' . count( $wporg_site_languages_menu_at_march_2016 ) . "\n";
 
 $wp_locales = array_unique( array_merge( $wpcom_locales_with_over_1k_translations_at_march_2015, $wporg_site_languages_menu_at_march_2016 ) );
@@ -61,7 +61,7 @@ $cldr_locales_to_keep = array_unique( $cldr_locales_to_keep );
 echo 'combined unique CLDR JSON file locales -- ' . count( $cldr_locales_to_keep ) . "\n\n";
 asort( $cldr_locales_to_keep );
 
-$locale_files_to_keep = array( 'timeZoneNames.json', 'ca-generic.json', 'dateFields.json', 'territories.json', 'languages.json', 'currencies.json', 'numbers.json' );
+$locale_files_to_keep = [ 'timeZoneNames.json', 'ca-generic.json', 'dateFields.json', 'territories.json', 'languages.json', 'currencies.json', 'numbers.json' ];
 $cldr_json_directory = "./data/$cldr_version/main/";
 $deleted_locales = 0;
 $retained_locales = 0;

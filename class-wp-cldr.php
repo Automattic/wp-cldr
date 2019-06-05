@@ -70,7 +70,7 @@ class WP_CLDR {
 	 *
 	 * @var array
 	 */
-	private $localized = array();
+	private $localized = [];
 
 	/**
 	 * Whether or not to use caching.
@@ -119,7 +119,7 @@ class WP_CLDR {
 	public static function get_cldr_locale( $wp_locale ) {
 
 		// Some WordPress locales are significantly different from CLDR locales.
-		$wp2cldr = array(
+		$wp2cldr = [
 			'ary' => 'ar-MA',
 			'mya' => 'my',
 			'no' => 'nb',
@@ -130,7 +130,7 @@ class WP_CLDR {
 			'zh-sg' => 'zh-Hans',
 			'zh-tw' => 'zh-Hant',
 			'zh' => 'zh-Hans',
-		);
+		];
 
 		// Convert underscores to dashes and everything to lowercase.
 		$cleaned_up_wp_locale = '';
@@ -167,7 +167,7 @@ class WP_CLDR {
 	 */
 	public static function get_cldr_json_path( $cldr_locale, $bucket ) {
 
-		$base_path = __DIR__ . '/data/' . WP_CLDR::CLDR_VERSION;
+		$base_path = __DIR__ . '/data/' . self::CLDR_VERSION;
 
 		switch ( $cldr_locale ) {
 			case 'supplemental':
@@ -210,7 +210,7 @@ class WP_CLDR {
 			return $json_decoded;
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -248,7 +248,7 @@ class WP_CLDR {
 		$cache_key = "cldr-$locale-$bucket";
 
 		if ( $this->use_cache ) {
-			$cached_data = wp_cache_get( $cache_key, WP_CLDR::CACHE_GROUP );
+			$cached_data = wp_cache_get( $cache_key, self::CACHE_GROUP );
 			if ( false !== $cached_data ) {
 				$this->localized[ $locale ][ $bucket ] = $cached_data;
 				return true;
@@ -281,8 +281,8 @@ class WP_CLDR {
 				break;
 
 			case 'currencies':
-			 	$this->localized[ $locale ][ $bucket ] = $json_file['main'][ $cldr_locale ]['numbers'][ $bucket ];
-			 	break;
+				$this->localized[ $locale ][ $bucket ] = $json_file['main'][ $cldr_locale ]['numbers'][ $bucket ];
+				break;
 
 			case 'timeZoneNames':
 				$this->localized[ $locale ][ $bucket ] = $json_file['main'][ $cldr_locale ]['dates'][ $bucket ];
@@ -294,7 +294,7 @@ class WP_CLDR {
 		}
 
 		if ( $this->use_cache ) {
-			wp_cache_set( $cache_key, $this->localized[ $locale ][ $bucket ], WP_CLDR::CACHE_GROUP );
+			wp_cache_set( $cache_key, $this->localized[ $locale ][ $bucket ], self::CACHE_GROUP );
 		}
 
 		return true;
@@ -308,17 +308,17 @@ class WP_CLDR {
 	 */
 	public function flush_wp_cache_for_locale_bucket( $locale, $bucket ) {
 		$cache_key = "cldr-$locale-$bucket";
-		return wp_cache_delete( $cache_key, WP_CLDR::CACHE_GROUP );
+		return wp_cache_delete( $cache_key, self::CACHE_GROUP );
 	}
 
 	/**
 	 * Clears the WordPress object cache for all CLDR data items across all locales.
 	 */
 	public function flush_all_wp_caches() {
-		$this->localized = array();
+		$this->localized = [];
 
 		$locales = $this->get_languages();
-		$supported_buckets = array( 'territories', 'currencies', 'languages', 'weekData', 'telephoneCodeData' );
+		$supported_buckets = [ 'territories', 'currencies', 'languages', 'weekData', 'telephoneCodeData' ];
 		foreach ( array_keys( $locales ) as $locale ) {
 			foreach ( $supported_buckets as $bucket ) {
 				$this->flush_wp_cache_for_locale_bucket( $locale, $bucket );
@@ -357,7 +357,7 @@ class WP_CLDR {
 		}
 
 		// Since everything else failed, return an empty array.
-		return array();
+		return [];
 	}
 
 	/**
@@ -512,7 +512,7 @@ class WP_CLDR {
 		// so we need to loop through them to find one without a `_to` ending date
 		// and without a `_tender` flag which are always false indicating
 		// the currency wasn't legal tender.
-		$result = array();
+		$result = [];
 		if ( isset( $json_file['supplemental']['currencyData']['region'] ) ) {
 			foreach ( $json_file['supplemental']['currencyData']['region'] as $country_code => $currencies ) {
 				foreach ( $currencies as $currency_dates ) {
@@ -551,7 +551,7 @@ class WP_CLDR {
 	 * @return array An associative array of ISO 4217 currency codes and then an array of the ISO 3166 codes for countries which currently use each currency.
 	 */
 	public function get_countries_for_all_currencies() {
-		$result = array();
+		$result = [];
 		$currency_for_all_countries = $this->get_currency_for_all_countries();
 		if ( isset( $currency_for_all_countries ) ) {
 			foreach ( $currency_for_all_countries as $country_code => $currency_code ) {
@@ -575,7 +575,7 @@ class WP_CLDR {
 		if ( isset( $countries_for_all_currencies[ $currency_code ] ) ) {
 			return $countries_for_all_currencies[ $currency_code ];
 		}
-		return array();
+		return [];
 	}
 
 	/**
@@ -592,11 +592,11 @@ class WP_CLDR {
 
 		// If $region_code is a country code, return it.
 		if ( preg_match( '/^[A-Z]{2}$/', $region_code ) ) {
-			return array( $region_code );
+			return [ $region_code ];
 		}
 
 		// If it's a region code, recursively find the contained country codes.
-		$result = array();
+		$result = [];
 		if ( preg_match( '/^\d{3}$/', $region_code ) ) {
 			$json_file = $this->get_locale_bucket( 'supplemental', 'territoryContainment' );
 			if ( isset( $json_file['supplemental']['territoryContainment'][ $region_code ]['_contains'] ) ) {
@@ -620,7 +620,7 @@ class WP_CLDR {
 	 */
 	public function get_languages_spoken( $country_code ) {
 		$json_file = $this->get_locale_bucket( 'supplemental', 'territoryInfo' );
-		$result = array();
+		$result = [];
 		if ( isset( $json_file['supplemental']['territoryInfo'][ $country_code ]['languagePopulation'] ) ) {
 			foreach ( $json_file['supplemental']['territoryInfo'][ $country_code ]['languagePopulation'] as $language => $info ) {
 				$result[ $language ] = $info['_populationPercent'];
@@ -662,7 +662,7 @@ class WP_CLDR {
 		if ( isset( $json_file['supplemental']['territoryInfo'][ $country_code ] ) ) {
 			return $json_file['supplemental']['territoryInfo'][ $country_code ];
 		}
-		return array();
+		return [];
 	}
 
 	/**
@@ -676,7 +676,7 @@ class WP_CLDR {
 	 * @return array An associative array of time zone IDs (e.g. `Europe/Istanbul`) and the localized exemplar city names.
 	 */
 	private function build_cities_array( $zones, $id_start = '' ) {
-		$result = array();
+		$result = [];
 		foreach ( $zones as $id => $array ) {
 			if ( isset( $array['exemplarCity'] ) ) {
 				$result[ $id_start . $id ] = $array['exemplarCity'];
@@ -701,7 +701,7 @@ class WP_CLDR {
 		if ( ! empty( $time_zone_cities_json['zone'] ) ) {
 			return $this->build_cities_array( $time_zone_cities_json['zone'] );
 		}
-		return array();
+		return [];
 	}
 
 	/**

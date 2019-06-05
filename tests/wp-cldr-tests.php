@@ -24,8 +24,8 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 	public function test_get_territory_name() {
 
 		// Test country names.
-		$this->assertEquals( 'Allemagne', $this->cldr->get_territory_name( 'DE' , 'fr_FR' ) );
-		$this->assertEquals( 'ألمانيا', $this->cldr->get_territory_name( 'DE' , 'ar_AR' ) );
+		$this->assertEquals( 'Allemagne', $this->cldr->get_territory_name( 'DE', 'fr_FR' ) );
+		$this->assertEquals( 'ألمانيا', $this->cldr->get_territory_name( 'DE', 'ar_AR' ) );
 
 		// Test region names.
 		$this->assertEquals( 'Afrique', $this->cldr->get_territory_name( '002', 'fr_FR' ) );
@@ -63,14 +63,14 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 	public function test_get_language_name() {
 
 		$this->assertEquals( 'français canadien', $this->cldr->get_language_name( 'fr-ca', 'fr' ) );
-		$this->assertEquals( 'Canadian French', $this->cldr->get_language_name( 'fr-ca' , 'en' ) );
-		$this->assertEquals( 'Deutsch', $this->cldr->get_language_name( 'de_DE' , 'de-DE' ) );
-		$this->assertEquals( 'ベンガル語', $this->cldr->get_language_name( 'bn_BD' , 'ja_JP' ) );
+		$this->assertEquals( 'Canadian French', $this->cldr->get_language_name( 'fr-ca', 'en' ) );
+		$this->assertEquals( 'Deutsch', $this->cldr->get_language_name( 'de_DE', 'de-DE' ) );
+		$this->assertEquals( 'ベンガル語', $this->cldr->get_language_name( 'bn_BD', 'ja_JP' ) );
 
 		// Test some bad slugs.
 		$this->assertEquals( '', $this->cldr->get_language_name( 'bad-slug' ) );
 		$this->assertEquals( '', $this->cldr->get_language_name( '' ) );
-		$this->assertEquals( 'Canadian French', $this->cldr->get_language_name( 'fr-ca' , '' ) );
+		$this->assertEquals( 'Canadian French', $this->cldr->get_language_name( 'fr-ca', '' ) );
 	}
 
 	public function test_get_territories() {
@@ -162,15 +162,15 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 	public function test_all_WordPress_locales() {
 
 		// First, create an array of all WordPress locales.
-		$wpcom_locales_with_over_1k_translations_at_march_2015 = array( 'az', 'de', 'ja', 'id', 'pt-br', 'it', 'he', 'es', 'fr', 'nl', 'tr', 'hu', 'ru', 'ko', 'ar', 'sq', 'fr-ca', 'fa', 'zh-tw', 'zh-cn', 'sv', 'ga', 'el', 'fi', 'gl', 'bs', 'pt', 'ca', 'sr', 'hr', 'pl', 'nn', 'el-po', 'da', 'gd', 'th', 'cs', 'eo', 'ckb', 'mya', 'cy', 'ro', 'te', 'no', 'bg', 'sk', 'lt', 'ug', 'fr-be', 'vi', 'nb', 'ms', 'km', 'uk', 'eu', 'ky', 'br', 'es-pr', 'fr-ch', 'si', 'ta', 'as', 'mk', 'tl', 'su', 'is', 'et', 'lv', 'af', 'bn', 'oc', 'ur', 'kk', 'ne', 'mwl', 'hi', 'en-gb', 'mhr', 'mn', 'zh', 'sl', 'mr', 'ml', 'so', 'sah', 'fo', 'zh-hk', 'ast' );
-		$wporg_site_languages_menu_at_march_2016 = array( 'en', 'ar', 'ary', 'az', 'azb', 'bg_BG', 'bn_BD', 'bs_BA', 'ca', 'ceb', 'cy', 'da_DK', 'de_CH', 'de_DE', 'de_DE_formal', 'el', 'en_AU', 'en_CA', 'en_GB', 'en_NZ', 'en_ZA', 'eo', 'es_AR', 'es_CL', 'es_CO', 'es_ES', 'es_GT', 'es_MX', 'es_PE', 'es_VE', 'et', 'eu', 'fa_IR', 'fi', 'fr_BE', 'fr_CA', 'fr_FR', 'gd', 'gl_ES', 'haz', 'he_IL', 'hi_IN', 'hr', 'hu_HU', 'hy', 'id_ID', 'is_IS', 'it_IT', 'ja', 'ka_GE', 'ko_KR', 'lt_LT', 'ms_MY', 'my_MM', 'nb_NO', 'nl_NL', 'nl_NL_formal', 'nn_NO', 'oci', 'pl_PL', 'ps', 'pt_BR', 'pt_PT', 'ro_RO', 'ru_RU', 'sk_SK', 'sl_SI', 'sq', 'sr_RS', 'sv_SE', 'th', 'tl', 'tr_TR', 'ug_CN', 'uk', 'vi', 'zh_CN', 'zh_TW' );
+		$wpcom_locales_with_over_1k_translations_at_march_2015 = [ 'az', 'de', 'ja', 'id', 'pt-br', 'it', 'he', 'es', 'fr', 'nl', 'tr', 'hu', 'ru', 'ko', 'ar', 'sq', 'fr-ca', 'fa', 'zh-tw', 'zh-cn', 'sv', 'ga', 'el', 'fi', 'gl', 'bs', 'pt', 'ca', 'sr', 'hr', 'pl', 'nn', 'el-po', 'da', 'gd', 'th', 'cs', 'eo', 'ckb', 'mya', 'cy', 'ro', 'te', 'no', 'bg', 'sk', 'lt', 'ug', 'fr-be', 'vi', 'nb', 'ms', 'km', 'uk', 'eu', 'ky', 'br', 'es-pr', 'fr-ch', 'si', 'ta', 'as', 'mk', 'tl', 'su', 'is', 'et', 'lv', 'af', 'bn', 'oc', 'ur', 'kk', 'ne', 'mwl', 'hi', 'en-gb', 'mhr', 'mn', 'zh', 'sl', 'mr', 'ml', 'so', 'sah', 'fo', 'zh-hk', 'ast' ];
+		$wporg_site_languages_menu_at_march_2016 = [ 'en', 'ar', 'ary', 'az', 'azb', 'bg_BG', 'bn_BD', 'bs_BA', 'ca', 'ceb', 'cy', 'da_DK', 'de_CH', 'de_DE', 'de_DE_formal', 'el', 'en_AU', 'en_CA', 'en_GB', 'en_NZ', 'en_ZA', 'eo', 'es_AR', 'es_CL', 'es_CO', 'es_ES', 'es_GT', 'es_MX', 'es_PE', 'es_VE', 'et', 'eu', 'fa_IR', 'fi', 'fr_BE', 'fr_CA', 'fr_FR', 'gd', 'gl_ES', 'haz', 'he_IL', 'hi_IN', 'hr', 'hu_HU', 'hy', 'id_ID', 'is_IS', 'it_IT', 'ja', 'ka_GE', 'ko_KR', 'lt_LT', 'ms_MY', 'my_MM', 'nb_NO', 'nl_NL', 'nl_NL_formal', 'nn_NO', 'oci', 'pl_PL', 'ps', 'pt_BR', 'pt_PT', 'ro_RO', 'ru_RU', 'sk_SK', 'sl_SI', 'sq', 'sr_RS', 'sv_SE', 'th', 'tl', 'tr_TR', 'ug_CN', 'uk', 'vi', 'zh_CN', 'zh_TW' ];
 		$wp_locales = array_unique( array_merge( $wpcom_locales_with_over_1k_translations_at_march_2015, $wporg_site_languages_menu_at_march_2016 ) );
 
 		// Second, check to see if a CLDR JSON file is available for each one, first excluding known missing
 		// locales, then checking the WP locale is mapped to a CLDR locale, and then checking a language-only
 		// CLDR code. If neither is found, set to `false` so the test fails. Then echo the failed $wp_locale
 		// so we can see in the PHPUnit output which one it was.
-		$known_missing_locales = array( 'su', 'oc', 'mwl', 'mhr', 'azb', 'ceb', 'haz', 'oci' );
+		$known_missing_locales = [ 'su', 'oc', 'mwl', 'mhr', 'azb', 'ceb', 'haz', 'oci' ];
 		foreach ( $wp_locales as $wp_locale ) {
 			$found_json_file = true;
 			$wp_locale_mapped_to_cldr = $this->cldr->get_cldr_locale( $wp_locale );
@@ -242,22 +242,22 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 
 	public function test_get_countries_for_currency() {
 
-		$this->assertEquals( array( 'JP' ), $this->cldr->get_countries_for_currency( 'JPY' ) );
-		$this->assertEquals( array( 'QA' ), $this->cldr->get_countries_for_currency( 'QAR' ) );
-		$this->assertEquals( array( 'GB', 'GG', 'GS', 'IM', 'JE', 'TA' ), $this->cldr->get_countries_for_currency( 'GBP' ) );
+		$this->assertEquals( [ 'JP' ], $this->cldr->get_countries_for_currency( 'JPY' ) );
+		$this->assertEquals( [ 'QA' ], $this->cldr->get_countries_for_currency( 'QAR' ) );
+		$this->assertEquals( [ 'GB', 'GG', 'GS', 'IM', 'JE', 'TA' ], $this->cldr->get_countries_for_currency( 'GBP' ) );
 
 		// Test a bad slug.
-		$this->assertEquals( array(), $this->cldr->get_countries_for_currency( 'bad-code' ) );
+		$this->assertEquals( [], $this->cldr->get_countries_for_currency( 'bad-code' ) );
 	}
 
 	public function test_get_territories_contained() {
 
-		$this->assertEquals( array( 'BM', 'CA', 'GL', 'PM', 'US' ), $this->cldr->get_territories_contained( '021' ) );
-		$this->assertEquals( array( 'US' ), $this->cldr->get_territories_contained( 'US' ) );
+		$this->assertEquals( [ 'BM', 'CA', 'GL', 'PM', 'US' ], $this->cldr->get_territories_contained( '021' ) );
+		$this->assertEquals( [ 'US' ], $this->cldr->get_territories_contained( 'US' ) );
 
 		// Test some bad slugs.
-		$this->assertEquals( array(), $this->cldr->get_territories_contained( 'bad-slug' ) );
-		$this->assertEquals( array(), $this->cldr->get_territories_contained( '' ) );
+		$this->assertEquals( [], $this->cldr->get_territories_contained( 'bad-slug' ) );
+		$this->assertEquals( [], $this->cldr->get_territories_contained( '' ) );
 	}
 
 	public function test_get_languages_spoken() {
@@ -267,8 +267,8 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertArrayHasKey( 'es', $us_languages );
 
 		// Test some bad slugs.
-		$this->assertEquals( array(), $this->cldr->get_languages_spoken( 'bad-slug' ) );
-		$this->assertEquals( array(), $this->cldr->get_languages_spoken( '' ) );
+		$this->assertEquals( [], $this->cldr->get_languages_spoken( 'bad-slug' ) );
+		$this->assertEquals( [], $this->cldr->get_languages_spoken( '' ) );
 	}
 
 	public function test_get_most_spoken_language() {
@@ -289,7 +289,7 @@ class WP_CLDR_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertArrayHasKey( 'languagePopulation', $us_info );
 
 		// Test some bad slugs.
-		$this->assertEquals( array(), $this->cldr->get_territory_info( 'bad-slug' ) );
+		$this->assertEquals( [], $this->cldr->get_territory_info( 'bad-slug' ) );
 	}
 
 	public function test_get_time_zone_cities() {
