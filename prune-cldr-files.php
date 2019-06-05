@@ -6,6 +6,8 @@
  * @package wp-cldr
  */
 
+declare( strict_types=1 );
+
 require_once 'class-wp-cldr.php';
 
 // The second parameter, false, tell the class to not use caching which means we can avoid loading WordPress.
@@ -42,8 +44,9 @@ $cldr_available_locales_full = $cldr_available_locales_json['availableLocales'][
 unlink( $cldr_available_locales_path );
 
 // Build a list of the CLDR locales that we want to keep, based on mapping from the WP locales.
-foreach ( $wp_locales as $wp_locale ) {
-	$wp_locale_mapped_to_cldr = $cldr->get_cldr_locale( $wp_locale );
+$cldr_locales_to_keep = [];
+foreach ( $wp_locales as $wordpress_locale ) {
+	$wp_locale_mapped_to_cldr = $cldr->get_cldr_locale( $wordpress_locale );
 	if ( in_array( $wp_locale_mapped_to_cldr, $cldr_available_locales_full, true ) ) {
 		$cldr_locales_to_keep[] = $wp_locale_mapped_to_cldr;
 	} else {
@@ -61,7 +64,7 @@ $cldr_locales_to_keep = array_unique( $cldr_locales_to_keep );
 echo 'combined unique CLDR JSON file locales -- ' . count( $cldr_locales_to_keep ) . "\n\n";
 asort( $cldr_locales_to_keep );
 
-$locale_files_to_keep = [ 'timeZoneNames.json', 'ca-generic.json', 'dateFields.json', 'territories.json', 'languages.json', 'currencies.json', 'numbers.json' ];
+$locale_files_to_keep = [ 'timeZoneNames.json', 'territories.json', 'languages.json', 'currencies.json' ];
 $cldr_json_directory = "./data/$cldr_version/main/";
 $deleted_locales = 0;
 $retained_locales = 0;
@@ -92,11 +95,11 @@ foreach ( new DirectoryIterator( $cldr_json_directory ) as $cldr_main_item ) {
 
 echo "CLDR locales deleted = $deleted_locales\n";
 echo "CLDR locales retained = $retained_locales\n";
-echo "files pruned from retained CLDR locales = $files_pruned_from_retained_locales\n";
+echo "files pruned from retained CLDR locales = $files_pruned_from_retained_locales\n\n";
 
 echo "\nWordPress locales without CLDR JSON file:\n";
-foreach ( $wp_locales as $wp_locale ) {
-	$cldr_locale = $cldr->get_cldr_locale( $wp_locale );
+foreach ( $wp_locales as $wordpress_locale ) {
+	$cldr_locale = $cldr->get_cldr_locale( $wordpress_locale );
 	$cldr_json_file = $cldr->get_cldr_json_file( $cldr_locale, 'territories' );
 
 	if ( empty( $cldr_json_file ) ) {
@@ -105,6 +108,26 @@ foreach ( $wp_locales as $wp_locale ) {
 	}
 
 	if ( empty( $cldr_json_file ) ) {
-		echo "'$wp_locale' -- found no match for CLDR file $cldr_locale\n";
+		echo "'$wordpress_locale' -- found no match for CLDR file $cldr_locale\n";
 	}
 }
+
+$supplemental_files_to_keep = [ 'currencyData.json', 'territoryContainment.json', 'territoryInfo.json', 'weekData.json' ];
+$cldr_supplemental_directory = "./data/$cldr_version/supplemental/";
+$deleted_supplemental_files = 0;
+$retained_supplemental_files = 0;
+
+// Iterate through the CLDR `supplemental` directory, removing files we don't want.
+foreach ( new DirectoryIterator( $cldr_supplemental_directory ) as $cldr_supplemental_file ) {
+	if ( $cldr_supplemental_file->isDot() ) {
+		continue;
+	}
+	if ( ! in_array( $cldr_supplemental_file->getFileName(), $supplemental_files_to_keep, true ) ) {
+		unlink( $cldr_supplemental_file->getPathName() );
+		$deleted_supplemental_files++;
+		continue;
+	}
+	$retained_supplemental_files++;
+}
+echo "\nCLDR supplemental files deleted = $deleted_supplemental_files\n";
+echo "CLDR supplemental files retained = $retained_supplemental_files\n";
