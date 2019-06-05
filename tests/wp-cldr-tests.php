@@ -268,7 +268,7 @@ class WP_CLDR_Tests extends TestCase {
 
 		$this->assertEquals( 'en', $this->cldr->get_most_spoken_language( 'US' ) );
 		$this->assertEquals( 'fr', $this->cldr->get_most_spoken_language( 'FR' ) );
-		$this->assertEquals( 'zh_Hans', $this->cldr->get_most_spoken_language( 'CN' ) );
+		$this->assertEquals( 'zh', $this->cldr->get_most_spoken_language( 'CN' ) );
 
 		// Test some bad slugs.
 		$this->assertEquals( '', $this->cldr->get_most_spoken_language( 'bad-slug' ) );
