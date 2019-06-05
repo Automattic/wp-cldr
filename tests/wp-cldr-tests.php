@@ -302,7 +302,7 @@ class WP_CLDR_Tests extends TestCase {
 		$this->assertEquals( 'Paris', $time_zone_cities_in_english['Europe/Paris'] );
 
 		// The number of time zone exemplar cities is dynamic this range should cover it.
-		$this->assertGreaterThan( 440, count( $this->cldr->get_time_zone_cities() ) );
+		$this->assertGreaterThan( 400, count( $this->cldr->get_time_zone_cities() ) );
 		$this->assertLessThan( 450, count( $this->cldr->get_time_zone_cities() ) );
 
 		// Test some bad slugs.
