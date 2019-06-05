@@ -14,6 +14,8 @@
  * @package    wp-cldr
  */
 
+declare( strict_types=1 );
+
 require_once plugin_dir_path( __FILE__ ) . 'class-wp-cldr.php';
 require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 

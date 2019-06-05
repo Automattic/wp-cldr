@@ -9,6 +9,8 @@
  * @package wp-cldr
  */
 
+declare( strict_types=1 );
+
 require 'class-wp-cldr.php';
 
 /**
