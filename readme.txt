@@ -21,7 +21,7 @@ With the plugin active, WordPress developers can access the following for over 1
 * Names and symbols for currencies (and ISO 4317 currency codes).
 * Names for time zone example cities (and IANA time zone IDs).
 * Calendar information including the first day of the week in different countries.
-* Country information including telephone codes, most spoken languages, currency, and population.
+* Country information including most spoken languages, currency, and population.
 
 More information in the [detailed API documentation](https://automattic.github.io/wp-cldr/class-WP_CLDR.html).
 

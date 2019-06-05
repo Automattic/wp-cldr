@@ -320,7 +320,7 @@ class WP_CLDR {
 		$this->localized = [];
 
 		$locales = $this->get_languages();
-		$supported_buckets = [ 'territories', 'currencies', 'languages', 'weekData', 'telephoneCodeData' ];
+		$supported_buckets = [ 'territories', 'currencies', 'languages', 'weekData' ];
 		foreach ( array_keys( $locales ) as $locale ) {
 			foreach ( $supported_buckets as $bucket ) {
 				$this->flush_wp_cache_for_locale_bucket( $locale, $bucket );
@@ -463,23 +463,6 @@ class WP_CLDR {
 	 */
 	public function get_languages( string $locale = '' ) : array {
 		return $this->get_locale_bucket( $locale, 'languages' );
-	}
-
-	/**
-	 * Gets telephone code for a country.
-	 *
-	 * @link http://unicode.org/reports/tr35/tr35-info.html#Telephone_Code_Data CLDR Telephone Code Data
-	 * @link http://www.iso.org/iso/country_codes ISO 3166 country codes
-	 *
-	 * @param string $country_code A two-letter ISO 3166 country code.
-	 * @return string The telephone code for the provided country.
-	 */
-	public function get_telephone_code( $country_code ) {
-		$json_file = $this->get_locale_bucket( 'supplemental', 'telephoneCodeData' );
-		if ( isset( $json_file['supplemental']['telephoneCodeData'][ $country_code ][0]['telephoneCountryCode'] ) ) {
-			return $json_file['supplemental']['telephoneCodeData'][ $country_code ][0]['telephoneCountryCode'];
-		}
-		return '';
 	}
 
 	/**

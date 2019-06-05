@@ -213,11 +213,6 @@ function wp_cldr_settings() {
 	echo '<br>';
 
 	echo '<i>';
-	esc_html_e( 'Telephone code', 'wp-cldr' );
-	echo '</i> — ';
-	echo esc_html( $cldr->get_telephone_code( $country ) ) . '<br>';
-
-	echo '<i>';
 	esc_html_e( 'First day of week', 'wp-cldr' );
 	echo '</i> — ';
 	echo esc_html( $cldr->get_first_day_of_week( $country ) ) . '<br>';

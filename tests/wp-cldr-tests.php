@@ -190,16 +190,6 @@ class WP_CLDR_Tests extends TestCase {
 		}
 	}
 
-	public function test_get_telephone_code() {
-
-		$this->assertEquals( '1', $this->cldr->get_telephone_code( 'US' ) );
-		$this->assertEquals( '55', $this->cldr->get_telephone_code( 'BR' ) );
-
-		// Test some bad slugs.
-		$this->assertEquals( '', $this->cldr->get_telephone_code( 'bad-slug' ) );
-		$this->assertEquals( '', $this->cldr->get_telephone_code( '' ) );
-	}
-
 	public function test_get_first_day_of_week() {
 
 		$this->assertEquals( 'sun', $this->cldr->get_first_day_of_week( 'US' ) );
