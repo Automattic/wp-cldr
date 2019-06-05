@@ -7,7 +7,7 @@
 	convertWarningsToExceptions="true"
 	verbose="true">
     <testsuites>
-        <testsuite>
+        <testsuite name="wp-cldr-tests">
             <file>./tests/wp-cldr-tests.php</file>
         </testsuite>
     </testsuites>
