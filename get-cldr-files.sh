@@ -9,34 +9,40 @@ fi
 # set the CLDR version
 CLDRVERSION="36.0.0"
 
-# remove any existing data files for this CLDR version
-rm -rf data/$CLDRVERSION
+DATA_DIR=$PWD/data/$CLDRVERSION
+
+# re-create any existing data files for this CLDR version
+rm -rf $DATA_DIR
+mkdir -p $DATA_DIR
 
 # download the CLDR JSON reference distribution from GitHub
-wget -O tmp.zip https://github.com/unicode-cldr/cldr-core/archive/$CLDRVERSION.zip && unzip tmp.zip -d temp/ && rm tmp.zip
-wget -O tmp.zip https://github.com/unicode-cldr/cldr-localenames-full/archive/$CLDRVERSION.zip && unzip tmp.zip -d temp/ && rm tmp.zip
-wget -O tmp.zip https://github.com/unicode-cldr/cldr-numbers-full/archive/$CLDRVERSION.zip && unzip tmp.zip -d temp/ && rm tmp.zip
-wget -O tmp.zip https://github.com/unicode-cldr/cldr-dates-full/archive/$CLDRVERSION.zip && unzip tmp.zip -d temp/ && rm tmp.zip
+ZIP_TMP_DIR=$(mktemp -d)
+DATA_TMP_DIR=$(mktemp -d)
 
-# download latest CLDR XML files
-# wget -O tmp.zip http://www.unicode.org/Public/cldr/latest/core.zip && unzip tmp.zip -d temp/ && rm tmp.zip
+curl -L -o $ZIP_TMP_DIR/core.zip https://github.com/unicode-cldr/cldr-core/archive/$CLDRVERSION.zip
+unzip $ZIP_TMP_DIR/core.zip -d $DATA_TMP_DIR
 
-# confirm the directory exists then copy the license and availableLocales files
-mkdir data/$CLDRVERSION
-cp -av temp/cldr-core-$CLDRVERSION/LICENSE data/$CLDRVERSION
-cp -av temp/cldr-core-$CLDRVERSION/availableLocales.json data/$CLDRVERSION
+curl -L -o $ZIP_TMP_DIR/localenames.zip https://github.com/unicode-cldr/cldr-localenames-full/archive/$CLDRVERSION.zip
+unzip $ZIP_TMP_DIR/localenames.zip -d $DATA_TMP_DIR
+
+curl -L -o $ZIP_TMP_DIR/numbers.zip https://github.com/unicode-cldr/cldr-numbers-full/archive/$CLDRVERSION.zip
+unzip $ZIP_TMP_DIR/numbers.zip -d $DATA_TMP_DIR
+
+curl -L -o $ZIP_TMP_DIR/dates.zip https://github.com/unicode-cldr/cldr-dates-full/archive/$CLDRVERSION.zip
+unzip $ZIP_TMP_DIR/dates.zip -d $DATA_TMP_DIR
+
+rm -rf $ZIP_TMP_DIR
+
+# copy the license and availableLocales files
+cp -av $DATA_TMP_DIR/cldr-core-$CLDRVERSION/LICENSE $DATA_DIR
+cp -av $DATA_TMP_DIR/cldr-core-$CLDRVERSION/availableLocales.json $DATA_DIR
 
 # copy the supplemental data JSON directory
-cp -av temp/cldr-core-$CLDRVERSION/supplemental data/$CLDRVERSION/supplemental
+cp -av $DATA_TMP_DIR/cldr-core-$CLDRVERSION/supplemental $DATA_DIR/supplemental
 
 # copy the locale JSON directories, merging into a single directory tree
-cp -av temp/cldr-numbers-full-$CLDRVERSION/main/ data/$CLDRVERSION/main
-cp -av temp/cldr-dates-full-$CLDRVERSION/main/ data/$CLDRVERSION/main
-cp -av temp/cldr-localenames-full-$CLDRVERSION/main/ data/$CLDRVERSION/main
+cp -av $DATA_TMP_DIR/cldr-numbers-full-$CLDRVERSION/main/ $DATA_DIR/main
+cp -av $DATA_TMP_DIR/cldr-dates-full-$CLDRVERSION/main/ $DATA_DIR/main
+cp -av $DATA_TMP_DIR/cldr-localenames-full-$CLDRVERSION/main/ $DATA_DIR/main
 
-# copy two XML directories (files that aren't available in JSON form yet)
-# cp -av temp/common/annotations data/$CLDRVERSION/
-# cp -av temp/common/subdivisions data/$CLDRVERSION/
-
-# remove the downloaded originals
-rm -rf temp/
+rm -rf $DATA_TMP_DIR
