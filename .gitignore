@@ -1,5 +1,8 @@
 .DS_Store
 .htaccess
+.phpunit.*
+composer.*
+vendor/
 wp-content/uploads/
 wp-content/blogs.dir/
 wp-content/upgrade/
