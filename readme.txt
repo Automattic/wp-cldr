@@ -36,6 +36,12 @@ Follow along with or contribute to the development of this plugin at https://git
 1. See the plugin in action via its settings page.
 1. Build CLDR data into your site by using [methods in the API documentation](https://automattic.github.io/wp-cldr/class-WP_CLDR.html)
 
+== Automated Testing ==
+
+1. Install composer (if not already installed): https://getcomposer.org/download/
+1. `composer require --dev phpunit/phpunit ^8`
+1. `./vendor/bin/phpunit`
+
 == Frequently Asked Questions ==
 
 = What locales are included? =
