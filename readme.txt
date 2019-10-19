@@ -66,11 +66,11 @@ Open up a new issue on GitHub at https://github.com/Automattic/wp-cldr/issues. W
 4. Examples of data available for the locale `hi_IN`, Hindi
 
 == Changelog ==
-= 1.1 (Jun [ ] , 2019) =
-	
-* Update for CLDR 35.1
-* General code updates after three eventful years for PHP.
-	
+= 1.1 (Oct [ ] , 2019) =
+
+* Update for CLDR 36.0.0
+* General code updates after three+ eventful years for PHP & locale data
+
 = 1.0 (Mar 21, 2016) =
 
 * Documentation & localization cleanup

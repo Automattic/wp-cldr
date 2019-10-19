@@ -89,7 +89,7 @@ class WP_CLDR {
 	/**
 	 * The CLDR version, which the class uses to determine path to JSON files.
 	 */
-	const CLDR_VERSION = '35.1.0';
+	const CLDR_VERSION = '36.0.0';
 
 	/**
 	 * Constructs a new instance of the class, including setting defaults for locale and caching.
