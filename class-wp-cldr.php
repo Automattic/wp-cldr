@@ -89,7 +89,7 @@ class WP_CLDR {
 	/**
 	 * The CLDR version, which the class uses to determine path to JSON files.
 	 */
-	const CLDR_VERSION = '36.0.0';
+	const CLDR_VERSION = '41.0.0';
 
 	/**
 	 * Constructs a new instance of the class, including setting defaults for locale and caching.
@@ -123,9 +123,15 @@ class WP_CLDR {
 		// Some WordPress locales are significantly different from CLDR locales.
 		$wp2cldr = [
 			'ary' => 'ar-MA',
+			'azb' => 'az',
+			'dzo' => 'dz',
 			'mya' => 'my',
 			'no' => 'nb',
+			'bel' => 'be',
+			'kmr' => 'ku',
+			'kir' => 'ky',
 			'oci' => 'oc',
+			'snd' => 'sd',
 			'tl' => 'fil',
 			'zh-cn' => 'zh-Hans',
 			'zh-hk' => 'zh-Hant',
