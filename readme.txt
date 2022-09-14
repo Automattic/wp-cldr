@@ -3,7 +3,7 @@ Contributors: stuwest, jblz, automattic
 Tags: i18n, internationalization, L10n, localization, unicode, CLDR
 Requires at least: 4.4
 Tested up to: 4.4.2
-Stable tag: 1.0
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,10 @@ Open up a new issue on GitHub at https://github.com/Automattic/wp-cldr/issues. W
 4. Examples of data available for the locale `hi_IN`, Hindi
 
 == Changelog ==
+= 1.2 = (Sept [], 2022) =
+
+* Update for CLDR 41.0.0
+
 = 1.1 (Oct [ ] , 2019) =
 
 * Update for CLDR 36.0.0
