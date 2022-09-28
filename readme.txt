@@ -3,7 +3,7 @@ Contributors: stuwest, jblz, automattic
 Tags: i18n, internationalization, L10n, localization, unicode, CLDR
 Requires at least: 4.4
 Tested up to: 4.4.2
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,7 @@ With the plugin active, WordPress developers can access the following for over 1
 * Names and symbols for currencies (and ISO 4317 currency codes).
 * Names for time zone example cities (and IANA time zone IDs).
 * Calendar information including the first day of the week in different countries.
-* Country information including telephone codes, most spoken languages, currency, and population.
+* Country information including most spoken languages, currency, and population.
 
 More information in the [detailed API documentation](https://automattic.github.io/wp-cldr/class-WP_CLDR.html).
 
@@ -35,6 +35,12 @@ Follow along with or contribute to the development of this plugin at https://git
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. See the plugin in action via its settings page.
 1. Build CLDR data into your site by using [methods in the API documentation](https://automattic.github.io/wp-cldr/class-WP_CLDR.html)
+
+== Automated Testing ==
+
+1. Install composer (if not already installed): https://getcomposer.org/download/
+1. `composer require --dev phpunit/phpunit ^8`
+1. `./vendor/bin/phpunit`
 
 == Frequently Asked Questions ==
 
@@ -66,6 +72,10 @@ Open up a new issue on GitHub at https://github.com/Automattic/wp-cldr/issues. W
 4. Examples of data available for the locale `hi_IN`, Hindi
 
 == Changelog ==
+= 1.1 = (Sept [], 2022) =
+
+* Update for CLDR 41.0.0
+* General code updates after 6+ eventful years for PHP & locale data
 
 = 1.0 (Mar 21, 2016) =
 
