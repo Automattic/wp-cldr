@@ -72,6 +72,10 @@ Open up a new issue on GitHub at https://github.com/Automattic/wp-cldr/issues. W
 4. Examples of data available for the locale `hi_IN`, Hindi
 
 == Changelog ==
+= 1.2 = (Dec, 2023) =
+
+* Update for CLDR 44.0.0
+
 = 1.1 = (Sept [], 2022) =
 
 * Update for CLDR 41.0.0

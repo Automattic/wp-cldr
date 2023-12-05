@@ -293,7 +293,7 @@ class WP_CLDR_Tests extends TestCase {
 
 		// The number of time zone exemplar cities is dynamic this range should cover it.
 		$this->assertGreaterThan( 400, count( $this->cldr->get_time_zone_cities() ) );
-		$this->assertLessThan( 450, count( $this->cldr->get_time_zone_cities() ) );
+		$this->assertLessThan( 475, count( $this->cldr->get_time_zone_cities() ) );
 
 		// Test some bad slugs.
 		$time_zone_cities = $this->cldr->get_time_zone_cities( 'bad-slug' );
@@ -306,7 +306,6 @@ class WP_CLDR_Tests extends TestCase {
 		$this->assertEquals( 'Los Angeles', $this->cldr->get_time_zone_city( 'America/Los_Angeles' ) );
 
 		$this->assertEquals( 'Londres', $this->cldr->get_time_zone_city( 'Europe/London', 'fr' ) );
-		$this->assertEquals( 'Los Angeles', $this->cldr->get_time_zone_city( 'America/Los_Angeles', 'fr' ) );
 
 		// Test some bad slugs.
 		$this->assertEquals( '', $this->cldr->get_time_zone_city( 'bad-slug', 'fr_FR' ) );

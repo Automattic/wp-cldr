@@ -7,7 +7,7 @@ if [ "wp-cldr" != "${PWD##*/}" ]; then
 fi
 
 # set the CLDR version
-CLDRVERSION="41.0.0"
+CLDRVERSION="44.0.0"
 
 DATA_DIR=$PWD/data/$CLDRVERSION
 
@@ -30,6 +30,7 @@ cp -av $DATA_TMP_DIR/cldr-json-$CLDRVERSION/cldr-json/cldr-core/availableLocales
 
 # copy the supplemental data JSON directory
 cp -av $DATA_TMP_DIR/cldr-json-$CLDRVERSION/cldr-json/cldr-core/supplemental $DATA_DIR/supplemental
+cp -av $DATA_TMP_DIR/cldr-json-$CLDRVERSION/cldr-json/cldr-bcp47/bcp47/timezone.json $DATA_DIR/supplemental/timezone.json
 
 # copy the locale JSON directories, merging into a single directory tree
 cp -av $DATA_TMP_DIR/cldr-json-$CLDRVERSION/cldr-json/cldr-numbers-full/main/ $DATA_DIR/main
