@@ -1,14 +1,8 @@
-<phpunit
-	stopOnFailure="false"
-	backupGlobals="false"
-	colors="true"
-	convertErrorsToExceptions="true"
-	convertNoticesToExceptions="true"
-	convertWarningsToExceptions="true"
-	verbose="true">
-    <testsuites>
-        <testsuite name="wp-cldr-tests">
-            <file>./tests/wp-cldr-tests.php</file>
-        </testsuite>
-    </testsuites>
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" stopOnFailure="false" backupGlobals="false" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd">
+  <testsuites>
+    <testsuite name="wp-cldr-tests">
+      <directory suffix="Tests.php">tests</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>
