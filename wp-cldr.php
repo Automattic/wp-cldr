@@ -5,7 +5,7 @@
  * Plugin URI:  https://github.com/Automattic/wp-cldr
  * Author:      Automattic
  * Author URI:  https://automattic.com
- * Version:     1.1
+ * Version:     1.2
  * Text Domain: wp-cldr
  * Domain Path: /languages
  * License:     GPLv2 or later

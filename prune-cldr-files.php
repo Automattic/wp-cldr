@@ -112,7 +112,7 @@ foreach ( $wp_locales as $wordpress_locale ) {
 	}
 }
 
-$supplemental_files_to_keep = [ 'currencyData.json', 'territoryContainment.json', 'territoryInfo.json', 'weekData.json' ];
+$supplemental_files_to_keep = [ 'currencyData.json', 'territoryContainment.json', 'territoryInfo.json', 'weekData.json', 'timezone.json' ];
 $cldr_supplemental_directory = "./data/$cldr_version/supplemental/";
 $deleted_supplemental_files = 0;
 $retained_supplemental_files = 0;
