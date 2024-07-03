@@ -5,7 +5,7 @@
  * Plugin URI:  https://github.com/Automattic/wp-cldr
  * Author:      Automattic
  * Author URI:  https://automattic.com
- * Version:     1.2
+ * Version:     1.2.1
  * Text Domain: wp-cldr
  * Domain Path: /languages
  * License:     GPLv2 or later
@@ -235,7 +235,7 @@ function wp_cldr_settings() {
 	esc_html_e( 'Population', 'wp-cldr' );
 	echo '</i> — ';
 	$territory_info = $cldr->get_territory_info( $country );
-	$population = $territory_info['_population'];
+	$population = (int) $territory_info['_population'];
 	if ( class_exists( 'NumberFormatter' ) ) {
 		// Use locale formatting rules.
 		$fmt = new NumberFormatter( $locale, NumberFormatter::DECIMAL );
