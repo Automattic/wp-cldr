@@ -72,6 +72,10 @@ Open up a new issue on GitHub at https://github.com/Automattic/wp-cldr/issues. W
 4. Examples of data available for the locale `hi_IN`, Hindi
 
 == Changelog ==
+= 1.2.1 = (July, 2024) =
+
+* Fix a type error when displaying the population in the admin panel
+
 = 1.2 = (Jun, 2024) =
 
 * Update for CLDR 45.0.0

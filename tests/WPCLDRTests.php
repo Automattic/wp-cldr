@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
  * Performs unit tests against the wp-cldr plugin.
  */
 final class WPCLDRTests extends TestCase {
-
+	protected $cldr;
 	protected function setup() : void {
 		// The second parameter, false, tells the class to not use caching which means we can avoid loading WordPress for these tests.
 		$this->cldr = new WP_CLDR( 'en', false );
