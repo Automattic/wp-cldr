@@ -293,7 +293,7 @@ final class WPCLDRTests extends TestCase {
 
 		// The number of time zone exemplar cities is dynamic this range should cover it.
 		$this->assertGreaterThan( 400, count( $this->cldr->get_time_zone_cities() ) );
-		$this->assertLessThan( 475, count( $this->cldr->get_time_zone_cities() ) );
+		$this->assertLessThan( 500, count( $this->cldr->get_time_zone_cities() ) );
 
 		// Test some bad slugs.
 		$time_zone_cities = $this->cldr->get_time_zone_cities( 'bad-slug' );
