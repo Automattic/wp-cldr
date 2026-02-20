@@ -7,7 +7,7 @@ if [ "wp-cldr" != "${PWD##*/}" ]; then
 fi
 
 # set the CLDR version
-CLDRVERSION="46.0.0"
+CLDRVERSION="48.1.0"
 
 DATA_DIR="$PWD"/data/$CLDRVERSION
 
