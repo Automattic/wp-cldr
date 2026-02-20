@@ -12,6 +12,7 @@ The repository contains a WordPress plugin that provides CLDR data.
 - Always fetch the latest CLDR version from <https://github.com/unicode-org/cldr-json/tags>. Don't use the gh tool.
 - Create a branch named feature/update-cldr-to-version-NEW_CLDR_VERSION_HERE.
 - Create a pull request for the changes.
+- Increment the plugin version.
 
 ## Running tests
 
